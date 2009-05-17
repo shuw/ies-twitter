@@ -1,0 +1,1 @@
+java -Xmx1024m -cp ..\NLTProjects\bin\;lib\jtwitter.jar;bin; edu.shu.nlt.twitter.crawler.BasicTimelineCrawler
