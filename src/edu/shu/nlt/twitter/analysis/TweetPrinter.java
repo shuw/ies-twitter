@@ -1,5 +1,13 @@
 package edu.shu.nlt.twitter.analysis;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Date;
+
 import edu.nlt.shallow.data.Keyable;
 import edu.shu.nlt.twitter.crawler.data.Status;
 import edu.shu.nlt.twitter.crawler.data.Timeline;
@@ -16,11 +24,17 @@ public class TweetPrinter implements Runnable {
 
 	@Override
 	public void run() {
-		printAll();
 
+		File file = new File("output", "tweets_all.txt");
+
+		try {
+			printAll(new PrintStream(new FileOutputStream(file)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void printAll() {
+	private void printAll(PrintStream stream) {
 
 		int totalCount = 0;
 
@@ -33,6 +47,7 @@ public class TweetPrinter implements Runnable {
 				String statusText = status.getText();
 
 				System.out.println(statusText);
+				stream.println(statusText);
 			}
 		}
 
@@ -40,7 +55,7 @@ public class TweetPrinter implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		(new UrlFinder(new DiskCache("cache"))).run();
+		(new TweetPrinter(new DiskCache("cache"))).run();
 	}
 
 	class UrlKey implements Keyable {
