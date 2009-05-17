@@ -1,0 +1,7 @@
+Store crawl state on user level
+
+Integrate language classifier
+
+Crawl referenced URLs, save final URL, save page title
+Use reply-to references for named entities
+Load timeline
