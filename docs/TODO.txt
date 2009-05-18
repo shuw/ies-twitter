@@ -1,7 +1,12 @@
-Store crawl state on user level
+*** Linguistic tasks***
+Extract #Memes. Extract named entities from associated tweets to categorize it.
+
 
 Integrate language classifier
-
-Crawl referenced URLs, save final URL, save page title
 Use reply-to references for named entities
 Load timeline
+
+
+*** Crawler tasks ***
+Store crawl state on user level
+Crawl referenced URLs, save final URL, save page title
