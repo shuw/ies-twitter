@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
 
 import edu.shu.nlt.twitter.crawler.repository.Cacheable;
 import edu.shu.nlt.twitter.crawler.repository.PersistentCache;
@@ -35,6 +39,63 @@ public class Timeline implements Cacheable {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * @param timeline
+	 *            Additional timeline data to append
+	 */
+	public void append(Timeline timeline) {
+
+		if (!timeline.getUserScreenName().equals(timeline.getUserScreenName())) {
+			throw new IllegalArgumentException("timelines do not match");
+		}
+		Hashtable<Integer, Status> statusTable = new Hashtable<Integer, Status>(statusList.size());
+
+		for (Status status : statusList) {
+			statusTable.put(status.getId(), status);
+		}
+
+		for (Status status : timeline.getStatusList()) {
+			if (!statusTable.containsKey((Integer) status.getId())) {
+				// only add status that are not already in the list
+				statusList.add(status);
+			}
+		}
+
+	}
+
+	/**
+	 * @return The update frequency / day for the latest 10 tweets
+	 */
+	public double getUpdateFrequency() {
+
+		ArrayList<Status> sortedList = new ArrayList<Status>(statusList);
+
+		// Reverse sort so that latest tweets appear first
+		Collections.sort(sortedList, new Comparator<Status>() {
+
+			@Override
+			public int compare(Status o1, Status o2) {
+				return o2.getCreatedAt().compareTo(o1.getCreatedAt());
+			}
+
+		});
+
+		int depthToSeek = (sortedList.size() < 10 ? sortedList.size() : 10);
+
+		if (depthToSeek == 0) {
+			// no updates from user
+			return 0;
+		}
+
+		Date lastUpdatedTime = getLastUpdated();
+		Date updatedTimeOfLastElement = sortedList.get(depthToSeek - 1).getCreatedAt();
+
+		long timeBetweenUpdatesMillisecs = (lastUpdatedTime.getTime() - updatedTimeOfLastElement.getTime())
+				/ depthToSeek;
+
+		return (double) (3600 * 24 * 1000) / (double) timeBetweenUpdatesMillisecs;
 	}
 
 	public static Timeline getInstance(String value) {
@@ -74,7 +135,7 @@ public class Timeline implements Cacheable {
 
 	}
 
-	public static Timeline getInstance(String userScreenName, Collection<Status> statusList, Date lastUpdated) {
+	public static Timeline getInstance(String userScreenName, List<Status> statusList, Date lastUpdated) {
 		return new Timeline(userScreenName, statusList, lastUpdated);
 	}
 

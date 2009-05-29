@@ -1,4 +1,9 @@
 *** Linguistic tasks***
+Concept vs. Entities
+
+Remove named entities with < 2 instances
+
+
 Extract #Memes. Extract named entities from associated tweets to categorize it.
 
 
@@ -8,5 +13,6 @@ Load timeline
 
 
 *** Crawler tasks ***
+Recrawl tweets with highfrequency of updates
 Store crawl state on user level
 Crawl referenced URLs, save final URL, save page title

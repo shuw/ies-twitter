@@ -73,7 +73,7 @@ public class BasicTimelineCrawler implements Runnable {
 			// Only perform timeline loading and tree expansion for cached user
 			// profiles
 			if (userProfile != null) {
-				ensureTimeline(userProfile.getUser());
+				ensureTimeline(repository, twitter, userProfile.getUser(), true);
 
 				for (User friend : userProfile.getFriends()) {
 					queue.add(friend);
@@ -82,50 +82,77 @@ public class BasicTimelineCrawler implements Runnable {
 		}
 	}
 
+	public static boolean needsUpdate(Timeline timeline, int numOfUpdatesToRetrieve) {
+		double daysSinceLastUpdate = (double) (System.currentTimeMillis() - timeline.getLastUpdated().getTime())
+				/ (double) (3600 * 24 * 1000);
+
+		double updateFrequency = timeline.getUpdateFrequency();
+
+		// return true if estimated number of new updates exceeds the number of
+		// updates we can retrieve per call
+		return (daysSinceLastUpdate * updateFrequency) > numOfUpdatesToRetrieve;
+
+	}
+
+	static final int NUM_OF_UPDATES_TO_RETRIEVE = 20;
+
 	/**
 	 * Ensures that user friend data is loaded for user
 	 * 
 	 * @param user
 	 * @return
 	 */
-	public void ensureTimeline(User user) {
+	public static void ensureTimeline(PersistentCache repository, Twitter twitter, User user, boolean appendTimelines) {
 
-		if (repository.containsKey(Timeline.getCacheKey(user.getScreenName()))) {
-			System.out.println("Cached timeline found: " + user.getScreenName() + "\t"
-					+ repository.getLastUpdated(Timeline.getCacheKey(user.getScreenName())));
-		} else {
-			try {
-				List<winterwell.jtwitter.Twitter.Status> statusList = twitter.getUserTimeline(user.getScreenName(), 20,
-						null);
+		Timeline cachedTimeline = Timeline.getInstance(repository, user.getScreenName());
 
-				Timeline timeline = Timeline.getInstance(user.getScreenName(), adaptStatusList(statusList), new Date());
+		if (cachedTimeline != null && !(appendTimelines && needsUpdate(cachedTimeline, NUM_OF_UPDATES_TO_RETRIEVE))) {
 
+			System.out.println("Cached timeline " + cachedTimeline.getStatusList().size() + ": " + user.getScreenName()
+					+ "\t" + repository.getLastUpdated(Timeline.getCacheKey(user.getScreenName())));
+			return;
+		}
+
+		try {
+			List<winterwell.jtwitter.Twitter.Status> statusList = twitter.getUserTimeline(user.getScreenName(),
+					NUM_OF_UPDATES_TO_RETRIEVE, null);
+
+			Timeline timeline = Timeline.getInstance(user.getScreenName(), adaptStatusList(statusList), new Date());
+
+			if (cachedTimeline != null) {
+				timeline.append(cachedTimeline);
+				System.out.println("Updated timeline +"
+						+ (timeline.getStatusList().size() - cachedTimeline.getStatusList().size()) + ": "
+						+ user.getScreenName());
+			} else {
+				System.out.println("New timeline " + timeline.getStatusList().size() + ": " + user.getScreenName());
+			}
+
+			// update cache
+			repository.put(timeline);
+
+		} catch (Exception ex) {
+			if (ex.getMessage().contains("401 Unauthorized")) {
+				System.out.println("New empty (private) timeline: " + user.getScreenName());
+
+				Timeline timeline = Timeline.getInstance(user.getScreenName(), null, new Date());
 				// update cache
 				repository.put(timeline);
-				System.out.println("New timeline: " + user.getScreenName());
+			} else {
 
-			} catch (Exception ex) {
-				if (ex.getMessage().contains("401 Unauthorized")) {
-					System.out.println("New empty (private) timeline: " + user.getScreenName());
-
-					Timeline timeline = Timeline.getInstance(user.getScreenName(), null, new Date());
-					// update cache
-					repository.put(timeline);
-				} else {
-
-					System.out.println("Error / Rate limit reached, sleeping for pre-set time." + new Date() + " "
-							+ ex.getMessage());
-					try {
-						Thread.sleep(1000 * 60 * Util.ThrottlerWaitTimeMinutes);
-					} catch (InterruptedException e) {
-						throw new RuntimeException(e);
-					}
-
-					ensureTimeline(user);
-					return;
+				System.out.println("Error / Rate limit reached, sleeping for pre-set time." + new Date() + " "
+						+ ex.getMessage());
+				try {
+					Thread.sleep(1000 * 60 * Util.ThrottlerWaitTimeMinutes);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
 				}
+
+				ensureTimeline(repository, twitter, user, appendTimelines);
+				return;
 			}
 		}
+
 	}
 
 	@Override
