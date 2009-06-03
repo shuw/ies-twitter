@@ -102,7 +102,8 @@ public class BasicTimelineCrawler implements Runnable {
 	 * @param user
 	 * @return
 	 */
-	public static void ensureTimeline(PersistentCache repository, Twitter twitter, User user, boolean appendTimelines) {
+	public static Timeline ensureTimeline(PersistentCache repository, Twitter twitter, User user,
+			boolean appendTimelines) {
 
 		Timeline cachedTimeline = Timeline.getInstance(repository, user.getScreenName());
 
@@ -110,34 +111,21 @@ public class BasicTimelineCrawler implements Runnable {
 
 			System.out.println("Cached timeline " + cachedTimeline.getStatusList().size() + ": " + user.getScreenName()
 					+ "\t" + repository.getLastUpdated(Timeline.getCacheKey(user.getScreenName())));
-			return;
+			return cachedTimeline;
 		}
 
+		Timeline timeline;
 		try {
 			List<winterwell.jtwitter.Twitter.Status> statusList = twitter.getUserTimeline(user.getScreenName(),
 					NUM_OF_UPDATES_TO_RETRIEVE, null);
 
-			Timeline timeline = Timeline.getInstance(user.getScreenName(), adaptStatusList(statusList), new Date());
-
-			if (cachedTimeline != null) {
-				timeline.append(cachedTimeline);
-				System.out.println("Updated timeline +"
-						+ (timeline.getStatusList().size() - cachedTimeline.getStatusList().size()) + ": "
-						+ user.getScreenName());
-			} else {
-				System.out.println("New timeline " + timeline.getStatusList().size() + ": " + user.getScreenName());
-			}
-
-			// update cache
-			repository.put(timeline);
+			timeline = Timeline.getInstance(user.getScreenName(), adaptStatusList(statusList), new Date());
 
 		} catch (Exception ex) {
-			if (ex.getMessage().contains("401 Unauthorized")) {
-				System.out.println("New empty (private) timeline: " + user.getScreenName());
+			if (ex.getMessage().contains("401 Unauthorized") || ex.getMessage().contains("404 Error")) {
+				System.out.println("401/404 ignored" + user.getScreenName());
 
-				Timeline timeline = Timeline.getInstance(user.getScreenName(), null, new Date());
-				// update cache
-				repository.put(timeline);
+				timeline = Timeline.getInstance(user.getScreenName(), null, new Date());
 			} else {
 
 				System.out.println("Error / Rate limit reached, sleeping for pre-set time." + new Date() + " "
@@ -148,10 +136,21 @@ public class BasicTimelineCrawler implements Runnable {
 					throw new RuntimeException(e);
 				}
 
-				ensureTimeline(repository, twitter, user, appendTimelines);
-				return;
+				return ensureTimeline(repository, twitter, user, appendTimelines);
 			}
 		}
+
+		if (cachedTimeline != null) {
+			timeline.append(cachedTimeline);
+			System.out.println("Updated timeline +"
+					+ (timeline.getStatusList().size() - cachedTimeline.getStatusList().size()) + ": "
+					+ user.getScreenName());
+		} else {
+			System.out.println("New timeline " + timeline.getStatusList().size() + ": " + user.getScreenName());
+		}
+		// update cache
+		repository.put(timeline);
+		return timeline;
 
 	}
 
