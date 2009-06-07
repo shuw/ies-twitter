@@ -103,16 +103,12 @@ public class FindInstances implements LineProcessor {
 		System.out.println("Total lines processed: " + totalLinesProcessed);
 		System.out.println("Lines with at least one match: " + hasAtLeastOneMatch);
 
-		System.out.println("COMPANY_COUNTER_TABLE");
-
 		companyCounter.printEntries(new PrintStream(new FileOutputStream(new File("output", "companies_found.txt"))),
 				Integer.MAX_VALUE);
 
-		System.out.println("PERSON_COUNTER_TABLE");
 		personCounter.printEntries(new PrintStream(new FileOutputStream(new File("output", "people_found.txt"))),
 				Integer.MAX_VALUE);
 
-		System.out.println("PRODUCT_COUNTER_TABLE");
 		productCounter.printEntries(new PrintStream(new FileOutputStream(new File("output", "products_found.txt"))),
 				Integer.MAX_VALUE);
 	}
