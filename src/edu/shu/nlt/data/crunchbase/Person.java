@@ -1,6 +1,8 @@
 package edu.shu.nlt.data.crunchbase;
 
-public class Person : Keyable {
+import edu.nlt.shallow.data.Keyable;
+
+public class Person implements Keyable {
 	private String firstName;
 	private String lastName;
 	private String crunchbaseId;
@@ -21,6 +23,11 @@ public class Person : Keyable {
 	}
 
 	public String getCrunchBaseId() {
+		return crunchbaseId;
+	}
+
+	@Override
+	public String getKey() {
 		return crunchbaseId;
 	}
 
