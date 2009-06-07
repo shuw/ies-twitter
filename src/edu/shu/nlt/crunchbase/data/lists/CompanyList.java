@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.data;
+package edu.shu.nlt.crunchbase.data.lists;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,9 @@ import java.util.Hashtable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import edu.shu.nlt.crunchbase.data.Company;
+import edu.shu.nlt.crunchbase.data.JsonUtil;
 
 public class CompanyList {
 
@@ -20,7 +22,7 @@ public class CompanyList {
 		CompanyList companies = getInstance();
 
 		for (Company company : companies.getCompanies())
-			System.out.println(company.getName() + " ID: " + company.getCrunchBaseId());
+			company.printDetails(System.out);
 
 		System.out.println("Total # of companies: " + companies.getCompanies().size());
 	}
@@ -41,14 +43,9 @@ public class CompanyList {
 		companyTable = new Hashtable<String, Company>(jsonArray.length());
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			Company newCompany = Company.getInstance(jsonArray.getJSONObject(i));
 
-			String name = jsonObject.getString("name");
-			String crunchbaseID = jsonObject.getString("permalink");
-
-			Company newCompany = new Company(crunchbaseID, name);
-
-			companyTable.put(name.toLowerCase(), newCompany);
+			companyTable.put(newCompany.getName().toLowerCase(), newCompany);
 		}
 	}
 

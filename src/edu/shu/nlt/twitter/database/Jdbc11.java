@@ -1,4 +1,4 @@
-package edu.shu.nlt.twitter.random;
+package edu.shu.nlt.twitter.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Currently unused class
+ * 
+ * @author shu
+ * 
+ */
 public class Jdbc11 {
 	static final String mySqlServerLocation = "127.0.0.1:3306";
 	static final String mySqlUserName = "root";
@@ -17,9 +23,6 @@ public class Jdbc11 {
 
 	public static void CreateDB(String dbName) {
 		try {
-
-			String url = "jdbc:mysql://127.0.0.1:3306/mysql";
-
 			Connection con = GetConnection("mysql");
 
 			Statement stmt = con.createStatement();

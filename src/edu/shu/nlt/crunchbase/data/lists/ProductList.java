@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.data;
+package edu.shu.nlt.crunchbase.data.lists;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,9 @@ import java.util.Hashtable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import edu.shu.nlt.crunchbase.data.JsonUtil;
+import edu.shu.nlt.crunchbase.data.Product;
 
 public class ProductList {
 
@@ -20,7 +22,7 @@ public class ProductList {
 		ProductList products = getInstance();
 
 		for (Product product : products.getProducts())
-			System.out.println(product.getName() + " ID: " + product.getCrunchBaseId());
+			product.printDetails(System.out);
 
 		System.out.println("Total # of products: " + products.getProducts().size());
 	}
@@ -41,12 +43,8 @@ public class ProductList {
 		products = new Hashtable<String, Product>(jsonArray.length());
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			String name = jsonObject.getString("name");
-			String crunchbaseID = jsonObject.getString("permalink");
-
-			products.put(name.toLowerCase(), new Product(crunchbaseID, name));
+			Product product = Product.getInstance(jsonArray.getJSONObject(i));
+			products.put(product.getName().toLowerCase(), product);
 		}
 	}
 

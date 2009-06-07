@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.data;
+package edu.shu.nlt.crunchbase.data.lists;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,9 @@ import java.util.Hashtable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import edu.shu.nlt.crunchbase.data.JsonUtil;
+import edu.shu.nlt.crunchbase.data.Person;
 
 public class PersonList {
 	private static String getFullNameKey(String firstName, String lastName) {
@@ -30,7 +32,7 @@ public class PersonList {
 		PersonList personList = getInstance();
 
 		for (Person person : personList.getPeople())
-			System.out.println(person.getFirstName() + " " + person.getLastName() + " ID: " + person.getCrunchBaseId());
+			person.printDetails(System.out);
 
 		System.out.println("Total # of companies: " + personList.getPeople().size());
 
@@ -52,16 +54,9 @@ public class PersonList {
 		people = new Hashtable<String, Person>(jsonArray.length());
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			Person newPerson = Person.getInstance(jsonArray.getJSONObject(i));
 
-			String crunchbaseID = jsonObject.getString("permalink");
-
-			String firstName = jsonObject.getString("first_name");
-			String lastName = jsonObject.getString("last_name");
-
-			Person newPerson = new Person(crunchbaseID, firstName, lastName);
-
-			people.put(getFullNameKey(firstName, lastName), newPerson);
+			people.put(getFullNameKey(newPerson.getFirstName(), newPerson.getLastName()), newPerson);
 		}
 	}
 

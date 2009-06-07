@@ -14,11 +14,11 @@ import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
 import edu.shu.nlt.crunchbase.data.Company;
-import edu.shu.nlt.crunchbase.data.CompanyList;
 import edu.shu.nlt.crunchbase.data.Person;
-import edu.shu.nlt.crunchbase.data.PersonList;
 import edu.shu.nlt.crunchbase.data.Product;
-import edu.shu.nlt.crunchbase.data.ProductList;
+import edu.shu.nlt.crunchbase.data.lists.CompanyList;
+import edu.shu.nlt.crunchbase.data.lists.PersonList;
+import edu.shu.nlt.crunchbase.data.lists.ProductList;
 
 public class FindInstances implements LineProcessor {
 

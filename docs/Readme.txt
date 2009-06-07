@@ -13,6 +13,9 @@ Twitter API
 Intention Ontology
 
 Technology Ontology
+	Products
+		Employees, Products, Competitors
+
 
 Tweet Ontology
 

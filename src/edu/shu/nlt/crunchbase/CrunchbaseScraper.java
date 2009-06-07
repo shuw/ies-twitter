@@ -1,22 +1,29 @@
 package edu.shu.nlt.crunchbase;
 
 import java.io.File;
-import java.io.IOException;
 
 import edu.shu.nlt.crunchbase.data.Company;
-import edu.shu.nlt.crunchbase.data.CompanyList;
 import edu.shu.nlt.crunchbase.data.Person;
-import edu.shu.nlt.crunchbase.data.PersonList;
 import edu.shu.nlt.crunchbase.data.Product;
-import edu.shu.nlt.crunchbase.data.ProductList;
+import edu.shu.nlt.crunchbase.data.lists.CompanyList;
+import edu.shu.nlt.crunchbase.data.lists.PersonList;
+import edu.shu.nlt.crunchbase.data.lists.ProductList;
 
 public class CrunchbaseScraper implements Runnable {
 
-	private CompanyList companyList;
-	private PersonList personList;
-	private ProductList productList;
-
+	public static CrunchbaseScraper getInstance() {
+		return new CrunchbaseScraper("cache/crunchbase");
+	}
+	public static void main(String[] args) {
+		getInstance().run();
+	}
 	private String cachePath;
+
+	private CompanyList companyList;
+
+	private PersonList personList;
+
+	private ProductList productList;
 
 	private CrunchbaseScraper(String path) {
 		companyList = CompanyList.getInstance();
@@ -25,12 +32,18 @@ public class CrunchbaseScraper implements Runnable {
 		this.cachePath = path;
 	}
 
-	public static CrunchbaseScraper getInstance() {
-		return new CrunchbaseScraper("cache/crunchbase");
-	}
+	private void ensureCache(String type, String crunchbaseId) {
 
-	public static void main(String[] args) {
-		getInstance().run();
+		File file = new File(cachePath + "/" + type, crunchbaseId);
+		if (!file.exists()) {
+			String url = "http://api.crunchbase.com/v/1/" + type + "/" + crunchbaseId + ".js";
+			FileDownload.download(url, file.toString());
+			System.out.println("downloaded: " + url);
+
+		} else {
+			System.out.println("skipped cached " + file.getName());
+		}
+
 	}
 
 	@Override
@@ -45,20 +58,6 @@ public class CrunchbaseScraper implements Runnable {
 
 		for (Company company : companyList.getCompanies()) {
 			ensureCache("company", company.getCrunchBaseId());
-		}
-
-	}
-
-	private void ensureCache(String type, String crunchbaseId) {
-
-		File file = new File(cachePath + "/" + type, crunchbaseId);
-		if (!file.exists()) {
-			String url = "http://api.crunchbase.com/v/1/" + type + "/" + crunchbaseId + ".js";
-			FileDownload.download(url, file.toString());
-			System.out.println("downloaded: " + url);
-
-		} else {
-			System.out.println("skipped cached " + file.getName());
 		}
 
 	}

@@ -125,6 +125,7 @@ public class BasicFriendGraphCrawler implements Runnable {
 	 * @param user
 	 * @param depth
 	 */
+	@SuppressWarnings("unused")
 	private synchronized void getFriendsDepthFirst(User user, int depth) {
 		UserProfile userWrapper = ensureUserProfile(repository, twitter, user);
 
