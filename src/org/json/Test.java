@@ -1,9 +1,9 @@
 package org.json;
 
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.io.StringWriter;
 
 /**
  * Test class. This file is not formally a member of the org.json library.
@@ -29,14 +29,18 @@ public class Test {
  *  a JSONObject with an array of names.
  */
         class Obj implements JSONString {
-        	public String aString;
-        	public double aNumber;
         	public boolean aBoolean;
+        	public double aNumber;
+        	public String aString;
         	
             public Obj(String string, double n, boolean b) {
                 this.aString = string;
                 this.aNumber = n;
                 this.aBoolean = b;
+            }
+            
+            public String getBENT() {
+            	return "All uppercase key";
             }
             
             public double getNumber() {
@@ -47,16 +51,12 @@ public class Test {
             	return this.aString;
             }
             
-            public boolean isBoolean() {
-            	return this.aBoolean;
-            }
-            
-            public String getBENT() {
-            	return "All uppercase key";
-            }
-            
             public String getX() {
             	return "x";
+            }
+            
+            public boolean isBoolean() {
+            	return this.aBoolean;
             }
             
             public String toJSONString() {

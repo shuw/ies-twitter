@@ -10,6 +10,24 @@ import edu.shu.nlt.twitter.ie.NamedEntity;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 
 public class FindNamedEntities implements Runnable {
+	public static void main(String[] args) {
+		CRFClassifier classifier = null;
+
+		try {
+			classifier = CRFClassifier.getClassifier(new File("classifiers", "ner-eng-ie.crf-4-conll-distsim.ser"));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (classifier != null) {
+			FindNamedEntities task = new FindNamedEntities(classifier);
+
+			task.run();
+
+		}
+	}
+
 	private CRFClassifier classifier;
 
 	public FindNamedEntities(CRFClassifier classifier) {
@@ -38,24 +56,6 @@ public class FindNamedEntities implements Runnable {
 			System.out.println();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		CRFClassifier classifier = null;
-
-		try {
-			classifier = CRFClassifier.getClassifier(new File("classifiers", "ner-eng-ie.crf-4-conll-distsim.ser"));
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		if (classifier != null) {
-			FindNamedEntities task = new FindNamedEntities(classifier);
-
-			task.run();
-
-		}
 	}
 
 }

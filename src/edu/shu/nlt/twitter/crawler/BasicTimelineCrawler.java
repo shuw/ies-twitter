@@ -21,6 +21,8 @@ import edu.shu.nlt.twitter.crawler.repository.PersistentCache;
  */
 public class BasicTimelineCrawler implements Runnable {
 
+	static final int NUM_OF_UPDATES_TO_RETRIEVE = 20;
+
 	private static List<Status> adaptStatusList(List<winterwell.jtwitter.Twitter.Status> statusList) {
 		List<Status> adaptedStatus = new ArrayList<Status>(statusList.size());
 
@@ -30,71 +32,6 @@ public class BasicTimelineCrawler implements Runnable {
 
 		return adaptedStatus;
 	}
-
-	public static void main(String[] args) {
-
-		Twitter twitter = new Twitter("shuw", "direwolf");
-		DiskCache cache = new DiskCache("cache");
-
-		BasicTimelineCrawler crawler = new BasicTimelineCrawler(twitter, cache, "shanselman");
-		crawler.run();
-	}
-
-	private PersistentCache repository;
-
-	private String rootUser;
-
-	private Twitter twitter;
-
-	public BasicTimelineCrawler(Twitter twitter, PersistentCache repository, String rootUser) {
-		super();
-		this.twitter = twitter;
-		this.repository = repository;
-		this.rootUser = rootUser;
-	}
-
-	/**
-	 * Depth first algorithm for crawling the timeline.
-	 * 
-	 * Assume that all relevant social network data is already cached
-	 * 
-	 * @param rootUser
-	 */
-	private synchronized void crawlBreadthFirst(User rootUser) {
-		LinkedList<User> queue = new LinkedList<User>();
-		queue.add(rootUser);
-
-		while (!queue.isEmpty()) {
-			User user = queue.remove();
-			// UserProfile userProfile = UserProfile.getInstance(repository,
-			// userScreenName);
-			UserProfile userProfile = BasicFriendGraphCrawler.ensureUserProfile(repository, twitter, user);
-
-			// Only perform timeline loading and tree expansion for cached user
-			// profiles
-			if (userProfile != null) {
-				ensureTimeline(repository, twitter, userProfile.getUser(), true);
-
-				for (User friend : userProfile.getFriends()) {
-					queue.add(friend);
-				}
-			}
-		}
-	}
-
-	public static boolean needsUpdate(Timeline timeline, int numOfUpdatesToRetrieve) {
-		double daysSinceLastUpdate = (double) (System.currentTimeMillis() - timeline.getLastUpdated().getTime())
-				/ (double) (3600 * 24 * 1000);
-
-		double updateFrequency = timeline.getUpdateFrequency();
-
-		// return true if estimated number of new updates exceeds the number of
-		// updates we can retrieve per call
-		return (daysSinceLastUpdate * updateFrequency) > numOfUpdatesToRetrieve;
-
-	}
-
-	static final int NUM_OF_UPDATES_TO_RETRIEVE = 20;
 
 	/**
 	 * Ensures that user friend data is loaded for user
@@ -152,6 +89,69 @@ public class BasicTimelineCrawler implements Runnable {
 		repository.put(timeline);
 		return timeline;
 
+	}
+
+	public static void main(String[] args) {
+
+		Twitter twitter = new Twitter("shuw", "direwolf");
+		DiskCache cache = DiskCache.getInstance();
+
+		BasicTimelineCrawler crawler = new BasicTimelineCrawler(twitter, cache, "shanselman");
+		crawler.run();
+	}
+
+	public static boolean needsUpdate(Timeline timeline, int numOfUpdatesToRetrieve) {
+		double daysSinceLastUpdate = (double) (System.currentTimeMillis() - timeline.getLastUpdated().getTime())
+				/ (double) (3600 * 24 * 1000);
+
+		double updateFrequency = timeline.getUpdateFrequency();
+
+		// return true if estimated number of new updates exceeds the number of
+		// updates we can retrieve per call
+		return (daysSinceLastUpdate * updateFrequency) > numOfUpdatesToRetrieve;
+
+	}
+
+	private PersistentCache repository;
+
+	private String rootUser;
+
+	private Twitter twitter;
+
+	public BasicTimelineCrawler(Twitter twitter, PersistentCache repository, String rootUser) {
+		super();
+		this.twitter = twitter;
+		this.repository = repository;
+		this.rootUser = rootUser;
+	}
+
+	/**
+	 * Depth first algorithm for crawling the timeline.
+	 * 
+	 * Assume that all relevant social network data is already cached
+	 * 
+	 * @param rootUser
+	 */
+	private synchronized void crawlBreadthFirst(User rootUser) {
+		LinkedList<User> queue = new LinkedList<User>();
+		queue.add(rootUser);
+
+		while (!queue.isEmpty()) {
+			User user = queue.remove();
+			// UserProfile userProfile = UserProfile.getInstance(repository,
+			// userScreenName);
+			UserProfile userProfile = BasicFriendGraphCrawler.ensureUserProfile(repository, twitter, user);
+
+			// Only perform timeline loading and tree expansion for cached user
+			// profiles
+			if (userProfile != null) {
+				ensureTimeline(repository, twitter, userProfile.getUser(), true);
+
+				for (User friend : userProfile.getFriends()) {
+					queue.add(friend);
+				}
+			}
+		}
 	}
 
 	@Override

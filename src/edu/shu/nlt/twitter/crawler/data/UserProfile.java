@@ -19,10 +19,12 @@ import edu.shu.nlt.twitter.crawler.repository.PersistentCache.CachedValue;
  * 
  */
 public class UserProfile implements Cacheable {
+	private static final String Version2 = "FormatVersion2";
+
 	public static final String FilePostfix = "_friends";
 
-	public static UserProfile getInstance(User user, Collection<User> friends, Date lastUpdated) {
-		return new UserProfile(user, friends, lastUpdated);
+	public static String getCacheKey(String userScreenName) {
+		return userScreenName + FilePostfix;
 	}
 
 	public static UserProfile getInstance(PersistentCache fromCache, String userScreenName) {
@@ -41,14 +43,6 @@ public class UserProfile implements Cacheable {
 		} else {
 			return null;
 		}
-	}
-
-	public static String getCacheKey(String userScreenName) {
-		return userScreenName + FilePostfix;
-	}
-
-	public String getCacheKey() {
-		return getCacheKey(user.getScreenName());
 	}
 
 	public static UserProfile getInstance(String value) {
@@ -96,7 +90,34 @@ public class UserProfile implements Cacheable {
 
 	}
 
-	private static final String Version2 = "FormatVersion2";
+	public static UserProfile getInstance(User user, Collection<User> friends, Date lastUpdated) {
+		return new UserProfile(user, friends, lastUpdated);
+	}
+
+	private Collection<User> friends;
+
+	private Date lastUpdated;
+
+	private User user;
+	private UserProfile(User user, Collection<User> friends, Date lastUpdated) {
+		super();
+		this.user = user;
+		this.lastUpdated = lastUpdated;
+
+		this.friends = friends != null ? friends : new ArrayList<User>();
+
+	}
+	public String getCacheKey() {
+		return getCacheKey(user.getScreenName());
+	}
+
+	public Collection<User> getFriends() {
+		return friends;
+	}
+
+	public Date getLastUpdated() {
+		return lastUpdated;
+	}
 
 	public String getSerialized() {
 		String delimiterWithSpace = "\n" + Util.Delimiter + "\n";
@@ -114,27 +135,6 @@ public class UserProfile implements Cacheable {
 
 		return builder.toString();
 
-	}
-
-	private Collection<User> friends;
-	private Date lastUpdated;
-	private User user;
-
-	private UserProfile(User user, Collection<User> friends, Date lastUpdated) {
-		super();
-		this.user = user;
-		this.lastUpdated = lastUpdated;
-
-		this.friends = friends != null ? friends : new ArrayList<User>();
-
-	}
-
-	public Collection<User> getFriends() {
-		return friends;
-	}
-
-	public Date getLastUpdated() {
-		return lastUpdated;
 	}
 
 	public User getUser() {

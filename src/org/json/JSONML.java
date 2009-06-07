@@ -270,12 +270,12 @@ public class JSONML {
      * will be an array of strings and JsonML JSONObjects.
 
      * Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
-     * @param x An XMLTokener of the XML source text.
+     * @param string The XML source text.
      * @return A JSONObject containing the structured data from the XML string.
      * @throws JSONException
      */
-    public static JSONObject toJSONObject(XMLTokener x) throws JSONException {
-       	return (JSONObject)parse(x, false, null);
+    public static JSONObject toJSONObject(String string) throws JSONException {
+    	return toJSONObject(new XMLTokener(string));
     }
     /**
      * Convert a well-formed (but not necessarily valid) XML string into a
@@ -286,12 +286,12 @@ public class JSONML {
      * will be an array of strings and JsonML JSONObjects.
 
      * Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
-     * @param string The XML source text.
+     * @param x An XMLTokener of the XML source text.
      * @return A JSONObject containing the structured data from the XML string.
      * @throws JSONException
      */
-    public static JSONObject toJSONObject(String string) throws JSONException {
-    	return toJSONObject(new XMLTokener(string));
+    public static JSONObject toJSONObject(XMLTokener x) throws JSONException {
+       	return (JSONObject)parse(x, false, null);
     }
 
 

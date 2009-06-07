@@ -10,28 +10,17 @@ import java.util.List;
 import edu.nlt.shallow.data.table.KeyCounterTable;
 import edu.nlt.shallow.data.tags.Word;
 import edu.nlt.shallow.parser.WordTokenizer;
-import edu.nlt.util.FileProcessor;
 import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
-import edu.shu.nlt.data.crunchbase.Company;
-import edu.shu.nlt.data.crunchbase.CompanyList;
-import edu.shu.nlt.data.crunchbase.Person;
-import edu.shu.nlt.data.crunchbase.PersonList;
-import edu.shu.nlt.data.crunchbase.Product;
-import edu.shu.nlt.data.crunchbase.ProductList;
+import edu.shu.nlt.crunchbase.data.Company;
+import edu.shu.nlt.crunchbase.data.CompanyList;
+import edu.shu.nlt.crunchbase.data.Person;
+import edu.shu.nlt.crunchbase.data.PersonList;
+import edu.shu.nlt.crunchbase.data.Product;
+import edu.shu.nlt.crunchbase.data.ProductList;
 
 public class FindInstances implements LineProcessor {
-
-	private CompanyList companyList;
-	private PersonList personList;
-	private ProductList productList;
-
-	public FindInstances() {
-		companyList = new CompanyList(new File("data/crunchbase/companies.js"));
-		personList = new PersonList(new File("data/crunchbase/people.js"));
-		productList = new ProductList(new File("data/crunchbase/products.js"));
-	}
 
 	public static void main(String[] args) throws FileNotFoundException {
 
@@ -47,15 +36,27 @@ public class FindInstances implements LineProcessor {
 	}
 
 	private KeyCounterTable<Company> companyCounter = new KeyCounterTable<Company>();
+	private CompanyList companyList;
+
+	private int hasAtLeastOneMatch = 0;
+
 	private KeyCounterTable<Person> personCounter = new KeyCounterTable<Person>();
+
+	private PersonList personList;
 	private KeyCounterTable<Product> productCounter = new KeyCounterTable<Product>();
+	private ProductList productList;
 
 	private StopWords stopWords = new StopWords();
 
+	private WordTokenizer tokenizer = new WordTokenizer(false);
+
 	private int totalLinesProcessed = 0;
 
-	private WordTokenizer tokenizer = new WordTokenizer(false);
-	private int hasAtLeastOneMatch = 0;
+	public FindInstances() {
+		companyList = CompanyList.getInstance();
+		personList = PersonList.getInstance();
+		productList = ProductList.getInstance();
+	}
 
 	private int match(String tweet, String phrase) {
 

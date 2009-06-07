@@ -1,4 +1,4 @@
-package edu.shu.nlt.twitter.analysis;
+package edu.shu.nlt.analysis;
 
 import edu.shu.nlt.twitter.crawler.data.Timeline;
 import edu.shu.nlt.twitter.crawler.repository.PersistentCache;

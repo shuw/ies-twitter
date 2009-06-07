@@ -1,11 +1,11 @@
-package edu.shu.nlt.data.crunchbase;
+package edu.shu.nlt.crunchbase.data;
 
 import edu.nlt.shallow.data.Keyable;
 
 public class Person implements Keyable {
+	private String crunchbaseId;
 	private String firstName;
 	private String lastName;
-	private String crunchbaseId;
 
 	public Person(String crunchbaseId, String firstName, String lastName) {
 		super();
@@ -14,21 +14,21 @@ public class Person implements Keyable {
 		this.lastName = lastName;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
 	public String getCrunchBaseId() {
 		return crunchbaseId;
+	}
+
+	public String getFirstName() {
+		return firstName;
 	}
 
 	@Override
 	public String getKey() {
 		return crunchbaseId;
+	}
+
+	public String getLastName() {
+		return lastName;
 	}
 
 }

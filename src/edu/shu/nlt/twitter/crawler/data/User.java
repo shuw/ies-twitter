@@ -7,16 +7,6 @@ public class User {
 	}
 
 	/**
-	 * Adapter for jtwitter class
-	 * 
-	 * @param user
-	 * @return User
-	 */
-	public static User getInstance(winterwell.jtwitter.Twitter.User user) {
-		return new User(user.getId(), user.getScreenName(), user.getName(), user.getLocation(), user.getDescription());
-	}
-
-	/**
 	 * @param value
 	 *            Serialized value
 	 * @return User
@@ -47,14 +37,20 @@ public class User {
 
 	}
 
-	public String serialize() {
-		return id + "\t" + screenName + "\t" + name + "\t" + location + "\n" + description;
+	/**
+	 * Adapter for jtwitter class
+	 * 
+	 * @param user
+	 * @return User
+	 */
+	public static User getInstance(winterwell.jtwitter.Twitter.User user) {
+		return new User(user.getId(), user.getScreenName(), user.getName(), user.getLocation(), user.getDescription());
 	}
 
 	private String description;
+
 	private int id;
 	private String location;
-
 	private String name;
 
 	private String screenName;
@@ -87,6 +83,10 @@ public class User {
 
 	public String getScreenName() {
 		return screenName;
+	}
+
+	public String serialize() {
+		return id + "\t" + screenName + "\t" + name + "\t" + location + "\n" + description;
 	}
 
 }

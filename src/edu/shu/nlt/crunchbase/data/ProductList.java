@@ -1,4 +1,4 @@
-package edu.shu.nlt.data.crunchbase;
+package edu.shu.nlt.crunchbase.data;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,22 @@ import org.json.JSONObject;
 
 public class ProductList {
 
+	public static ProductList getInstance() {
+		return new ProductList(new File("data/crunchbase/products.js"));
+	}
+
+	public static void main(String[] args) throws JSONException, IOException {
+
+		ProductList products = getInstance();
+
+		for (Product product : products.getProducts())
+			System.out.println(product.getName() + " ID: " + product.getCrunchBaseId());
+
+		System.out.println("Total # of products: " + products.getProducts().size());
+	}
+
+	private Hashtable<String, Product> products;
+
 	public ProductList(File file) {
 		try {
 			initialize(file);
@@ -18,8 +34,6 @@ public class ProductList {
 			throw new RuntimeException(e);
 		}
 	}
-
-	private Hashtable<String, Product> products;
 
 	private void initialize(File companyFile) throws JSONException, IOException {
 		JSONArray jsonArray = JsonUtil.GetJsonArray(companyFile);
@@ -36,21 +50,11 @@ public class ProductList {
 		}
 	}
 
-	public Collection<Product> getProducts() {
-		return products.values();
-	}
-
 	public Product getProduct(String name) {
 		return products.get(name.toLowerCase());
 	}
 
-	public static void main(String[] args) throws JSONException, IOException {
-
-		ProductList products = new ProductList(new File("data/crunchbase/products.js"));
-
-		for (Product product : products.getProducts())
-			System.out.println(product.getName() + " ID: " + product.getCrunchBaseId());
-
-		System.out.println("Total # of products: " + products.getProducts().size());
+	public Collection<Product> getProducts() {
+		return products.values();
 	}
 }

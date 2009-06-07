@@ -1,4 +1,4 @@
-package edu.shu.nlt.twitter.analysis;
+package edu.shu.nlt.analysis;
 
 import edu.nlt.util.processor.LineProcessor;
 import edu.shu.nlt.twitter.crawler.data.Status;

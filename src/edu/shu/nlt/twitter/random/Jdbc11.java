@@ -11,12 +11,24 @@ public class Jdbc11 {
 	static final String mySqlUserName = "root";
 	static final String mySqlUserPwd = "direwolf";
 
-	public static void main(String args[]) throws Exception {
+	private static Connection GetConnection(String path) throws SQLException {
+		return DriverManager.getConnection("jdbc:mysql://" + mySqlServerLocation + "/" + path, "root", "direwolf");
+	}
 
-		Class.forName("com.mysql.jdbc.Driver");
+	public static void CreateDB(String dbName) {
+		try {
 
-		CreateDB("JunkDB");
-		DoSomethingNew("JunkDB");
+			String url = "jdbc:mysql://127.0.0.1:3306/mysql";
+
+			Connection con = GetConnection("mysql");
+
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("CREATE DATABASE " + dbName);
+			con.close();
+		} catch (SQLException e) {
+
+		}
 
 	}
 
@@ -50,24 +62,12 @@ public class Jdbc11 {
 
 	}
 
-	private static Connection GetConnection(String path) throws SQLException {
-		return DriverManager.getConnection("jdbc:mysql://" + mySqlServerLocation + "/" + path, "root", "direwolf");
-	}
+	public static void main(String args[]) throws Exception {
 
-	public static void CreateDB(String dbName) {
-		try {
+		Class.forName("com.mysql.jdbc.Driver");
 
-			String url = "jdbc:mysql://127.0.0.1:3306/mysql";
-
-			Connection con = GetConnection("mysql");
-
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("CREATE DATABASE " + dbName);
-			con.close();
-		} catch (SQLException e) {
-
-		}
+		CreateDB("JunkDB");
+		DoSomethingNew("JunkDB");
 
 	}
 }

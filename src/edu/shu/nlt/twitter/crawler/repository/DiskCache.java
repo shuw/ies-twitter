@@ -19,11 +19,15 @@ public class DiskCache implements PersistentCache {
 	private CacheMap cacheMap;
 	private ObjectStore objectStore;
 
-	public DiskCache(String basePath) {
+	private DiskCache(String basePath) {
 		super();
 		this.basePath = new File(basePath);
 
 		initialize();
+	}
+
+	public static DiskCache getInstance() {
+		return new DiskCache("cache/twitter");
 	}
 
 	/**
@@ -43,6 +47,11 @@ public class DiskCache implements PersistentCache {
 			}
 		});
 
+	}
+
+	@Override
+	public boolean containsKey(String key) {
+		return cacheMap.containsKey(key);
 	}
 
 	@Override
@@ -85,6 +94,21 @@ public class DiskCache implements PersistentCache {
 		}
 	}
 
+	public CacheMap getCacheMap() {
+		return cacheMap;
+	}
+
+	@Override
+	public Collection<String> getKeysMatching(String regex) {
+		return cacheMap.getKeysMatching(regex);
+
+	}
+
+	@Override
+	public Date getLastUpdated(String key) {
+		return cacheMap.getLastUpdated(key);
+	}
+
 	@Override
 	public void put(Cacheable cacheable) {
 
@@ -102,26 +126,6 @@ public class DiskCache implements PersistentCache {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	@Override
-	public boolean containsKey(String key) {
-		return cacheMap.containsKey(key);
-	}
-
-	@Override
-	public Date getLastUpdated(String key) {
-		return cacheMap.getLastUpdated(key);
-	}
-
-	public CacheMap getCacheMap() {
-		return cacheMap;
-	}
-
-	@Override
-	public Collection<String> getKeysMatching(String regex) {
-		return cacheMap.getKeysMatching(regex);
 
 	}
 }

@@ -17,13 +17,16 @@ public class Status {
 		return getInstance(status.getId(), status.getText(), status.getCreatedAt());
 	}
 
-	public String serialize() {
-		return id + "\t" + createdAt.getTime() + "\t" + Util.stripNewLineCharacters(text);
-	}
-
 	private Date createdAt;
+
 	private int id;
 	private String text;
+	private Status(int id, String text, Date createdAt) {
+		super();
+		this.id = id;
+		this.text = Util.stripNewLineCharacters(text);
+		this.createdAt = createdAt;
+	}
 
 	public Date getCreatedAt() {
 		return createdAt;
@@ -37,11 +40,8 @@ public class Status {
 		return text;
 	}
 
-	private Status(int id, String text, Date createdAt) {
-		super();
-		this.id = id;
-		this.text = Util.stripNewLineCharacters(text);
-		this.createdAt = createdAt;
+	public String serialize() {
+		return id + "\t" + createdAt.getTime() + "\t" + Util.stripNewLineCharacters(text);
 	}
 
 }

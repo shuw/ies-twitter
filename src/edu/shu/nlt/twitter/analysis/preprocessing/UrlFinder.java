@@ -15,51 +15,31 @@ import edu.nlt.util.InputUtil;
 import edu.nlt.util.processor.LineProcessor;
 
 public class UrlFinder implements LineProcessor {
+	public static void main(String[] args) throws FileNotFoundException {
+		UrlFinder urlFinder = new UrlFinder();
+
+		boolean useSystemIn = false;
+		if (useSystemIn) {
+
+			InputUtil.process(System.in, urlFinder);
+		} else {
+			InputUtil.process(new File("output", "tweets_all.txt"), urlFinder);
+		}
+
+		File file = new File("output", "urls_sorted_unique.txt");
+
+		urlFinder.printResults(new PrintStream(new FileOutputStream(file)));
+
+	}
 	private Pattern pattern = Pattern.compile("http://[^ ]+", Pattern.CASE_INSENSITIVE);
+
 	private KeyCounterTable<UrlKey> urlCounterTable;
 
+	int totalCount1 = 0;
+
+	int totalTweets = 0;
 	public UrlFinder() {
 		urlCounterTable = new KeyCounterTable<UrlKey>();
-
-	}
-
-	class UrlKey implements Keyable {
-		private String url;
-
-		public String getUrl() {
-			return url;
-		}
-
-		public UrlKey(String url) {
-			super();
-			this.url = url;
-		}
-
-		@Override
-		public String getKey() {
-			return url;
-		}
-
-		@Override
-		public String toString() {
-			return url;
-		}
-	}
-
-	int totalCount1 = 0;
-	int totalTweets = 0;
-
-	@Override
-	public void processLine(String value) {
-		Matcher matcher = pattern.matcher(value);
-		totalTweets++;
-		while (matcher.find()) {
-			String matchedUrl = matcher.group();
-			System.out.println("Found url: " + matchedUrl);
-
-			urlCounterTable.add(new UrlKey(matchedUrl));
-			totalCount1++;
-		}
 
 	}
 
@@ -81,21 +61,41 @@ public class UrlFinder implements LineProcessor {
 
 	}
 
-	public static void main(String[] args) throws FileNotFoundException {
-		UrlFinder urlFinder = new UrlFinder();
+	@Override
+	public void processLine(String value) {
+		Matcher matcher = pattern.matcher(value);
+		totalTweets++;
+		while (matcher.find()) {
+			String matchedUrl = matcher.group();
+			System.out.println("Found url: " + matchedUrl);
 
-		boolean useSystemIn = false;
-		if (useSystemIn) {
-
-			InputUtil.process(System.in, urlFinder);
-		} else {
-			InputUtil.process(new File("output", "tweets_all.txt"), urlFinder);
+			urlCounterTable.add(new UrlKey(matchedUrl));
+			totalCount1++;
 		}
 
-		File file = new File("output", "urls_sorted_unique.txt");
+	}
 
-		urlFinder.printResults(new PrintStream(new FileOutputStream(file)));
+	class UrlKey implements Keyable {
+		private String url;
 
+		public UrlKey(String url) {
+			super();
+			this.url = url;
+		}
+
+		@Override
+		public String getKey() {
+			return url;
+		}
+
+		public String getUrl() {
+			return url;
+		}
+
+		@Override
+		public String toString() {
+			return url;
+		}
 	}
 
 }

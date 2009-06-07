@@ -63,60 +63,6 @@ public class XML {
     public static final Character SLASH = new Character('/');
 
     /**
-     * Replace special characters with XML escapes:
-     * <pre>
-     * &amp; <small>(ampersand)</small> is replaced by &amp;amp;
-     * &lt; <small>(less than)</small> is replaced by &amp;lt;
-     * &gt; <small>(greater than)</small> is replaced by &amp;gt;
-     * &quot; <small>(double quote)</small> is replaced by &amp;quot;
-     * </pre>
-     * @param string The string to be escaped.
-     * @return The escaped string.
-     */
-    public static String escape(String string) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0, len = string.length(); i < len; i++) {
-            char c = string.charAt(i);
-            switch (c) {
-            case '&':
-                sb.append("&amp;");
-                break;
-            case '<':
-                sb.append("&lt;");
-                break;
-            case '>':
-                sb.append("&gt;");
-                break;
-            case '"':
-                sb.append("&quot;");
-                break;
-            default:
-                sb.append(c);
-            }
-        }
-        return sb.toString();
-    }
-    
-    /**
-     * Throw an exception if the string contains whitespace. 
-     * Whitespace is not allowed in tagNames and attributes.
-     * @param string
-     * @throws JSONException
-     */
-    public static void noSpace(String string) throws JSONException {
-    	int i, length = string.length();
-    	if (length == 0) {
-    		throw new JSONException("Empty string.");
-    	}
-    	for (i = 0; i < length; i += 1) {
-		    if (Character.isWhitespace(string.charAt(i))) {
-		    	throw new JSONException("'" + string + 
-		    			"' contains a space character.");
-		    }
-		}
-    }
-
-    /**
      * Scan the content following the named tag, attaching it to the context.
      * @param x       The XMLTokener containing the source string.
      * @param context The JSONObject that will include the new material.
@@ -278,6 +224,60 @@ public class XML {
                 }
             }
         }
+    }
+    
+    /**
+     * Replace special characters with XML escapes:
+     * <pre>
+     * &amp; <small>(ampersand)</small> is replaced by &amp;amp;
+     * &lt; <small>(less than)</small> is replaced by &amp;lt;
+     * &gt; <small>(greater than)</small> is replaced by &amp;gt;
+     * &quot; <small>(double quote)</small> is replaced by &amp;quot;
+     * </pre>
+     * @param string The string to be escaped.
+     * @return The escaped string.
+     */
+    public static String escape(String string) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0, len = string.length(); i < len; i++) {
+            char c = string.charAt(i);
+            switch (c) {
+            case '&':
+                sb.append("&amp;");
+                break;
+            case '<':
+                sb.append("&lt;");
+                break;
+            case '>':
+                sb.append("&gt;");
+                break;
+            case '"':
+                sb.append("&quot;");
+                break;
+            default:
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Throw an exception if the string contains whitespace. 
+     * Whitespace is not allowed in tagNames and attributes.
+     * @param string
+     * @throws JSONException
+     */
+    public static void noSpace(String string) throws JSONException {
+    	int i, length = string.length();
+    	if (length == 0) {
+    		throw new JSONException("Empty string.");
+    	}
+    	for (i = 0; i < length; i += 1) {
+		    if (Character.isWhitespace(string.charAt(i))) {
+		    	throw new JSONException("'" + string + 
+		    			"' contains a space character.");
+		    }
+		}
     }
 
 

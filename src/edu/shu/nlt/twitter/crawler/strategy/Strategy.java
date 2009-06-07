@@ -15,8 +15,14 @@ public interface Strategy {
 	public UserInfoRequest getNext();
 
 	public class UserInfoRequest {
-		private String userID;
 		private Date lastUpdated;
+		private String userID;
+
+		public UserInfoRequest(String userID, Date lastUpdated) {
+			super();
+			this.userID = userID;
+			this.lastUpdated = lastUpdated;
+		}
 
 		public String getUserID() {
 			return userID;
@@ -24,12 +30,6 @@ public interface Strategy {
 
 		public Date lastUpdated() {
 			return lastUpdated;
-		}
-
-		public UserInfoRequest(String userID, Date lastUpdated) {
-			super();
-			this.userID = userID;
-			this.lastUpdated = lastUpdated;
 		}
 
 	}

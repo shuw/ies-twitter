@@ -1,4 +1,4 @@
-package edu.shu.nlt.data.crunchbase;
+package edu.shu.nlt.crunchbase.data;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,22 @@ import org.json.JSONObject;
 
 public class CompanyList {
 
+	public static CompanyList getInstance() {
+		return new CompanyList(new File("data/crunchbase/companies.js"));
+	}
+
+	public static void main(String[] args) throws JSONException, IOException {
+
+		CompanyList companies = getInstance();
+
+		for (Company company : companies.getCompanies())
+			System.out.println(company.getName() + " ID: " + company.getCrunchBaseId());
+
+		System.out.println("Total # of companies: " + companies.getCompanies().size());
+	}
+
+	private Hashtable<String, Company> companyTable;
+
 	public CompanyList(File companyFile) {
 		try {
 			initialize(companyFile);
@@ -18,8 +34,6 @@ public class CompanyList {
 			throw new RuntimeException(e);
 		}
 	}
-
-	private Hashtable<String, Company> companyTable;
 
 	private void initialize(File companyFile) throws JSONException, IOException {
 		JSONArray jsonArray = JsonUtil.GetJsonArray(companyFile);
@@ -44,15 +58,5 @@ public class CompanyList {
 
 	public Company getCompany(String name) {
 		return companyTable.get(name.toLowerCase());
-	}
-
-	public static void main(String[] args) throws JSONException, IOException {
-
-		CompanyList companies = new CompanyList(new File("data/crunchbase/companies.js"));
-
-		for (Company company : companies.getCompanies())
-			System.out.println(company.getName() + " ID: " + company.getCrunchBaseId());
-
-		System.out.println("Total # of companies: " + companies.getCompanies().size());
 	}
 }

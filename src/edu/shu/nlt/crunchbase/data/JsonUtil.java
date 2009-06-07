@@ -1,4 +1,4 @@
-package edu.shu.nlt.data.crunchbase;
+package edu.shu.nlt.crunchbase.data;
 
 import java.io.File;
 import java.io.FileReader;

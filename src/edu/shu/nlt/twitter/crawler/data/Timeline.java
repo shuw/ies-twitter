@@ -41,63 +41,6 @@ public class Timeline implements Cacheable {
 		}
 	}
 
-	/**
-	 * @param timeline
-	 *            Additional timeline data to append
-	 */
-	public void append(Timeline timeline) {
-
-		if (!timeline.getUserScreenName().equals(timeline.getUserScreenName())) {
-			throw new IllegalArgumentException("timelines do not match");
-		}
-		Hashtable<Integer, Status> statusTable = new Hashtable<Integer, Status>(statusList.size());
-
-		for (Status status : statusList) {
-			statusTable.put(status.getId(), status);
-		}
-
-		for (Status status : timeline.getStatusList()) {
-			if (!statusTable.containsKey((Integer) status.getId())) {
-				// only add status that are not already in the list
-				statusList.add(status);
-			}
-		}
-
-	}
-
-	/**
-	 * @return The update frequency / day for the latest 10 tweets
-	 */
-	public double getUpdateFrequency() {
-
-		ArrayList<Status> sortedList = new ArrayList<Status>(statusList);
-
-		// Reverse sort so that latest tweets appear first
-		Collections.sort(sortedList, new Comparator<Status>() {
-
-			@Override
-			public int compare(Status o1, Status o2) {
-				return o2.getCreatedAt().compareTo(o1.getCreatedAt());
-			}
-
-		});
-
-		int depthToSeek = (sortedList.size() < 10 ? sortedList.size() : 10);
-
-		if (depthToSeek == 0) {
-			// no updates from user
-			return 0;
-		}
-
-		Date lastUpdatedTime = getLastUpdated();
-		Date updatedTimeOfLastElement = sortedList.get(depthToSeek - 1).getCreatedAt();
-
-		long timeBetweenUpdatesMillisecs = (lastUpdatedTime.getTime() - updatedTimeOfLastElement.getTime())
-				/ depthToSeek;
-
-		return (double) (3600 * 24 * 1000) / (double) timeBetweenUpdatesMillisecs;
-	}
-
 	public static Timeline getInstance(String value) {
 		BufferedReader reader = new BufferedReader(new StringReader(value));
 
@@ -152,20 +95,36 @@ public class Timeline implements Cacheable {
 		this.lastUpdated = lastUpdated;
 	}
 
+	/**
+	 * @param timeline
+	 *            Additional timeline data to append
+	 */
+	public void append(Timeline timeline) {
+
+		if (!timeline.getUserScreenName().equals(timeline.getUserScreenName())) {
+			throw new IllegalArgumentException("timelines do not match");
+		}
+		Hashtable<Integer, Status> statusTable = new Hashtable<Integer, Status>(statusList.size());
+
+		for (Status status : statusList) {
+			statusTable.put(status.getId(), status);
+		}
+
+		for (Status status : timeline.getStatusList()) {
+			if (!statusTable.containsKey((Integer) status.getId())) {
+				// only add status that are not already in the list
+				statusList.add(status);
+			}
+		}
+
+	}
+
 	public String getCacheKey() {
 		return getCacheKey(userScreenName);
 	}
 
 	public Date getLastUpdated() {
 		return lastUpdated;
-	}
-
-	public Collection<Status> getStatusList() {
-		return statusList;
-	}
-
-	public String getUserScreenName() {
-		return userScreenName;
 	}
 
 	public String getSerialized() {
@@ -180,6 +139,47 @@ public class Timeline implements Cacheable {
 
 		return builder.toString();
 
+	}
+
+	public Collection<Status> getStatusList() {
+		return statusList;
+	}
+
+	/**
+	 * @return The update frequency / day for the latest 10 tweets
+	 */
+	public double getUpdateFrequency() {
+
+		ArrayList<Status> sortedList = new ArrayList<Status>(statusList);
+
+		// Reverse sort so that latest tweets appear first
+		Collections.sort(sortedList, new Comparator<Status>() {
+
+			@Override
+			public int compare(Status o1, Status o2) {
+				return o2.getCreatedAt().compareTo(o1.getCreatedAt());
+			}
+
+		});
+
+		int depthToSeek = (sortedList.size() < 10 ? sortedList.size() : 10);
+
+		if (depthToSeek == 0) {
+			// no updates from user
+			return 0;
+		}
+
+		Date lastUpdatedTime = getLastUpdated();
+		Date updatedTimeOfLastElement = sortedList.get(depthToSeek - 1).getCreatedAt();
+
+		long timeBetweenUpdatesMillisecs = (lastUpdatedTime.getTime() - updatedTimeOfLastElement.getTime())
+				/ depthToSeek;
+
+		return (double) (3600 * 24 * 1000) / (double) timeBetweenUpdatesMillisecs;
+	}
+
+	public String getUserScreenName() {
+		return userScreenName;
 	}
 
 }

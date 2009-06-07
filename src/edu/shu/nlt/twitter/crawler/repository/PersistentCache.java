@@ -5,15 +5,15 @@ import java.util.Date;
 
 public interface PersistentCache {
 
-	public void put(Cacheable cacheable);
+	public boolean containsKey(String key);
 
 	public CachedValue get(String key);
 
-	public boolean containsKey(String key);
+	public Collection<String> getKeysMatching(String regex);
 
 	public Date getLastUpdated(String key);
 
-	public Collection<String> getKeysMatching(String regex);
+	public void put(Cacheable cacheable);
 
 	public class CachedValue {
 

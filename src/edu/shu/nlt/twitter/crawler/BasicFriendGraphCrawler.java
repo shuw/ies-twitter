@@ -32,19 +32,6 @@ public class BasicFriendGraphCrawler implements Runnable {
 		return adaptedUsers;
 	}
 
-	private PersistentCache repository;
-
-	private String rootUser;
-
-	private Twitter twitter;
-
-	public BasicFriendGraphCrawler(Twitter twitter, PersistentCache repository, String rootScreenName) {
-		super();
-		this.twitter = twitter;
-		this.repository = repository;
-		this.rootUser = rootScreenName;
-	}
-
 	/**
 	 * Ensures that user friend data is loaded for user
 	 * 
@@ -91,6 +78,28 @@ public class BasicFriendGraphCrawler implements Runnable {
 		return userWrapper;
 	}
 
+	public static void main(String[] args) {
+
+		Twitter twitter = new Twitter("shuw", "direwolf");
+		DiskCache cache = DiskCache.getInstance();
+
+		BasicFriendGraphCrawler crawler = new BasicFriendGraphCrawler(twitter, cache, "shanselman");
+		crawler.run();
+	}
+
+	private PersistentCache repository;
+
+	private String rootUser;
+
+	private Twitter twitter;
+
+	public BasicFriendGraphCrawler(Twitter twitter, PersistentCache repository, String rootScreenName) {
+		super();
+		this.twitter = twitter;
+		this.repository = repository;
+		this.rootUser = rootScreenName;
+	}
+
 	/**
 	 * Depth first algorithm for crawling the social network
 	 * 
@@ -126,15 +135,6 @@ public class BasicFriendGraphCrawler implements Runnable {
 			}
 		}
 
-	}
-
-	public static void main(String[] args) {
-
-		Twitter twitter = new Twitter("shuw", "direwolf");
-		DiskCache cache = new DiskCache("cache");
-
-		BasicFriendGraphCrawler crawler = new BasicFriendGraphCrawler(twitter, cache, "shanselman");
-		crawler.run();
 	}
 
 	public void run() {

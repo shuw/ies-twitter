@@ -97,6 +97,42 @@ public class JSONArray {
     }
 
     /**
+     * Construct a JSONArray from a Collection.
+     * @param collection     A Collection.
+     */
+    public JSONArray(Collection collection) {
+        this.myArrayList = (collection == null) ?
+            new ArrayList() :
+            new ArrayList(collection);
+    }
+
+
+    /**
+     * Construct a JSONArray from a collection of beans.
+     * The collection should have Java Beans.
+     * 
+     * @throws JSONException If not an array.
+     */
+
+    public JSONArray(Collection collection, boolean includeSuperClass) {
+		this.myArrayList = new ArrayList();
+		if (collection != null) {
+			Iterator iter = collection.iterator();;
+			while (iter.hasNext()) {
+			    Object o = iter.next();
+			    if (o instanceof Map) {
+			    	this.myArrayList.add(new JSONObject((Map)o, includeSuperClass));
+			    } else if (!JSONObject.isStandardProperty(o.getClass())) {
+			    	this.myArrayList.add(new JSONObject(o, includeSuperClass));
+			    } else {
+                    this.myArrayList.add(o);  
+				}
+			}
+		}
+    }
+
+
+    /**
      * Construct a JSONArray from a JSONTokener.
      * @param x A JSONTokener
      * @throws JSONException If there is a syntax error.
@@ -145,54 +181,6 @@ public class JSONArray {
         }
     }
 
-
-    /**
-     * Construct a JSONArray from a source JSON text.
-     * @param source     A string that begins with
-     * <code>[</code>&nbsp;<small>(left bracket)</small>
-     *  and ends with <code>]</code>&nbsp;<small>(right bracket)</small>.
-     *  @throws JSONException If there is a syntax error.
-     */
-    public JSONArray(String source) throws JSONException {
-        this(new JSONTokener(source));
-    }
-
-
-    /**
-     * Construct a JSONArray from a Collection.
-     * @param collection     A Collection.
-     */
-    public JSONArray(Collection collection) {
-        this.myArrayList = (collection == null) ?
-            new ArrayList() :
-            new ArrayList(collection);
-    }
-
-    /**
-     * Construct a JSONArray from a collection of beans.
-     * The collection should have Java Beans.
-     * 
-     * @throws JSONException If not an array.
-     */
-
-    public JSONArray(Collection collection, boolean includeSuperClass) {
-		this.myArrayList = new ArrayList();
-		if (collection != null) {
-			Iterator iter = collection.iterator();;
-			while (iter.hasNext()) {
-			    Object o = iter.next();
-			    if (o instanceof Map) {
-			    	this.myArrayList.add(new JSONObject((Map)o, includeSuperClass));
-			    } else if (!JSONObject.isStandardProperty(o.getClass())) {
-			    	this.myArrayList.add(new JSONObject(o, includeSuperClass));
-			    } else {
-                    this.myArrayList.add(o);  
-				}
-			}
-		}
-    }
-
-    
     /**
      * Construct a JSONArray from an array
      * @throws JSONException If not an array.
@@ -209,6 +197,7 @@ public class JSONArray {
         }
     }
 
+    
     /**
      * Construct a JSONArray from an array with a bean.
      * The array should have Java Beans.
@@ -230,6 +219,17 @@ public class JSONArray {
         } else {
             throw new JSONException("JSONArray initial value should be a string or collection or array.");
         }
+    }
+
+    /**
+     * Construct a JSONArray from a source JSON text.
+     * @param source     A string that begins with
+     * <code>[</code>&nbsp;<small>(left bracket)</small>
+     *  and ends with <code>]</code>&nbsp;<small>(right bracket)</small>.
+     *  @throws JSONException If there is a syntax error.
+     */
+    public JSONArray(String source) throws JSONException {
+        this(new JSONTokener(source));
     }
 
     
@@ -652,43 +652,6 @@ public class JSONArray {
 
 
     /**
-     * Append an long value. This increases the array's length by one.
-     *
-     * @param value A long value.
-     * @return this.
-     */
-    public JSONArray put(long value) {
-        put(new Long(value));
-        return this;
-    }
-
-
-    /**
-     * Put a value in the JSONArray, where the value will be a
-     * JSONObject which is produced from a Map.
-     * @param value A Map value.
-     * @return      this.
-     */
-    public JSONArray put(Map value) {
-        put(new JSONObject(value));
-        return this;
-    }
-
-
-    /**
-     * Append an object value. This increases the array's length by one.
-     * @param value An object value.  The value should be a
-     *  Boolean, Double, Integer, JSONArray, JSONObject, Long, or String, or the
-     *  JSONObject.NULL object.
-     * @return this.
-     */
-    public JSONArray put(Object value) {
-        this.myArrayList.add(value);
-        return this;
-    }
-
-
-    /**
      * Put or replace a boolean value in the JSONArray. If the index is greater
      * than the length of the JSONArray, then null elements will be added as
      * necessary to pad it out.
@@ -806,6 +769,43 @@ public class JSONArray {
         }
         return this;
     }
+
+
+    /**
+     * Append an long value. This increases the array's length by one.
+     *
+     * @param value A long value.
+     * @return this.
+     */
+    public JSONArray put(long value) {
+        put(new Long(value));
+        return this;
+    }
+
+
+    /**
+     * Put a value in the JSONArray, where the value will be a
+     * JSONObject which is produced from a Map.
+     * @param value A Map value.
+     * @return      this.
+     */
+    public JSONArray put(Map value) {
+        put(new JSONObject(value));
+        return this;
+    }
+
+
+    /**
+     * Append an object value. This increases the array's length by one.
+     * @param value An object value.  The value should be a
+     *  Boolean, Double, Integer, JSONArray, JSONObject, Long, or String, or the
+     *  JSONObject.NULL object.
+     * @return this.
+     */
+    public JSONArray put(Object value) {
+        this.myArrayList.add(value);
+        return this;
+    }
     
     
     /**
@@ -879,6 +879,44 @@ public class JSONArray {
 
 
     /**
+     * Write the contents of the JSONArray as JSON text to a writer.
+     * For compactness, no whitespace is added.
+     * <p>
+     * Warning: This method assumes that the data structure is acyclical.
+     *
+     * @return The writer.
+     * @throws JSONException
+     */
+    public Writer write(Writer writer) throws JSONException {
+        try {
+            boolean b = false;
+            int     len = length();
+
+            writer.write('[');
+
+            for (int i = 0; i < len; i += 1) {
+                if (b) {
+                    writer.write(',');
+                }
+                Object v = this.myArrayList.get(i);
+                if (v instanceof JSONObject) {
+                    ((JSONObject)v).write(writer);
+                } else if (v instanceof JSONArray) {
+                    ((JSONArray)v).write(writer);
+                } else {
+                    writer.write(JSONObject.valueToString(v));
+                }
+                b = true;
+            }
+            writer.write(']');
+            return writer;
+        } catch (IOException e) {
+           throw new JSONException(e);
+        }
+    }
+
+
+    /**
      * Make a prettyprinted JSON text of this JSONArray.
      * Warning: This method assumes that the data structure is acyclical.
      * @param indentFactor The number of spaces to add to each level of
@@ -918,43 +956,5 @@ public class JSONArray {
         }
         sb.append(']');
         return sb.toString();
-    }
-
-
-    /**
-     * Write the contents of the JSONArray as JSON text to a writer.
-     * For compactness, no whitespace is added.
-     * <p>
-     * Warning: This method assumes that the data structure is acyclical.
-     *
-     * @return The writer.
-     * @throws JSONException
-     */
-    public Writer write(Writer writer) throws JSONException {
-        try {
-            boolean b = false;
-            int     len = length();
-
-            writer.write('[');
-
-            for (int i = 0; i < len; i += 1) {
-                if (b) {
-                    writer.write(',');
-                }
-                Object v = this.myArrayList.get(i);
-                if (v instanceof JSONObject) {
-                    ((JSONObject)v).write(writer);
-                } else if (v instanceof JSONArray) {
-                    ((JSONArray)v).write(writer);
-                } else {
-                    writer.write(JSONObject.valueToString(v));
-                }
-                b = true;
-            }
-            writer.write(']');
-            return writer;
-        } catch (IOException e) {
-           throw new JSONException(e);
-        }
     }
 }
