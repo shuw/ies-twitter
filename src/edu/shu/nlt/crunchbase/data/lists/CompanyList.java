@@ -8,8 +8,8 @@ import java.util.Hashtable;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import edu.shu.nlt.crunchbase.data.Company;
 import edu.shu.nlt.crunchbase.data.JsonUtil;
+import edu.shu.nlt.crunchbase.data.base.Company;
 
 public class CompanyList {
 

@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.data;
+package edu.shu.nlt.crunchbase.data.base;
 
 import java.io.PrintStream;
 

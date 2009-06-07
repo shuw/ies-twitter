@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import edu.shu.nlt.crunchbase.data.JsonUtil;
-import edu.shu.nlt.crunchbase.data.Product;
+import edu.shu.nlt.crunchbase.data.base.Product;
 
 public class ProductList {
 

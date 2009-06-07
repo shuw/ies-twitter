@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.data;
+package edu.shu.nlt.crunchbase.data.expanded;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import edu.shu.nlt.crunchbase.data.JsonUtil;
+import edu.shu.nlt.crunchbase.data.base.Company;
+import edu.shu.nlt.crunchbase.data.base.Employee;
+import edu.shu.nlt.crunchbase.data.base.Product;
 
 public class CompanyInfo {
 

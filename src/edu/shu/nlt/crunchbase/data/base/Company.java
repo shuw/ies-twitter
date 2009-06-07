@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.data;
+package edu.shu.nlt.crunchbase.data.base;
 
 import java.io.PrintStream;
 
@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.nlt.shallow.data.Keyable;
+import edu.shu.nlt.crunchbase.data.expanded.CompanyInfo;
 
 public class Company implements Keyable {
 	public static Company getInstance(JSONObject jsonObject) {

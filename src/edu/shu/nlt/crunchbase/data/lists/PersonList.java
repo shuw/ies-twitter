@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import edu.shu.nlt.crunchbase.data.JsonUtil;
-import edu.shu.nlt.crunchbase.data.Person;
+import edu.shu.nlt.crunchbase.data.base.Person;
 
 public class PersonList {
 	private static String getFullNameKey(String firstName, String lastName) {

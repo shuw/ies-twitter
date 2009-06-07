@@ -2,9 +2,9 @@ package edu.shu.nlt.crunchbase;
 
 import java.io.File;
 
-import edu.shu.nlt.crunchbase.data.Company;
-import edu.shu.nlt.crunchbase.data.Person;
-import edu.shu.nlt.crunchbase.data.Product;
+import edu.shu.nlt.crunchbase.data.base.Company;
+import edu.shu.nlt.crunchbase.data.base.Person;
+import edu.shu.nlt.crunchbase.data.base.Product;
 import edu.shu.nlt.crunchbase.data.lists.CompanyList;
 import edu.shu.nlt.crunchbase.data.lists.PersonList;
 import edu.shu.nlt.crunchbase.data.lists.ProductList;
