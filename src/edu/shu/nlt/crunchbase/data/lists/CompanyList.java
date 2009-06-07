@@ -21,10 +21,18 @@ public class CompanyList {
 
 		CompanyList companies = getInstance();
 
-		for (Company company : companies.getCompanies())
+		int greaterThan10Employees = 0;
+
+		for (Company company : companies.getCompanies()) {
 			company.printDetails(System.out);
 
+			if (company.getCompanyInfo() != null && company.getCompanyInfo().getNumOfEmployees() > 10) {
+				greaterThan10Employees++;
+			}
+		}
+
 		System.out.println("Total # of companies: " + companies.getCompanies().size());
+		System.out.println("Total with more than 10 employees: " + greaterThan10Employees);
 	}
 
 	private Hashtable<String, Company> companyTable;

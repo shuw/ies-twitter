@@ -21,10 +21,20 @@ public class ProductList {
 
 		ProductList products = getInstance();
 
-		for (Product product : products.getProducts())
+		int hasCompany = 0;
+
+		for (Product product : products.getProducts()) {
 			product.printDetails(System.out);
 
+			if (product.getProductInfo() != null) {
+				if (product.getProductInfo().getCompany() != null) {
+					hasCompany++;
+				}
+			}
+		}
+
 		System.out.println("Total # of products: " + products.getProducts().size());
+		System.out.println("Total with company defined: " + hasCompany);
 	}
 
 	private Hashtable<String, Product> products;

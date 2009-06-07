@@ -21,11 +21,20 @@ public class CompanyInfo {
 		File cachedInfo = new File("cache/crunchbase/company", crunchbaseId);
 
 		if (cachedInfo.exists()) {
-			return new CompanyInfo(cachedInfo);
-		} else {
-			return null;
+			try {
+				return new CompanyInfo(cachedInfo);
+
+			} catch (JSONException ex) {
+				if (cachedInfo.length() != 0) {
+					throw new RuntimeException(ex);
+				}
+
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
+		return null;
 	}
 
 	/**
@@ -48,20 +57,22 @@ public class CompanyInfo {
 
 	private List<Employee> employees;
 
+	private int numOfEmployees;
+
 	private List<Product> products;
 
-	private CompanyInfo(File file) {
+	private CompanyInfo(File file) throws JSONException, IOException {
 		super();
-		try {
-			initalize(file);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+
+		initalize(file);
+
 	}
 
 	private void initalize(File file) throws JSONException, IOException {
 
 		JSONObject companyJson = JsonUtil.GetJsonObject(file);
+
+		numOfEmployees = !companyJson.isNull("number_of_employees") ? companyJson.getInt("number_of_employees") : 0;
 
 		// Parse products
 		{
@@ -101,6 +112,10 @@ public class CompanyInfo {
 
 	public List<Employee> getEmployees() {
 		return employees;
+	}
+
+	public int getNumOfEmployees() {
+		return numOfEmployees;
 	}
 
 	public List<Product> getProducts() {

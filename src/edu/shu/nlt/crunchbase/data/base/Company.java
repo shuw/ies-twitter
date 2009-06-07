@@ -21,6 +21,8 @@ public class Company implements Keyable {
 
 	}
 
+	private CompanyInfo companyInfo;
+
 	private String crunchBaseId;
 
 	private String name;
@@ -32,7 +34,10 @@ public class Company implements Keyable {
 	}
 
 	public CompanyInfo getCompanyInfo() {
-		return CompanyInfo.getInstance(getCrunchBaseId());
+		if (companyInfo == null)
+			companyInfo = CompanyInfo.getInstance(getCrunchBaseId());
+
+		return companyInfo;
 	}
 
 	public String getCrunchBaseId() {

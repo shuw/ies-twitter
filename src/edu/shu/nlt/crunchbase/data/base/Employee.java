@@ -9,7 +9,7 @@ public class Employee {
 
 	public static Employee getInstance(JSONObject jsonObject) {
 		try {
-			boolean isPast = jsonObject.getBoolean("is_past");
+			boolean isPast = !jsonObject.isNull("is_past") ? jsonObject.getString("is_past").equals("true") : false;
 			String jobTitle = jsonObject.getString("title");
 
 			Person person = Person.getInstance(jsonObject.getJSONObject("person"));

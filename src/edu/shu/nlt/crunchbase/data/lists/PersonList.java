@@ -65,7 +65,6 @@ public class PersonList {
 	}
 
 	public Person getPerson(String firstName, String lastName) {
-
 		return people.get(getFullNameKey(firstName, lastName));
 
 	}

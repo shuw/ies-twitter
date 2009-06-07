@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.nlt.shallow.data.Keyable;
+import edu.shu.nlt.crunchbase.data.expanded.ProductInfo;
 
 public class Product implements Keyable {
 	public static Product getInstance(JSONObject jsonObject) {
@@ -25,6 +26,8 @@ public class Product implements Keyable {
 
 	private String name;
 
+	private ProductInfo productInfo;
+
 	private Product(String crunchBaseId, String name) {
 		super();
 		this.name = name;
@@ -42,6 +45,14 @@ public class Product implements Keyable {
 
 	public String getName() {
 		return name;
+	}
+
+	public ProductInfo getProductInfo() {
+		if (productInfo == null) {
+			productInfo = ProductInfo.getInstance(getCrunchBaseId());
+		}
+
+		return productInfo;
 	}
 
 	public void printDetails(PrintStream stream) {

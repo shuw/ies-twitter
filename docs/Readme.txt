@@ -20,3 +20,15 @@ Technology Ontology
 Tweet Ontology
 
  
+*** IE Task ***
+
+
+Extracting instances
+	Problems: Common names
+
+	Match person by first/last name only if company they work for is mentioned in tweet
+	
+
+Future work:
+	Parse tweets
+	Language detection on user-level
