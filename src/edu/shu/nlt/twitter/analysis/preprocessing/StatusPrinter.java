@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-import edu.shu.nlt.analysis.DocumentsProcessor;
-import edu.shu.nlt.analysis.TimelineProcessor;
+import edu.shu.nlt.twitter.analysis.DocumentsProcessor;
+import edu.shu.nlt.twitter.analysis.TimelineProcessor;
 import edu.shu.nlt.twitter.crawler.data.Status;
 import edu.shu.nlt.twitter.crawler.data.Timeline;
 import edu.shu.nlt.twitter.crawler.repository.DiskCache;

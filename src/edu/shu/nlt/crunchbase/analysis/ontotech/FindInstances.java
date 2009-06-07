@@ -1,4 +1,4 @@
-package edu.shu.nlt.twitter.analysis.ontology.tech;
+package edu.shu.nlt.crunchbase.analysis.ontotech;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package edu.shu.nlt.analysis;
+package edu.shu.nlt.twitter.analysis;
 
 import edu.shu.nlt.twitter.crawler.data.Timeline;
 
