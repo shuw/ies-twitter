@@ -1,6 +1,6 @@
 package edu.shu.nlt.data.crunchbase;
 
-public class Person {
+public class Person : Keyable {
 	private String firstName;
 	private String lastName;
 	private String crunchbaseId;

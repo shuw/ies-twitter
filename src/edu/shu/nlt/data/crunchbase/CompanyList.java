@@ -2,9 +2,8 @@ package edu.shu.nlt.data.crunchbase;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Hashtable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,16 +11,20 @@ import org.json.JSONObject;
 
 public class CompanyList {
 
-	public CompanyList(File companyFile) throws JSONException, IOException {
-		initialize(companyFile);
+	public CompanyList(File companyFile) {
+		try {
+			initialize(companyFile);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	private List<Company> companies;
+	private Hashtable<String, Company> companyTable;
 
 	private void initialize(File companyFile) throws JSONException, IOException {
 		JSONArray jsonArray = JsonUtil.GetJsonArray(companyFile);
 
-		companies = new ArrayList<Company>(jsonArray.length());
+		companyTable = new Hashtable<String, Company>(jsonArray.length());
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -29,12 +32,18 @@ public class CompanyList {
 			String name = jsonObject.getString("name");
 			String crunchbaseID = jsonObject.getString("permalink");
 
-			companies.add(new Company(crunchbaseID, name));
+			Company newCompany = new Company(crunchbaseID, name);
+
+			companyTable.put(name.toLowerCase(), newCompany);
 		}
 	}
 
 	public Collection<Company> getCompanies() {
-		return companies;
+		return companyTable.values();
+	}
+
+	public Company getCompany(String name) {
+		return companyTable.get(name.toLowerCase());
 	}
 
 	public static void main(String[] args) throws JSONException, IOException {
