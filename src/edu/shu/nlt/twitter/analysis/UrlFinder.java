@@ -1,56 +1,26 @@
 package edu.shu.nlt.twitter.analysis;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import edu.nlt.shallow.data.CountHolder;
 import edu.nlt.shallow.data.Keyable;
-import edu.nlt.shallow.data.table.CounterTable;
 import edu.nlt.shallow.data.table.KeyCounterTable;
-import edu.shu.nlt.twitter.crawler.data.Status;
-import edu.shu.nlt.twitter.crawler.data.Timeline;
-import edu.shu.nlt.twitter.crawler.repository.DiskCache;
-import edu.shu.nlt.twitter.crawler.repository.PersistentCache;
+import edu.nlt.util.InputUtil;
+import edu.nlt.util.processor.LineProcessor;
 
-public class UrlFinder implements Runnable {
+public class UrlFinder implements LineProcessor {
+	private Pattern pattern = Pattern.compile("http://[^ ]+", Pattern.CASE_INSENSITIVE);
+	private KeyCounterTable<UrlKey> urlCounterTable;
 
-	private PersistentCache repository;
-	private CounterTable<String> urlCounterTable;
+	public UrlFinder() {
+		urlCounterTable = new KeyCounterTable<UrlKey>();
 
-	public UrlFinder(PersistentCache repository) {
-		super();
-		this.repository = repository;
-		this.urlCounterTable = new KeyCounterTable();
-	}
-
-	@Override
-	public void run() {
-		findMatches("I think");
-
-	}
-
-	private void findMatches(String contains) {
-		contains = contains.toLowerCase();
-
-		int totalCount = 0;
-		int matchCount = 0;
-		for (String key : repository.getKeysMatching(".*" + Timeline.FilePostfix + "$")) {
-
-			Timeline timeline = Timeline.getInstance(repository, key.replace(Timeline.FilePostfix, ""));
-
-			for (Status status : timeline.getStatusList()) {
-				totalCount++;
-				String statusText = status.getText();
-				if (statusText.toLowerCase().contains(contains)) {
-					matchCount++;
-					System.out.println(timeline.getUserScreenName() + ": " + statusText);
-				}
-			}
-		}
-
-		System.out.println("*************************************************");
-		System.out.println("% matches = " + ((double) matchCount / (double) totalCount) * 100.0);
-		System.out.println("matches - " + matchCount + "   total - " + totalCount);
-	}
-
-	public static void main(String[] args) {
-		(new UrlFinder(new DiskCache("cache"))).run();
 	}
 
 	class UrlKey implements Keyable {
@@ -70,5 +40,62 @@ public class UrlFinder implements Runnable {
 			return url;
 		}
 
+		@Override
+		public String toString() {
+			return url;
+		}
 	}
+
+	int totalCount1 = 0;
+	int totalTweets = 0;
+
+	@Override
+	public void processLine(String value) {
+		Matcher matcher = pattern.matcher(value);
+		totalTweets++;
+		while (matcher.find()) {
+			String matchedUrl = matcher.group();
+			System.out.println("Found url: " + matchedUrl);
+
+			urlCounterTable.add(new UrlKey(matchedUrl));
+			totalCount1++;
+		}
+
+	}
+
+	public void printResults(PrintStream stream) {
+		final String outputFormat = "%1$s\t%2$s";
+
+		Collection<CountHolder<UrlKey>> results = urlCounterTable.getReverseSorted();
+
+		int totalCount = 0;
+		for (CountHolder<UrlKey> result : results) {
+
+			totalCount += result.getCount();
+			stream.println(String.format(outputFormat, result.getComponent(), result.getCount()));
+
+		}
+		System.out.println("Tweets: " + totalTweets);
+		System.out.println("(1) Total URLs found: " + totalCount1);
+		System.out.println("Total URLs found: " + totalCount);
+
+	}
+
+	public static void main(String[] args) throws FileNotFoundException {
+		UrlFinder urlFinder = new UrlFinder();
+
+		boolean useSystemIn = false;
+		if (useSystemIn) {
+
+			InputUtil.process(System.in, urlFinder);
+		} else {
+			InputUtil.process(new File("output", "tweets_all.txt"), urlFinder);
+		}
+
+		File file = new File("output", "urls_sorted_unique.txt");
+
+		urlFinder.printResults(new PrintStream(new FileOutputStream(file)));
+
+	}
+
 }

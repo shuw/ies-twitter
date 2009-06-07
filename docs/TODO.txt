@@ -13,6 +13,10 @@ Load timeline
 
 
 *** Crawler tasks ***
+Crawl all URLs in tweets. Run web crawler to get these and call web summarizer to extract piece of relevant text.
+
+
+
 Recrawl tweets with highfrequency of updates
 Store crawl state on user level
 Crawl referenced URLs, save final URL, save page title
