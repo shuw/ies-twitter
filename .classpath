@@ -6,7 +6,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/NLTProjects"/>
 	<classpathentry kind="lib" path="lib/jtwitter.jar"/>
 	<classpathentry kind="lib" path="lib/stanford-ner.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/owlapi-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
