@@ -1,0 +1,801 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY TwitterOntology "http://www.sgsolutions.ca/TwitterOntology.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.sgsolutions.ca/TwitterOntology.owl#"
+     xml:base="http://www.sgsolutions.ca/TwitterOntology.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:TwitterOntology="http://www.sgsolutions.ca/TwitterOntology.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about=""/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#PersonProperty -->
+
+    <owl:ObjectProperty rdf:about="#PersonProperty"/>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#ThoughtProperty -->
+
+    <owl:ObjectProperty rdf:about="#ThoughtProperty">
+        <rdfs:domain rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#hasFact -->
+
+    <owl:ObjectProperty rdf:about="#hasFact">
+        <rdfs:domain rdf:resource="#Topic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#hasIntention -->
+
+    <owl:ObjectProperty rdf:about="#hasIntention">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Intention"/>
+        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#hasProduct -->
+
+    <owl:ObjectProperty rdf:about="#hasProduct">
+        <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
+        <rdfs:range rdf:resource="#Product"/>
+        <owl:inverseOf rdf:resource="#isCreatedBy"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#hasSentiment -->
+
+    <owl:ObjectProperty rdf:about="#hasSentiment">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#hasTag -->
+
+    <owl:ObjectProperty rdf:about="#hasTag">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Tag"/>
+        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#hasTopic -->
+
+    <owl:ObjectProperty rdf:about="#hasTopic">
+        <rdfs:range rdf:resource="#Topic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isAbout -->
+
+    <owl:ObjectProperty rdf:about="#isAbout">
+        <rdfs:domain rdf:resource="#Topic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isCompetitorOf -->
+
+    <owl:ObjectProperty rdf:about="#isCompetitorOf">
+        <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
+        <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isCreatedBy -->
+
+    <owl:ObjectProperty rdf:about="#isCreatedBy">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isEmployeeOf -->
+
+    <owl:ObjectProperty rdf:about="#isEmployeeOf">
+        <rdfs:domain rdf:resource="#Organization"/>
+        <rdfs:range rdf:resource="#Person"/>
+        <owl:inverseOf rdf:resource="#isEmployerOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isEmployerOf -->
+
+    <owl:ObjectProperty rdf:about="#isEmployerOf">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isFollowing -->
+
+    <owl:ObjectProperty rdf:about="#isFollowing">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Person"/>
+        <rdfs:domain rdf:resource="#Person"/>
+        <rdfs:subPropertyOf rdf:resource="#PersonProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isFor -->
+
+    <owl:ObjectProperty rdf:about="#isFor">
+        <rdfs:range rdf:resource="#Person"/>
+        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isLocatedAt -->
+
+    <owl:ObjectProperty rdf:about="#isLocatedAt">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isReferenceTo -->
+
+    <owl:ObjectProperty rdf:about="#isReferenceTo">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isReferencedBy -->
+
+    <owl:ObjectProperty rdf:about="#isReferencedBy">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <owl:inverseOf rdf:resource="#isReferenceTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isRelated -->
+
+    <owl:ObjectProperty rdf:about="#isRelated">
+        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
+        <rdfs:range rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isTagOf -->
+
+    <owl:ObjectProperty rdf:about="#isTagOf">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="#Tag"/>
+        <owl:inverseOf rdf:resource="#hasTag"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isUtteredBy -->
+
+    <owl:ObjectProperty rdf:about="#isUtteredBy">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Person"/>
+        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#isUttererOf -->
+
+    <owl:ObjectProperty rdf:about="#isUttererOf">
+        <rdfs:subPropertyOf rdf:resource="#PersonProperty"/>
+        <rdfs:range rdf:resource="#UnitOfThought"/>
+        <owl:inverseOf rdf:resource="#isUtteredBy"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#hasCrunchbaseId -->
+
+    <owl:DatatypeProperty rdf:about="#hasCrunchbaseId">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="#InternetEntity"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#hasTwitterId -->
+
+    <owl:DatatypeProperty rdf:about="#hasTwitterId"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Abstract -->
+
+    <owl:Class rdf:about="#Abstract"/>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Action -->
+
+    <owl:Class rdf:about="#Action">
+        <rdfs:subClassOf rdf:resource="#Perdurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Belief -->
+
+    <owl:Class rdf:about="#Belief">
+        <rdfs:subClassOf rdf:resource="#OpinionStatement"/>
+        <owl:incompatibleWith
+            >i.e. I believe ...</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Company -->
+
+    <owl:Class rdf:about="#Company">
+        <rdfs:subClassOf rdf:resource="#Organization"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Desire -->
+
+    <owl:Class rdf:about="#Desire">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <owl:incompatibleWith
+            >i.e. I want to ...</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Endurant -->
+
+    <owl:Class rdf:about="#Endurant">
+        <rdfs:subClassOf rdf:resource="#SpatialTemporal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Event -->
+
+    <owl:Class rdf:about="#Event">
+        <rdfs:subClassOf rdf:resource="#Perdurant"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isLocatedAt"/>
+                <owl:onClass rdf:resource="#Location"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#FactStatement -->
+
+    <owl:Class rdf:about="#FactStatement">
+        <rdfs:subClassOf rdf:resource="#Statement"/>
+        <owl:incompatibleWith>i.e. X is Y</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Intention -->
+
+    <owl:Class rdf:about="#Intention">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+        <owl:disjointWith rdf:resource="#UnitOfThought"/>
+        <rdfs:comment
+            >Intention of a Unit of Thought. Cognitively biased</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#InternetEntity -->
+
+    <owl:Class rdf:about="#InternetEntity">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Introspection -->
+
+    <owl:Class rdf:about="#Introspection">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. I think I don&#39;t have a choice.</rdfs:comment>
+        <rdfs:comment
+            >i.e. What do I do?</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Location -->
+
+    <owl:Class rdf:about="#Location">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Negative -->
+
+    <owl:Class rdf:about="#Negative">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Neutral -->
+
+    <owl:Class rdf:about="#Neutral">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#OpinionStatement -->
+
+    <owl:Class rdf:about="#OpinionStatement">
+        <rdfs:subClassOf rdf:resource="#Statement"/>
+        <rdfs:comment
+            >i.e. I think socks are the best.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Organization -->
+
+    <owl:Class rdf:about="#Organization">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Perdurant -->
+
+    <owl:Class rdf:about="#Perdurant">
+        <rdfs:subClassOf rdf:resource="#SpatialTemporal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Person -->
+
+    <owl:Class rdf:about="#Person">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#PersonalFact -->
+
+    <owl:Class rdf:about="#PersonalFact">
+        <rdfs:subClassOf rdf:resource="#FactStatement"/>
+        <rdfs:comment
+            >Fact that applies locally to a small set of users</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#PhysicalObject -->
+
+    <owl:Class rdf:about="#PhysicalObject">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Positive -->
+
+    <owl:Class rdf:about="#Positive">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Product -->
+
+    <owl:Class rdf:about="#Product">
+        <rdfs:subClassOf rdf:resource="#PhysicalObject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Proposition -->
+
+    <owl:Class rdf:about="#Proposition">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. Let&#39;s go to the mall</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Question -->
+
+    <owl:Class rdf:about="#Question">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. How do I ...?</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Sentiment -->
+
+    <owl:Class rdf:about="#Sentiment">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#SpatialTemporal -->
+
+    <owl:Class rdf:about="#SpatialTemporal">
+        <owl:disjointWith rdf:resource="#UnitOfThought"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Statement -->
+
+    <owl:Class rdf:about="#Statement">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <owl:incompatibleWith
+            >i.e. New york has good pizza.</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Tag -->
+
+    <owl:Class rdf:about="#Tag">
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Technology -->
+
+    <owl:Class rdf:about="#Technology">
+        <rdfs:subClassOf rdf:resource="#Topic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Topic -->
+
+    <owl:Class rdf:about="#Topic">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Tweet -->
+
+    <owl:Class rdf:about="#Tweet">
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+        <rdfs:subClassOf rdf:resource="#Uterance"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isUtteredBy"/>
+                <owl:onClass rdf:resource="#User"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isUtteredBy"/>
+                <owl:allValuesFrom rdf:resource="#User"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#TweetOpinion -->
+
+    <owl:Class rdf:about="#TweetOpinion">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasTopic"/>
+                        <owl:someValuesFrom rdf:resource="#Topic"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasIntention"/>
+                        <owl:onClass rdf:resource="#OpinionStatement"/>
+                        <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasSentiment"/>
+                <owl:someValuesFrom rdf:resource="#Sentiment"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#TweetQuestion -->
+
+    <owl:Class rdf:about="#TweetQuestion">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasTopic"/>
+                        <owl:someValuesFrom rdf:resource="#Topic"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasIntention"/>
+                        <owl:onClass rdf:resource="#Question"/>
+                        <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#TweetReply -->
+
+    <owl:Class rdf:about="#TweetReply">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isFor"/>
+                <owl:someValuesFrom rdf:resource="#User"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#TweetStatement -->
+
+    <owl:Class rdf:about="#TweetStatement">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasTopic"/>
+                        <owl:someValuesFrom rdf:resource="#Topic"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#hasIntention"/>
+                        <owl:onClass rdf:resource="#Statement"/>
+                        <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#TwitterEntity -->
+
+    <owl:Class rdf:about="#TwitterEntity">
+        <rdfs:subClassOf rdf:resource="#InternetEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#URL -->
+
+    <owl:Class rdf:about="#URL">
+        <rdfs:subClassOf rdf:resource="#InternetEntity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasTopic"/>
+                <owl:someValuesFrom rdf:resource="#Topic"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#UnitOfThought -->
+
+    <owl:Class rdf:about="#UnitOfThought">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasIntention"/>
+                <owl:someValuesFrom rdf:resource="#Intention"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#UniversalFact -->
+
+    <owl:Class rdf:about="#UniversalFact">
+        <rdfs:subClassOf rdf:resource="#FactStatement"/>
+        <rdfs:comment
+            >Statement of universal fact</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#User -->
+
+    <owl:Class rdf:about="#User">
+        <rdfs:subClassOf rdf:resource="#Person"/>
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#Uterance -->
+
+    <owl:Class rdf:about="#Uterance">
+        <rdfs:subClassOf rdf:resource="#UnitOfThought"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#isUtteredBy"/>
+                <owl:onClass rdf:resource="#Person"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#LOCATION_SEATTLE -->
+
+    <Location rdf:about="#LOCATION_SEATTLE"/>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#PERSONAL_FACT -->
+
+    <PersonalFact rdf:about="#PERSONAL_FACT"/>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#START_TREK -->
+
+    <rdf:Description rdf:about="#START_TREK"/>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#TAG_STARTREK -->
+
+    <rdf:Description rdf:about="#TAG_STARTREK"/>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#THOUGHT_1 -->
+
+    <rdf:Description rdf:about="#THOUGHT_1">
+        <hasIntention rdf:resource="#PERSONAL_FACT"/>
+        <hasTag rdf:resource="#TAG_STARTREK"/>
+        <hasTopic rdf:resource="#TOPIC_STARTREK"/>
+        <isUtteredBy rdf:resource="#USER_1"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#TOPIC_STARTREK -->
+
+    <rdf:Description rdf:about="#TOPIC_STARTREK">
+        <isAbout rdf:resource="#START_TREK"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.sgsolutions.ca/TwitterOntology.owl#USER_1 -->
+
+    <rdf:Description rdf:about="#USER_1"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#TweetOpinion"/>
+            <rdf:Description rdf:about="#TweetQuestion"/>
+            <rdf:Description rdf:about="#TweetReply"/>
+            <rdf:Description rdf:about="#TweetStatement"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1101) http://owlapi.sourceforge.net -->
+
