@@ -12,9 +12,13 @@ import edu.shu.nlt.crunchbase.data.JsonUtil;
 import edu.shu.nlt.crunchbase.data.base.Product;
 
 public class ProductList {
+	private static ProductList s_productList;
 
 	public static ProductList getInstance() {
-		return new ProductList(new File("data/crunchbase/products.js"));
+		if (s_productList == null)
+			s_productList = new ProductList(new File("data/crunchbase/products.js"));
+
+		return s_productList;
 	}
 
 	public static void main(String[] args) throws JSONException, IOException {

@@ -12,9 +12,12 @@ import edu.shu.nlt.crunchbase.data.JsonUtil;
 import edu.shu.nlt.crunchbase.data.base.Company;
 
 public class CompanyList {
+	private static CompanyList s_companyList;
 
 	public static CompanyList getInstance() {
-		return new CompanyList(new File("data/crunchbase/companies.js"));
+		if (s_companyList == null)
+			s_companyList = new CompanyList(new File("data/crunchbase/companies.js"));
+		return s_companyList;
 	}
 
 	public static void main(String[] args) throws JSONException, IOException {

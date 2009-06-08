@@ -12,6 +12,8 @@ import edu.shu.nlt.crunchbase.data.JsonUtil;
 import edu.shu.nlt.crunchbase.data.base.Person;
 
 public class PersonList {
+	private static PersonList s_personList;
+
 	private static String getFullNameKey(String firstName, String lastName) {
 		// if the last name contains multiple names, only take the last one
 		// keying off of
@@ -24,7 +26,10 @@ public class PersonList {
 	}
 
 	public static PersonList getInstance() {
-		return new PersonList(new File("data/crunchbase/people.js"));
+		if (s_personList == null)
+			s_personList = new PersonList(new File("data/crunchbase/people.js"));
+
+		return s_personList;
 	}
 
 	public static void main(String[] args) throws JSONException, IOException {
