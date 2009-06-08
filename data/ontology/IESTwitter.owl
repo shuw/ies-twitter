@@ -1,0 +1,556 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY iestwitter "http://nlt.shu.edu/iestwitter#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://nlt.shu.edu/iestwitter#"
+     xml:base="http://nlt.shu.edu/iestwitter"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:iestwitter="http://nlt.shu.edu/iestwitter#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about=""/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#PersonProperty -->
+
+    <owl:ObjectProperty rdf:about="#PersonProperty"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#ThoughtProperty -->
+
+    <owl:ObjectProperty rdf:about="#ThoughtProperty">
+        <rdfs:domain rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#hasIntention -->
+
+    <owl:ObjectProperty rdf:about="#hasIntention">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Intention"/>
+        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#hasProduct -->
+
+    <owl:ObjectProperty rdf:about="#hasProduct">
+        <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
+        <rdfs:range rdf:resource="#Product"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isCompetitorOf -->
+
+    <owl:ObjectProperty rdf:about="#isCompetitorOf">
+        <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isCreatedBy -->
+
+    <owl:ObjectProperty rdf:about="#isCreatedBy">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <owl:inverseOf rdf:resource="#hasProduct"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isEmployeeOf -->
+
+    <owl:ObjectProperty rdf:about="#isEmployeeOf">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Organization"/>
+        <rdfs:domain rdf:resource="#Person"/>
+        <owl:inverseOf rdf:resource="#isEmployerOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isEmployerOf -->
+
+    <owl:ObjectProperty rdf:about="#isEmployerOf">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isFollowing -->
+
+    <owl:ObjectProperty rdf:about="#isFollowing">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Person"/>
+        <rdfs:domain rdf:resource="#Person"/>
+        <rdfs:subPropertyOf rdf:resource="#PersonProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isUtteredBy -->
+
+    <owl:ObjectProperty rdf:about="#isUtteredBy">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
+        <owl:inverseOf rdf:resource="#isUttererOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isUttererOf -->
+
+    <owl:ObjectProperty rdf:about="#isUttererOf">
+        <rdfs:subPropertyOf rdf:resource="#PersonProperty"/>
+        <rdfs:range rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#hasCrunchbaseId -->
+
+    <owl:DatatypeProperty rdf:about="#hasCrunchbaseId">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="#InternetEntity"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#hasTwitterId -->
+
+    <owl:DatatypeProperty rdf:about="#hasTwitterId"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Abstract -->
+
+    <owl:Class rdf:about="#Abstract"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Action -->
+
+    <owl:Class rdf:about="#Action">
+        <rdfs:subClassOf rdf:resource="#Perdurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Belief -->
+
+    <owl:Class rdf:about="#Belief">
+        <rdfs:subClassOf rdf:resource="#OpinionStatement"/>
+        <owl:incompatibleWith
+            >i.e. I believe ...</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Company -->
+
+    <owl:Class rdf:about="#Company">
+        <rdfs:subClassOf rdf:resource="#Organization"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Desire -->
+
+    <owl:Class rdf:about="#Desire">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <owl:incompatibleWith
+            >i.e. I want to ...</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Endurant -->
+
+    <owl:Class rdf:about="#Endurant">
+        <rdfs:subClassOf rdf:resource="#SpatialTemporal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Event -->
+
+    <owl:Class rdf:about="#Event">
+        <rdfs:subClassOf rdf:resource="#Perdurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#FactStatement -->
+
+    <owl:Class rdf:about="#FactStatement">
+        <rdfs:subClassOf rdf:resource="#Statement"/>
+        <owl:incompatibleWith>i.e. X is Y</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Intention -->
+
+    <owl:Class rdf:about="#Intention">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+        <owl:disjointWith rdf:resource="#UnitOfThought"/>
+        <rdfs:comment
+            >Intention of a Unit of Thought. Cognitively biased</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#InternetEntity -->
+
+    <owl:Class rdf:about="#InternetEntity">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Introspection -->
+
+    <owl:Class rdf:about="#Introspection">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. I think I don&#39;t have a choice.</rdfs:comment>
+        <rdfs:comment
+            >i.e. What do I do?</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Location -->
+
+    <owl:Class rdf:about="#Location">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Negative -->
+
+    <owl:Class rdf:about="#Negative">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Neutral -->
+
+    <owl:Class rdf:about="#Neutral">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#OpinionStatement -->
+
+    <owl:Class rdf:about="#OpinionStatement">
+        <rdfs:subClassOf rdf:resource="#Statement"/>
+        <rdfs:comment
+            >i.e. I think socks are the best.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Organization -->
+
+    <owl:Class rdf:about="#Organization">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Perdurant -->
+
+    <owl:Class rdf:about="#Perdurant">
+        <rdfs:subClassOf rdf:resource="#SpatialTemporal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Person -->
+
+    <owl:Class rdf:about="#Person">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#PersonalFact -->
+
+    <owl:Class rdf:about="#PersonalFact">
+        <rdfs:subClassOf rdf:resource="#FactStatement"/>
+        <rdfs:comment
+            >Fact that applies locally to a small set of users</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#PhysicalObject -->
+
+    <owl:Class rdf:about="#PhysicalObject">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Positive -->
+
+    <owl:Class rdf:about="#Positive">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Product -->
+
+    <owl:Class rdf:about="#Product">
+        <rdfs:subClassOf rdf:resource="#PhysicalObject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Proposition -->
+
+    <owl:Class rdf:about="#Proposition">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. Let&#39;s go to the mall</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Question -->
+
+    <owl:Class rdf:about="#Question">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. How do I ...?</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Sentiment -->
+
+    <owl:Class rdf:about="#Sentiment">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#SpatialTemporal -->
+
+    <owl:Class rdf:about="#SpatialTemporal">
+        <owl:disjointWith rdf:resource="#UnitOfThought"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Statement -->
+
+    <owl:Class rdf:about="#Statement">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <owl:incompatibleWith
+            >i.e. New york has good pizza.</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Tag -->
+
+    <owl:Class rdf:about="#Tag">
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Technology -->
+
+    <owl:Class rdf:about="#Technology">
+        <rdfs:subClassOf rdf:resource="#Topic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Topic -->
+
+    <owl:Class rdf:about="#Topic">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Tweet -->
+
+    <owl:Class rdf:about="#Tweet">
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+        <rdfs:subClassOf rdf:resource="#Uterance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TweetOpinion -->
+
+    <owl:Class rdf:about="#TweetOpinion">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TweetQuestion -->
+
+    <owl:Class rdf:about="#TweetQuestion">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TweetReply -->
+
+    <owl:Class rdf:about="#TweetReply">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TweetStatement -->
+
+    <owl:Class rdf:about="#TweetStatement">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TwitterEntity -->
+
+    <owl:Class rdf:about="#TwitterEntity">
+        <rdfs:subClassOf rdf:resource="#InternetEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#URL -->
+
+    <owl:Class rdf:about="#URL">
+        <rdfs:subClassOf rdf:resource="#InternetEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#UnitOfThought -->
+
+    <owl:Class rdf:about="#UnitOfThought">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasIntention"/>
+                <owl:someValuesFrom rdf:resource="#Intention"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#UniversalFact -->
+
+    <owl:Class rdf:about="#UniversalFact">
+        <rdfs:subClassOf rdf:resource="#FactStatement"/>
+        <rdfs:comment
+            >Statement of universal fact</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#User -->
+
+    <owl:Class rdf:about="#User">
+        <rdfs:subClassOf rdf:resource="#Person"/>
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Uterance -->
+
+    <owl:Class rdf:about="#Uterance">
+        <rdfs:subClassOf rdf:resource="#UnitOfThought"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#TweetOpinion"/>
+            <rdf:Description rdf:about="#TweetQuestion"/>
+            <rdf:Description rdf:about="#TweetReply"/>
+            <rdf:Description rdf:about="#TweetStatement"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1101) http://owlapi.sourceforge.net -->
+
