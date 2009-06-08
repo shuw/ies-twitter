@@ -79,7 +79,6 @@
     <!-- http://nlt.shu.edu/iestwitter#isCreatedBy -->
 
     <owl:ObjectProperty rdf:about="#isCreatedBy">
-        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <owl:inverseOf rdf:resource="#hasProduct"/>
     </owl:ObjectProperty>
     
@@ -88,7 +87,6 @@
     <!-- http://nlt.shu.edu/iestwitter#isEmployeeOf -->
 
     <owl:ObjectProperty rdf:about="#isEmployeeOf">
-        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
         <rdfs:range rdf:resource="#Organization"/>
         <rdfs:domain rdf:resource="#Person"/>
