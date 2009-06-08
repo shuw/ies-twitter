@@ -265,6 +265,7 @@ dr-colin-love	6
 barry-schwartz	6
 howard-schultz	6
 steve-gillmor	6
+ben-behrouzi-2	6
 cal-ripken	6
 colin-campbell	6
 merlin-mann	6
@@ -320,7 +321,6 @@ arun-sarin	5
 steve-case-2	5
 jeff-bewkes	5
 paul-s-otellini-2	5
-ben-behrouzi-2	5
 kevin-thau	5
 brad-miller	5
 david-weinberger	5

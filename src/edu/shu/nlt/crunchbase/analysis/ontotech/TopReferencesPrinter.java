@@ -76,5 +76,9 @@ public class TopReferencesPrinter implements LineProcessor {
 		for (Person person : results.getPersonMatches())
 			personCounter.add(person);
 
+		if (results.getTotalMatches() > 0) {
+			hasAtLeastOneMatch++;
+		}
+
 	}
 }

@@ -2,14 +2,12 @@ package edu.shu.nlt.crunchbase.analysis.ontotech;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
 import edu.nlt.shallow.data.tags.Word;
 import edu.nlt.shallow.parser.WordTokenizer;
 import edu.shu.nlt.crunchbase.data.base.Company;
-import edu.shu.nlt.crunchbase.data.base.Employee;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
 import edu.shu.nlt.crunchbase.data.lists.CompanyList;
@@ -33,17 +31,43 @@ public class InstanceMatcher {
 	private StopWords stopWords = new StopWords();
 	private WordTokenizer tokenizer = new WordTokenizer(false);
 
-	private void matchCompanyProduct(String phrase, LinkedList<Company> companyMatches,
-			LinkedList<Product> productMatches) {
+	private void matchCompanyProduct(String phrase, LinkedList<Person> personMatches,
+			LinkedList<Company> companyMatches, LinkedList<Product> productMatches) {
 
 		Company company = companyList.getCompany(phrase);
 		Product product = productList.getProduct(phrase);
+		Person person = null;
+
+		// split firstname + lastName
+		String[] words = phrase.split(" ");
+		if (words.length >= 2)
+			person = personList.getPerson(words[words.length - 2], words[words.length - 1]);
+
+		if (person != null)
+			personMatches.add(person);
 
 		if (company != null)
 			companyMatches.add(company);
 
 		if (product != null)
 			productMatches.add(product);
+
+	}
+
+	public static void main(String[] args) {
+
+		InstanceMatcher matcher = new InstanceMatcher();
+
+		MatchResult results = matcher.match("Mark  is the founder of Facebook, which makes the Facebook Platform");
+
+		for (Person person : results.getPersonMatches())
+			person.printDetails(System.out);
+
+		for (Company company : results.getCompanyMatches())
+			company.printDetails(System.out);
+
+		for (Product product : results.getProductMatches())
+			product.printDetails(System.out);
 
 	}
 
@@ -62,85 +86,18 @@ public class InstanceMatcher {
 
 			// match unigram & ignore stop words
 			if (!stopWords.isStopWord(matchWith)) {
-				matchCompanyProduct(matchWith, companyMatches, productMatches);
+				matchCompanyProduct(matchWith, personMatches, companyMatches, productMatches);
 			}
 
 			// match bigram
 			if (i > 0) {
 				matchWith = words.get(i - 1) + " " + matchWith;
-				matchCompanyProduct(matchWith, companyMatches, productMatches);
+				matchCompanyProduct(matchWith, personMatches, companyMatches, productMatches);
 
 				// match tri-gram
 				if (i > 1) {
 					matchWith = words.get(i - 2) + " " + matchWith;
-					matchCompanyProduct(matchWith, companyMatches, productMatches);
-				}
-			}
-		}
-
-		// Match names
-		//
-		// full-names for any person
-		//
-		// first/last name match for people related to companies, products
-		// mentioned in the sentence
-		//
-		{
-			Hashtable<String, Person> firstNameTable = new Hashtable<String, Person>();
-			Hashtable<String, Person> lastNameTable = new Hashtable<String, Person>();
-
-			boolean doPartialNameMatch = false;
-			for (Company company : companyMatches) {
-				if (company.getCompanyInfo() != null) {
-					for (Employee employee : company.getCompanyInfo().getEmployees()) {
-						doPartialNameMatch = true;
-
-						firstNameTable.put(employee.getPerson().getFirstName().toLowerCase(), employee.getPerson());
-						lastNameTable.put(employee.getPerson().getLastName().toLowerCase(), employee.getPerson());
-					}
-				}
-			}
-
-			for (Product product : productMatches) {
-
-				if (product.getProductInfo() != null) {
-					Company company = product.getProductInfo().getCompany();
-
-					if (company != null) {
-						for (Employee employee : company.getCompanyInfo().getEmployees()) {
-							doPartialNameMatch = true;
-
-							firstNameTable.put(employee.getPerson().getFirstName().toLowerCase(), employee.getPerson());
-							lastNameTable.put(employee.getPerson().getLastName().toLowerCase(), employee.getPerson());
-						}
-					}
-				}
-			}
-
-			for (int i = 0; i < words.size(); i++) {
-
-				String lastName = words.get(i).toString();
-
-				if (i > 0) {
-					String firstName = words.get(i - 1).toString();
-
-					Person personMatch = personList.getPerson(firstName, lastName);
-
-					if (personMatch != null) {
-						// Found full-name match
-						personMatches.add(personMatch);
-					} else if (doPartialNameMatch) {
-
-						// Find partial name matches for companies, products
-						// referenced
-
-						if (firstNameTable.contains(firstName))
-							personMatches.add(firstNameTable.get(firstName));
-
-						if (firstNameTable.contains(lastName))
-							personMatches.add(lastNameTable.get(lastName));
-
-					}
+					matchCompanyProduct(matchWith, personMatches, companyMatches, productMatches);
 				}
 			}
 		}
@@ -150,29 +107,32 @@ public class InstanceMatcher {
 
 	public static class MatchResult {
 
-		public Collection<Company> getCompanyMatches() {
+		public List<Company> getCompanyMatches() {
 			return companyMatches;
 		}
 
-		public Collection<Person> getPersonMatches() {
+		public List<Person> getPersonMatches() {
 			return personMatches;
 		}
 
-		public Collection<Product> getProductMatches() {
+		public List<Product> getProductMatches() {
 			return productMatches;
 		}
 
-		public MatchResult(Collection<Company> companyMatches, Collection<Person> personMatches,
-				Collection<Product> productMatches) {
+		public int getTotalMatches() {
+			return companyMatches.size() + personMatches.size() + productMatches.size();
+		}
+
+		public MatchResult(List<Company> companyMatches, List<Person> personMatches, List<Product> productMatches) {
 			super();
 			this.companyMatches = companyMatches;
 			this.personMatches = personMatches;
 			this.productMatches = productMatches;
 		}
 
-		private Collection<Company> companyMatches;
-		private Collection<Person> personMatches;
-		private Collection<Product> productMatches;
+		private List<Company> companyMatches;
+		private List<Person> personMatches;
+		private List<Product> productMatches;
 	}
 
 }

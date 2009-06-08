@@ -1,7 +1,7 @@
 twitter	29789
 going	17772
 blog-2	15538
-video-5	11289
+video-5	11290
 follow	8160
 web	7247
 iphone	6695
@@ -1297,7 +1297,6 @@ ourstage	3
 plaxo-pulse	3
 technical-writing	3
 web-worker-daily	3
-coveroo	3
 zenfolio	3
 videohive	3
 flytech	3
@@ -1478,6 +1477,7 @@ sun-hardware	2
 juicecaster	2
 reimage	2
 rovio	2
+coveroo	2
 dotfuscator	2
 geckogo	2
 trackvia	2
