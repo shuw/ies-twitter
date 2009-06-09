@@ -1,5 +1,7 @@
 package edu.shu.nlt.crunchbase;
 
+import java.io.File;
+
 import edu.shu.nlt.crunchbase.data.lists.CompanyList;
 import edu.shu.nlt.crunchbase.data.lists.PersonList;
 import edu.shu.nlt.crunchbase.data.lists.ProductList;
@@ -22,9 +24,9 @@ public class Crunchbase {
 	private ProductList productsList;
 
 	public Crunchbase() {
-		productsList = ProductList.getInstance();
-		personList = PersonList.getInstance();
-		companyList = CompanyList.getInstance();
+		productsList = new ProductList(new File("data/crunchbase/products.js"));
+		personList = new PersonList(new File("data/crunchbase/people.js"));
+		companyList = new CompanyList(new File("data/crunchbase/companies.js"));
 	}
 
 	public CompanyList getCompanyList() {

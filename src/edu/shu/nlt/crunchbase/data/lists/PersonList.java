@@ -12,7 +12,6 @@ import edu.shu.nlt.crunchbase.data.JsonUtil;
 import edu.shu.nlt.crunchbase.data.base.Person;
 
 public class PersonList {
-	private static PersonList s_personList;
 
 	private static String getFullNameKey(String firstName, String lastName) {
 		// if the last name contains multiple names, only take the last one
@@ -25,16 +24,9 @@ public class PersonList {
 		return firstName.toLowerCase() + " " + splitLastlastName[splitLastlastName.length - 1].toLowerCase();
 	}
 
-	public static PersonList getInstance() {
-		if (s_personList == null)
-			s_personList = new PersonList(new File("data/crunchbase/people.js"));
-
-		return s_personList;
-	}
-
 	public static void main(String[] args) throws JSONException, IOException {
 
-		PersonList personList = getInstance();
+		PersonList personList = new PersonList(new File("data/crunchbase/people.js"));
 
 		for (Person person : personList.getPeople())
 			person.printDetails(System.out);
@@ -47,13 +39,17 @@ public class PersonList {
 
 	public PersonList(File file) {
 		try {
-			initialize(file);
+			initializeInstances(file);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void initialize(File file) throws JSONException, IOException {
+	public PersonList() {
+		people = new Hashtable<String, Person>();
+	}
+
+	private void initializeInstances(File file) throws JSONException, IOException {
 		JSONArray jsonArray = JsonUtil.GetJsonArray(file);
 
 		people = new Hashtable<String, Person>(jsonArray.length());
@@ -61,8 +57,12 @@ public class PersonList {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			Person newPerson = Person.getInstance(jsonArray.getJSONObject(i));
 
-			people.put(getFullNameKey(newPerson.getFirstName(), newPerson.getLastName()), newPerson);
+			addPerson(newPerson);
 		}
+	}
+
+	public void addPerson(Person person) {
+		people.put(getFullNameKey(person.getFirstName(), person.getLastName()), person);
 	}
 
 	public Collection<Person> getPeople() {

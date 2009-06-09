@@ -138,7 +138,7 @@ public class OntoCrunchbase implements Runnable {
 	public void initialize(OWLOntologyManager manager) throws OWLOntologyCreationException {
 		this.manager = manager;
 		this.dataFactory = manager.getOWLDataFactory();
-		this.companyList = CompanyList.getInstance();
+		this.companyList = new CompanyList(new File("data/crunchbase/companies.js"));
 		this.ontology = manager.loadOntologyFromPhysicalURI((new File("data/ontology/IESTwitter.owl")).toURI());
 		this.base = ontology.getURI();
 	}

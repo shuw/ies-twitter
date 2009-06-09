@@ -5,30 +5,24 @@ import java.io.File;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
-import edu.shu.nlt.crunchbase.data.lists.CompanyList;
-import edu.shu.nlt.crunchbase.data.lists.PersonList;
-import edu.shu.nlt.crunchbase.data.lists.ProductList;
 
 public class CrunchbaseScraper implements Runnable {
 
 	public static CrunchbaseScraper getInstance() {
 		return new CrunchbaseScraper("cache/crunchbase");
 	}
+
 	public static void main(String[] args) {
 		getInstance().run();
 	}
+
 	private String cachePath;
 
-	private CompanyList companyList;
-
-	private PersonList personList;
-
-	private ProductList productList;
+	private Crunchbase crunchbase;
 
 	private CrunchbaseScraper(String path) {
-		companyList = CompanyList.getInstance();
-		personList = PersonList.getInstance();
-		productList = ProductList.getInstance();
+		crunchbase = Crunchbase.getInstance();
+
 		this.cachePath = path;
 	}
 
@@ -48,15 +42,15 @@ public class CrunchbaseScraper implements Runnable {
 
 	@Override
 	public void run() {
-		for (Product product : productList.getProducts()) {
+		for (Product product : crunchbase.getProductsList().getProducts()) {
 			ensureCache("product", product.getCrunchBaseId());
 		}
 
-		for (Person person : personList.getPeople()) {
+		for (Person person : crunchbase.getPersonList().getPeople()) {
 			ensureCache("person", person.getCrunchBaseId());
 		}
 
-		for (Company company : companyList.getCompanies()) {
+		for (Company company : crunchbase.getCompanyList().getCompanies()) {
 			ensureCache("company", company.getCrunchBaseId());
 		}
 

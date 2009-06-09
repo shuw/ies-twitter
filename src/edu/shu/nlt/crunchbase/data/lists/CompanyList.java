@@ -14,15 +14,15 @@ import edu.shu.nlt.crunchbase.data.base.Company;
 public class CompanyList {
 	private static CompanyList s_companyList;
 
-	public static CompanyList getInstance() {
+	public static CompanyList getInstance(File file) {
 		if (s_companyList == null)
-			s_companyList = new CompanyList(new File("data/crunchbase/companies.js"));
+			s_companyList = new CompanyList(file);
 		return s_companyList;
 	}
 
 	public static void main(String[] args) throws JSONException, IOException {
 
-		CompanyList companies = getInstance();
+		CompanyList companies = getInstance(new File("data/crunchbase/companies.js"));
 
 		int greaterThan10Employees = 0;
 
@@ -42,13 +42,17 @@ public class CompanyList {
 
 	public CompanyList(File companyFile) {
 		try {
-			initialize(companyFile);
+			populateInstances(companyFile);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void initialize(File companyFile) throws JSONException, IOException {
+	public CompanyList() {
+		companyTable = new Hashtable<String, Company>();
+	}
+
+	private void populateInstances(File companyFile) throws JSONException, IOException {
 		JSONArray jsonArray = JsonUtil.GetJsonArray(companyFile);
 
 		companyTable = new Hashtable<String, Company>(jsonArray.length());
@@ -56,8 +60,12 @@ public class CompanyList {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			Company newCompany = Company.getInstance(jsonArray.getJSONObject(i));
 
-			companyTable.put(newCompany.getName().toLowerCase(), newCompany);
+			addCompany(newCompany);
 		}
+	}
+
+	public void addCompany(Company company) {
+		companyTable.put(company.getName().toLowerCase(), company);
 	}
 
 	public Collection<Company> getCompanies() {

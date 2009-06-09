@@ -33,6 +33,7 @@ public class TopReferencesPrinter implements LineProcessor {
 		lineProcessorMT.close();
 		finder.printResults();
 
+		System.out.println("Finished!");
 	}
 
 	private KeyCounterTable<Company> companyCounter = new KeyCounterTable<Company>();

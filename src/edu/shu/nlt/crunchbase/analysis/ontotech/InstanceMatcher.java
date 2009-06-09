@@ -1,5 +1,6 @@
 package edu.shu.nlt.crunchbase.analysis.ontotech;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,8 +8,10 @@ import java.util.List;
 import edu.nlt.shallow.data.tags.Word;
 import edu.nlt.shallow.parser.WordTokenizer;
 import edu.shu.nlt.crunchbase.data.base.Company;
+import edu.shu.nlt.crunchbase.data.base.Employee;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
+import edu.shu.nlt.crunchbase.data.expanded.CompanyInfo;
 import edu.shu.nlt.crunchbase.data.lists.CompanyList;
 import edu.shu.nlt.crunchbase.data.lists.PersonList;
 import edu.shu.nlt.crunchbase.data.lists.ProductList;
@@ -22,10 +25,10 @@ import edu.shu.nlt.crunchbase.data.lists.ProductList;
  * 
  */
 public class InstanceMatcher {
-	private CompanyList companyList = CompanyList.getInstance();
+	private CompanyList companyList;
 
-	private PersonList personList = PersonList.getInstance();
-	private ProductList productList = ProductList.getInstance();
+	private PersonList personList;
+	private ProductList productList;
 
 	private StopWords stopWords = new StopWords();
 	private WordTokenizer tokenizer = new WordTokenizer(false);
@@ -51,6 +54,46 @@ public class InstanceMatcher {
 		if (product != null)
 			productMatches.add(product);
 
+	}
+
+	public InstanceMatcher() {
+		initialize();
+	}
+
+	private final int c_minCompanyEmployees = 10;
+
+	/**
+	 * Constructs lists of Companies with > X employees, their products
+	 */
+	private void initialize() {
+		CompanyList allCcompanyList = CompanyList.getInstance(new File("data/crunchbase/companies.js"));
+
+		int totalCompaniesProcessed = 0;
+
+		companyList = new CompanyList();
+		personList = new PersonList();
+		productList = new ProductList();
+
+		for (Company company : allCcompanyList.getCompanies()) {
+			totalCompaniesProcessed++;
+			CompanyInfo companyInfo = company.getCompanyInfo();
+
+			if (companyInfo != null && companyInfo.getEmployees().size() >= c_minCompanyEmployees) {
+
+				System.out.println("Processing company: " + company.getName() + "  total processed: "
+						+ totalCompaniesProcessed);
+
+				companyList.addCompany(company);
+
+				for (Employee employee : companyInfo.getEmployees()) {
+					personList.addPerson(employee.getPerson());
+				}
+
+				for (Product product : companyInfo.getProducts()) {
+					productList.addProduct(product);
+				}
+			}
+		}
 	}
 
 	public static void main(String[] args) {

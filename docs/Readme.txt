@@ -22,6 +22,7 @@ Tweet Ontology
  
 *** IE Task ***
 
+Used stop words
 
 Extracting instances
 	Problems: Common names

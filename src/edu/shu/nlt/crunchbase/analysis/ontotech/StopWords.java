@@ -3,10 +3,13 @@ package edu.shu.nlt.crunchbase.analysis.ontotech;
 import java.util.HashSet;
 
 public class StopWords {
-	private static String[] s_stopWords = { "m", "a", "about", "above", "above", "across", "after", "afterwards",
-			"again", "against", "all", "almost", "alone", "along", "already", "also", "although", "always", "am",
-			"among", "amongst", "amoungst", "amount", "an", "and", "another", "any", "anyhow", "anyone", "anything",
-			"anyway", "anywhere", "are", "around", "as", "at", "back", "be", "became", "because", "become", "becomes",
+	/**
+	 * Standard english stop words
+	 */
+	private static String[] s_stopWords = { "a", "about", "above", "above", "across", "after", "afterwards", "again",
+			"against", "all", "almost", "alone", "along", "already", "also", "although", "always", "am", "among",
+			"amongst", "amoungst", "amount", "an", "and", "another", "any", "anyhow", "anyone", "anything", "anyway",
+			"anywhere", "are", "around", "as", "at", "back", "be", "became", "because", "become", "becomes",
 			"becoming", "been", "before", "beforehand", "behind", "being", "below", "beside", "besides", "between",
 			"beyond", "bill", "both", "bottom", "but", "by", "call", "can", "cannot", "cant", "co", "con", "could",
 			"couldnt", "cry", "de", "describe", "detail", "do", "done", "down", "due", "during", "each", "eg", "eight",
@@ -33,12 +36,22 @@ public class StopWords {
 			"will", "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", "yourselves",
 			"the" };
 
+	/**
+	 * Additional stop words to prevent companies/products with common words in
+	 * their names form matching
+	 */
+	private static String[] s_crunchbaseStopWords = { "slide", "like", "better place", "common sense", "propser",
+			"tipped", "wtf", "popular", "slide", "arms", "shine", "prism", "mobile" };
+
 	private HashSet<String> stopWords;
 
 	public StopWords() {
 		stopWords = new HashSet<String>(s_stopWords.length);
 
 		for (String stopWord : s_stopWords) {
+			stopWords.add(stopWord);
+		}
+		for (String stopWord : s_crunchbaseStopWords) {
 			stopWords.add(stopWord);
 		}
 	}

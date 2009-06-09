@@ -12,18 +12,10 @@ import edu.shu.nlt.crunchbase.data.JsonUtil;
 import edu.shu.nlt.crunchbase.data.base.Product;
 
 public class ProductList {
-	private static ProductList s_productList;
-
-	public static ProductList getInstance() {
-		if (s_productList == null)
-			s_productList = new ProductList(new File("data/crunchbase/products.js"));
-
-		return s_productList;
-	}
 
 	public static void main(String[] args) throws JSONException, IOException {
 
-		ProductList products = getInstance();
+		ProductList products = new ProductList(new File("data/crunchbase/products.js"));
 
 		int hasCompany = 0;
 
@@ -45,21 +37,29 @@ public class ProductList {
 
 	public ProductList(File file) {
 		try {
-			initialize(file);
+			initializeInstances(file);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void initialize(File companyFile) throws JSONException, IOException {
+	public ProductList() {
+		products = new Hashtable<String, Product>();
+	}
+
+	private void initializeInstances(File companyFile) throws JSONException, IOException {
 		JSONArray jsonArray = JsonUtil.GetJsonArray(companyFile);
 
 		products = new Hashtable<String, Product>(jsonArray.length());
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			Product product = Product.getInstance(jsonArray.getJSONObject(i));
-			products.put(product.getName().toLowerCase(), product);
+			addProduct(product);
 		}
+	}
+
+	public void addProduct(Product product) {
+		products.put(product.getName().toLowerCase(), product);
 	}
 
 	public Product getProduct(String name) {
