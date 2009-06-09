@@ -1,4 +1,3 @@
-like	31405
 twitter	29788
 google	8182
 facebook	5652
@@ -16,7 +15,6 @@ heavy	514
 techcrunch	498
 ebay	498
 ibm	316
-slide	310
 pandora	290
 cbs	274
 cisco	265
@@ -49,7 +47,6 @@ napster	49
 freewebs	49
 hubspot	45
 daylife	42
-tipped	42
 intuit	42
 feedburner	40
 ars-technica	39

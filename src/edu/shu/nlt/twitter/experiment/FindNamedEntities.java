@@ -1,15 +1,17 @@
 package edu.shu.nlt.twitter.experiment;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Collection;
 
 import edu.nlt.util.InputUtil;
+import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
 import edu.shu.nlt.twitter.ie.NERUtil;
 import edu.shu.nlt.twitter.ie.NamedEntity;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 
-public class FindNamedEntities implements Runnable {
+public class FindNamedEntities implements LineProcessor {
 	public static void main(String[] args) {
 		CRFClassifier classifier = null;
 
@@ -23,8 +25,9 @@ public class FindNamedEntities implements Runnable {
 		if (classifier != null) {
 			FindNamedEntities task = new FindNamedEntities(classifier);
 
-			task.run();
+			InputUtil.process(new File("output", "tweets_all.txt"), task);
 
+			task.printResults(System.out);
 		}
 	}
 
@@ -35,25 +38,30 @@ public class FindNamedEntities implements Runnable {
 		this.classifier = classifier;
 	}
 
-	@Override
-	public void run() {
+	private int countWithAtLeast1Match = 0;
+	private int totalMatches = 0;
 
-		System.out.println("System ready! ");
-
-		InputUtil.process(System.in, new TweetProcessor());
-
+	public void printResults(PrintStream out) {
+		out.println("total matches: " + totalMatches);
+		out.println("lines with at least 1 match: " + countWithAtLeast1Match);
 	}
 
-	private class TweetProcessor implements LineProcessor {
-
-		@Override
-		public void processLine(String value) {
+	@Override
+	public void processLine(String value) {
+		try {
 			Collection<NamedEntity> entities = NERUtil.getNamedEntities(classifier, value);
+			totalMatches += entities.size();
 
-			for (NamedEntity entity : entities) {
+			if (entities.size() > 0)
+				countWithAtLeast1Match++;
+
+			for (NamedEntity entity : entities)
 				System.out.print(entity.toString());
-			}
+
 			System.out.println();
+		} catch (Exception e) {
+			e.printStackTrace();
+
 		}
 
 	}

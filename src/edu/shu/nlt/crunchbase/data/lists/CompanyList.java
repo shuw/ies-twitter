@@ -12,17 +12,10 @@ import edu.shu.nlt.crunchbase.data.JsonUtil;
 import edu.shu.nlt.crunchbase.data.base.Company;
 
 public class CompanyList {
-	private static CompanyList s_companyList;
-
-	public static CompanyList getInstance(File file) {
-		if (s_companyList == null)
-			s_companyList = new CompanyList(file);
-		return s_companyList;
-	}
 
 	public static void main(String[] args) throws JSONException, IOException {
 
-		CompanyList companies = getInstance(new File("data/crunchbase/companies.js"));
+		CompanyList companies = new CompanyList(new File("data/crunchbase/companies.js"));
 
 		int greaterThan10Employees = 0;
 

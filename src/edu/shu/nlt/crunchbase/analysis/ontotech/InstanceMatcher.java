@@ -7,6 +7,7 @@ import java.util.List;
 
 import edu.nlt.shallow.data.tags.Word;
 import edu.nlt.shallow.parser.WordTokenizer;
+import edu.shu.nlt.crunchbase.Crunchbase;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Employee;
 import edu.shu.nlt.crunchbase.data.base.Person;
@@ -60,37 +61,53 @@ public class InstanceMatcher {
 		initialize();
 	}
 
+	/**
+	 * If != -1, then the company list will be filted by this minimum employee
+	 * count
+	 * 
+	 * and the product list will be scoped to products produced by those
+	 * companies
+	 */
 	private final int c_minCompanyEmployees = 10;
 
-	/**
-	 * Constructs lists of Companies with > X employees, their products
-	 */
 	private void initialize() {
-		CompanyList allCcompanyList = CompanyList.getInstance(new File("data/crunchbase/companies.js"));
 
-		int totalCompaniesProcessed = 0;
+		personList = new PersonList(new File("data/crunchbase/people.js"));
 
-		companyList = new CompanyList();
-		personList = new PersonList();
-		productList = new ProductList();
+		// Initialize company & product list
+		//
+		if (c_minCompanyEmployees == -1) {
+			companyList = Crunchbase.getInstance().getCompanyList();
+			productList = Crunchbase.getInstance().getProductsList();
 
-		for (Company company : allCcompanyList.getCompanies()) {
-			totalCompaniesProcessed++;
-			CompanyInfo companyInfo = company.getCompanyInfo();
+		} else {
+			CompanyList allCcompanyList = Crunchbase.getInstance().getCompanyList();
 
-			if (companyInfo != null && companyInfo.getEmployees().size() >= c_minCompanyEmployees) {
+			int totalCompaniesProcessed = 0;
 
-				System.out.println("Processing company: " + company.getName() + "  total processed: "
-						+ totalCompaniesProcessed);
+			companyList = new CompanyList();
+			productList = new ProductList();
 
-				companyList.addCompany(company);
+			// Constructs lists of Companies with > X employees, their products
+			//
+			for (Company company : allCcompanyList.getCompanies()) {
+				totalCompaniesProcessed++;
+				CompanyInfo companyInfo = company.getCompanyInfo();
 
-				for (Employee employee : companyInfo.getEmployees()) {
-					personList.addPerson(employee.getPerson());
-				}
+				if (companyInfo != null && companyInfo.getEmployees().size() >= c_minCompanyEmployees) {
 
-				for (Product product : companyInfo.getProducts()) {
-					productList.addProduct(product);
+					System.out.println("Processing company: " + company.getName() + "  total processed: "
+							+ totalCompaniesProcessed);
+
+					companyList.addCompany(company);
+
+					for (Employee employee : companyInfo.getEmployees()) {
+						personList.addPerson(employee.getPerson());
+					}
+
+					for (Product product : companyInfo.getProducts()) {
+						productList.addProduct(product);
+					}
 				}
 			}
 		}

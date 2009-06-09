@@ -33,3 +33,4 @@ Extracting instances
 Future work:
 	Parse tweets
 	Language detection on user-level
+	Crawler is intelligent, crawl only friends of people with low follow/follower ratio & whom stay on topic

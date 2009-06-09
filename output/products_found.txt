@@ -1,13 +1,10 @@
-twitter	29788
-iphone	6695
+twitter	29789
+iphone	6694
 windows	4268
-mobile	2719
 bing	1980
-wtf	1086
 xbox	1003
 firefox	955
 google-wave	955
-popular	880
 myspace	821
 gmail	768
 android	760
@@ -20,12 +17,9 @@ wikipedia	461
 safari	395
 lightning	348
 connected	323
-arms	319
-slide	310
 os-x	309
 pandora	290
 msn	230
-shine	229
 google-maps	221
 chrome	207
 windows-live	174
@@ -34,7 +28,6 @@ google-reader	140
 google-analytics	129
 second-life	125
 openid	123
-prism	118
 adobe-air	113
 google-earth	110
 admixer	105

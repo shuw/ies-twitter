@@ -20,11 +20,11 @@ import edu.shu.nlt.crunchbase.data.base.Product;
  * @author shu
  * 
  */
-public class TopReferencesPrinter implements LineProcessor {
+public class ExtractOntoTweets implements LineProcessor {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
-		TopReferencesPrinter finder = new TopReferencesPrinter();
+		ExtractOntoTweets finder = new ExtractOntoTweets();
 
 		LPMultiThreader lineProcessorMT = new LPMultiThreader(4, finder);
 
@@ -62,8 +62,6 @@ public class TopReferencesPrinter implements LineProcessor {
 
 	private InstanceMatcher matcher = new InstanceMatcher();
 
-	int questionsFound = 0;
-
 	@Override
 	public void processLine(String value) {
 		totalLinesProcessed++;
@@ -71,8 +69,11 @@ public class TopReferencesPrinter implements LineProcessor {
 
 		MatchResult results = matcher.match(value);
 
-		for (Company company : results.getCompanyMatches())
+		for (Company company : results.getCompanyMatches()) {
 			companyCounter.add(company);
+			
+			
+		}
 
 		for (Product product : results.getProductMatches())
 			productCounter.add(product);
@@ -81,11 +82,10 @@ public class TopReferencesPrinter implements LineProcessor {
 			personCounter.add(person);
 
 		if (results.getTotalMatches() > 0) {
-			if (value.matches("^.*\\? .*$")) {
-				questionsFound++;
+			if (value.matches(".*\\?$")) {
 				System.out.println(value);
 			}
-
+			
 			hasAtLeastOneMatch++;
 		}
 
