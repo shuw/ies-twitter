@@ -48,17 +48,6 @@
     
 
 
-    <!-- http://nlt.shu.edu/iestwitter#hasIntention -->
-
-    <owl:ObjectProperty rdf:about="#hasIntention">
-        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
-        <rdfs:range rdf:resource="#Intention"/>
-        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://nlt.shu.edu/iestwitter#hasProduct -->
 
     <owl:ObjectProperty rdf:about="#hasProduct">
@@ -110,6 +99,15 @@
         <rdfs:range rdf:resource="#Person"/>
         <rdfs:domain rdf:resource="#Person"/>
         <rdfs:subPropertyOf rdf:resource="#PersonProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isLocatedAt -->
+
+    <owl:ObjectProperty rdf:about="#isLocatedAt">
+        <rdfs:range rdf:resource="#Location"/>
+        <rdfs:subPropertyOf rdf:resource="#isReferringTo"/>
     </owl:ObjectProperty>
     
 
@@ -259,7 +257,6 @@
 
     <owl:Class rdf:about="#Intention">
         <rdfs:subClassOf rdf:resource="#Abstract"/>
-        <owl:disjointWith rdf:resource="#UnitOfThought"/>
         <rdfs:comment
             >Intention of a Unit of Thought. Cognitively biased</rdfs:comment>
     </owl:Class>
@@ -290,6 +287,15 @@
 
     <owl:Class rdf:about="#Location">
         <rdfs:subClassOf rdf:resource="#Endurant"/>
+        <rdfs:subClassOf rdf:resource="#NamedEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#NamedEntity -->
+
+    <owl:Class rdf:about="#NamedEntity">
+        <rdfs:subClassOf rdf:resource="#SpatialTemporal"/>
     </owl:Class>
     
 
@@ -324,6 +330,7 @@
 
     <owl:Class rdf:about="#Organization">
         <rdfs:subClassOf rdf:resource="#Endurant"/>
+        <rdfs:subClassOf rdf:resource="#NamedEntity"/>
     </owl:Class>
     
 
@@ -340,6 +347,7 @@
 
     <owl:Class rdf:about="#Person">
         <rdfs:subClassOf rdf:resource="#Endurant"/>
+        <rdfs:subClassOf rdf:resource="#NamedEntity"/>
     </owl:Class>
     
 
@@ -373,6 +381,7 @@
     <!-- http://nlt.shu.edu/iestwitter#Product -->
 
     <owl:Class rdf:about="#Product">
+        <rdfs:subClassOf rdf:resource="#NamedEntity"/>
         <rdfs:subClassOf rdf:resource="#PhysicalObject"/>
     </owl:Class>
     
@@ -460,6 +469,14 @@ It contains a question &amp; an answer</rdfs:comment>
     
 
 
+    <!-- http://nlt.shu.edu/iestwitter#TechnologyCompany -->
+
+    <owl:Class rdf:about="#TechnologyCompany">
+        <rdfs:subClassOf rdf:resource="#Company"/>
+    </owl:Class>
+    
+
+
     <!-- http://nlt.shu.edu/iestwitter#Topic -->
 
     <owl:Class rdf:about="#Topic">
@@ -529,12 +546,6 @@ It contains a question &amp; an answer</rdfs:comment>
 
     <owl:Class rdf:about="#UnitOfThought">
         <rdfs:subClassOf rdf:resource="#Abstract"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="#hasIntention"/>
-                <owl:someValuesFrom rdf:resource="#Intention"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -569,6 +580,25 @@ It contains a question &amp; an answer</rdfs:comment>
     <!-- http://nlt.shu.edu/iestwitter#related -->
 
     <owl:Class rdf:about="#related"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet39 -->
+
+    <Question rdf:about="#tweet39">
+        <rdf:type rdf:resource="#Tweet"/>
+    </Question>
     
 
 

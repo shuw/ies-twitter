@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.semanticweb.owl.model.OWLAxiom;
 
-import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;

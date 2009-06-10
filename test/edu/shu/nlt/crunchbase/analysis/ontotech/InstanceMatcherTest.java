@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer;
-import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
 
 public class InstanceMatcherTest {
 

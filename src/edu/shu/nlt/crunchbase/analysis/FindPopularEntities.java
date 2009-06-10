@@ -9,7 +9,8 @@ import edu.nlt.shallow.data.table.KeyCounterTable;
 import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
-import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
@@ -20,11 +21,11 @@ import edu.shu.nlt.crunchbase.data.base.Product;
  * @author shu
  * 
  */
-public class NamedEntityProcessor implements LineProcessor {
+public class FindPopularEntities implements LineProcessor {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
-		NamedEntityProcessor finder = new NamedEntityProcessor();
+		FindPopularEntities finder = new FindPopularEntities();
 
 		LPMultiThreader lineProcessorMT = new LPMultiThreader(4, finder);
 

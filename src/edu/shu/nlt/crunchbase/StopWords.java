@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.analysis;
+package edu.shu.nlt.crunchbase;
 
 import java.io.Serializable;
 import java.util.HashSet;

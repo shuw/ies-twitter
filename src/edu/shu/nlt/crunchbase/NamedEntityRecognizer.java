@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.analysis;
+package edu.shu.nlt.crunchbase;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,13 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import edu.nlt.shallow.data.tags.Word;
 import edu.nlt.shallow.parser.WordTokenizer;
-import edu.shu.nlt.crunchbase.Crunchbase;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Employee;
 import edu.shu.nlt.crunchbase.data.base.Person;

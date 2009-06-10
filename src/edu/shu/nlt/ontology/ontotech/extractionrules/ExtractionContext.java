@@ -2,7 +2,7 @@ package edu.shu.nlt.ontology.ontotech.extractionrules;
 
 import org.semanticweb.owl.model.OWLIndividual;
 
-import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
 import edu.shu.nlt.ontology.ontotech.OntologyUpdater;
 
 public class ExtractionContext {

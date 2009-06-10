@@ -1,4 +1,4 @@
-package edu.shu.nlt.twitter.ie;
+package edu.shu.nlt.ie;
 
 import java.util.ArrayList;
 import java.util.Collection;

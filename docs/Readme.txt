@@ -10,6 +10,9 @@ Twitter API
 
 
 *** System ***
+Protege is a pain to use
+
+
 Intention Ontology
 
 Technology Ontology
@@ -22,7 +25,9 @@ Tweet Ontology
  
 *** IE Task ***
 
-Named Entity Recognizer
+Technology Named Entity Recognizer (Crunchbase) - filtered by company employee size
+	General Stanford Named Entity Recognizer
+
 
 Used stop words
 
