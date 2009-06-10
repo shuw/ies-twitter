@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.analysis.ontotech;
+package edu.shu.nlt.crunchbase.analysis;
 
 import java.io.File;
 import java.io.PrintStream;

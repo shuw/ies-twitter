@@ -2,6 +2,7 @@ package edu.shu.nlt.crunchbase.data.expanded;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +16,11 @@ import edu.shu.nlt.crunchbase.data.base.Company;
  * @author shu
  * 
  */
-public class ProductInfo {
+public class ProductInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Company company;
 
 	private ProductInfo(File file) throws JSONException, IOException {

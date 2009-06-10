@@ -1,13 +1,19 @@
 package edu.shu.nlt.crunchbase.data.base;
 
 import java.io.PrintStream;
+import java.io.Serializable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.nlt.shallow.data.Keyable;
 
-public class Person implements Keyable {
+public class Person implements Keyable, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static Person getInstance(JSONObject jsonObject) {
 		try {
 			String crunchbaseID = jsonObject.getString("permalink");

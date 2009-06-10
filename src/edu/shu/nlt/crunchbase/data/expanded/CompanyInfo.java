@@ -2,6 +2,7 @@ package edu.shu.nlt.crunchbase.data.expanded;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,12 @@ import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Employee;
 import edu.shu.nlt.crunchbase.data.base.Product;
 
-public class CompanyInfo {
+public class CompanyInfo implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static CompanyInfo getInstance(String crunchbaseId) {
 

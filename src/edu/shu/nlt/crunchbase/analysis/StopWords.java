@@ -1,8 +1,14 @@
-package edu.shu.nlt.crunchbase.analysis.ontotech;
+package edu.shu.nlt.crunchbase.analysis;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class StopWords {
+public class StopWords implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Standard english stop words
 	 */

@@ -7,7 +7,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.shu.nlt.crunchbase.analysis.ontotech.InstanceMatcher.MatchResult;
+import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer;
+import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.MatchResult;
 
 public class InstanceMatcherTest {
 
@@ -21,14 +22,14 @@ public class InstanceMatcherTest {
 
 	@Before
 	public void setUp() throws Exception {
-		myInstance = new InstanceMatcher();
+		myInstance = NamedEntityRecognizer.getInstance();
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
 
-	InstanceMatcher myInstance;
+	NamedEntityRecognizer myInstance;
 
 	@Test
 	public void findHash() {

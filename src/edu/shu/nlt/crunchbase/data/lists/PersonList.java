@@ -2,6 +2,7 @@ package edu.shu.nlt.crunchbase.data.lists;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Hashtable;
 
@@ -11,7 +12,12 @@ import org.json.JSONException;
 import edu.shu.nlt.crunchbase.data.JsonUtil;
 import edu.shu.nlt.crunchbase.data.base.Person;
 
-public class PersonList {
+public class PersonList implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private static String getFullNameKey(String firstName, String lastName) {
 		// if the last name contains multiple names, only take the last one

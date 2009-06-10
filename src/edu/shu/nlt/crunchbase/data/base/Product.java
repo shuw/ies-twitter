@@ -1,6 +1,7 @@
 package edu.shu.nlt.crunchbase.data.base;
 
 import java.io.PrintStream;
+import java.io.Serializable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,7 +9,12 @@ import org.json.JSONObject;
 import edu.nlt.shallow.data.Keyable;
 import edu.shu.nlt.crunchbase.data.expanded.ProductInfo;
 
-public class Product implements Keyable {
+public class Product implements Keyable, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static Product getInstance(JSONObject jsonObject) {
 		try {
 			String name = jsonObject.getString("name");

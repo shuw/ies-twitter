@@ -1,11 +1,17 @@
 package edu.shu.nlt.crunchbase.data.base;
 
 import java.io.PrintStream;
+import java.io.Serializable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Employee {
+public class Employee implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static Employee getInstance(JSONObject jsonObject) {
 		try {

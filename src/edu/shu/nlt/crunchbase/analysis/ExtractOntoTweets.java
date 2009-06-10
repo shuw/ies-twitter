@@ -1,4 +1,4 @@
-package edu.shu.nlt.crunchbase.analysis.ontotech;
+package edu.shu.nlt.crunchbase.analysis;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +9,7 @@ import edu.nlt.shallow.data.table.KeyCounterTable;
 import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
-import edu.shu.nlt.crunchbase.analysis.ontotech.InstanceMatcher.MatchResult;
+import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.MatchResult;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
@@ -20,11 +20,11 @@ import edu.shu.nlt.crunchbase.data.base.Product;
  * @author shu
  * 
  */
-public class TopReferencesPrinter implements LineProcessor {
+public class ExtractOntoTweets implements LineProcessor {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
-		TopReferencesPrinter finder = new TopReferencesPrinter();
+		ExtractOntoTweets finder = new ExtractOntoTweets();
 
 		LPMultiThreader lineProcessorMT = new LPMultiThreader(4, finder);
 
@@ -60,9 +60,7 @@ public class TopReferencesPrinter implements LineProcessor {
 				Integer.MAX_VALUE);
 	}
 
-	private InstanceMatcher matcher = new InstanceMatcher();
-
-	int questionsFound = 0;
+	private NamedEntityRecognizer matcher = NamedEntityRecognizer.getInstance();
 
 	@Override
 	public void processLine(String value) {
@@ -71,8 +69,10 @@ public class TopReferencesPrinter implements LineProcessor {
 
 		MatchResult results = matcher.match(value);
 
-		for (Company company : results.getCompanyMatches())
+		for (Company company : results.getCompanyMatches()) {
 			companyCounter.add(company);
+
+		}
 
 		for (Product product : results.getProductMatches())
 			productCounter.add(product);
@@ -81,8 +81,7 @@ public class TopReferencesPrinter implements LineProcessor {
 			personCounter.add(person);
 
 		if (results.getTotalMatches() > 0) {
-			if (value.matches("^.*\\? .*$")) {
-				questionsFound++;
+			if (value.matches(".*\\?$")) {
 				System.out.println(value);
 			}
 

@@ -2,6 +2,7 @@ package edu.shu.nlt.crunchbase.data.lists;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Hashtable;
 
@@ -11,7 +12,12 @@ import org.json.JSONException;
 import edu.shu.nlt.crunchbase.data.JsonUtil;
 import edu.shu.nlt.crunchbase.data.base.Company;
 
-public class CompanyList {
+public class CompanyList implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args) throws JSONException, IOException {
 

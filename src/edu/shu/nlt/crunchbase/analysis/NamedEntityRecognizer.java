@@ -1,6 +1,12 @@
-package edu.shu.nlt.crunchbase.analysis.ontotech;
+package edu.shu.nlt.crunchbase.analysis;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +31,12 @@ import edu.shu.nlt.crunchbase.data.lists.ProductList;
  * @author shu
  * 
  */
-public class InstanceMatcher {
+public class NamedEntityRecognizer implements Serializable {
+	/**
+	 * First version
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private CompanyList companyList;
 
 	private PersonList personList;
@@ -57,18 +68,50 @@ public class InstanceMatcher {
 
 	}
 
-	public InstanceMatcher() {
+	public NamedEntityRecognizer(boolean filterCompaniesAndProducts) {
+		this.filterCompaniesAndProducts = filterCompaniesAndProducts;
 		initialize();
 	}
 
 	/**
-	 * If != -1, then the company list will be filted by this minimum employee
-	 * count
-	 * 
-	 * and the product list will be scoped to products produced by those
-	 * companies
+	 * Company's minimum employee count to be included in the recognizable word
+	 * list
 	 */
 	private final int c_minCompanyEmployees = 10;
+
+	/**
+	 * If true, then the company list will be filted by this minimum employee
+	 * count
+	 */
+	private boolean filterCompaniesAndProducts;
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public CompanyList getCompanyList() {
+		return companyList;
+	}
+
+	public PersonList getPersonList() {
+		return personList;
+	}
+
+	public ProductList getProductList() {
+		return productList;
+	}
+
+	public StopWords getStopWords() {
+		return stopWords;
+	}
+
+	public WordTokenizer getTokenizer() {
+		return tokenizer;
+	}
+
+	public boolean isFilterCompaniesAndProducts() {
+		return filterCompaniesAndProducts;
+	}
 
 	private void initialize() {
 
@@ -76,7 +119,7 @@ public class InstanceMatcher {
 
 		// Initialize company & product list
 		//
-		if (c_minCompanyEmployees == -1) {
+		if (!filterCompaniesAndProducts) {
 			companyList = Crunchbase.getInstance().getCompanyList();
 			productList = Crunchbase.getInstance().getProductsList();
 
@@ -113,9 +156,44 @@ public class InstanceMatcher {
 		}
 	}
 
+	public static NamedEntityRecognizer getInstance() {
+		final boolean scopeCompaniesAndProducts = true;
+
+		NamedEntityRecognizer instance = null;
+
+		File savedNerFile = new File("cache/temp", "ner.saved");
+
+		if (savedNerFile.exists())
+			try {
+				FileInputStream fis = new FileInputStream(savedNerFile);
+				ObjectInputStream in = new ObjectInputStream(fis);
+
+				instance = (NamedEntityRecognizer) in.readObject();
+			} catch (Exception e) {
+				System.out.println("Could not read: " + savedNerFile.toURI().toString() + ", ignoring file");
+			}
+
+		if (instance == null || instance.isFilterCompaniesAndProducts() != scopeCompaniesAndProducts) {
+			instance = new NamedEntityRecognizer(scopeCompaniesAndProducts);
+
+			// It takes a while to create this instance, so we serilize it
+			try {
+				FileOutputStream fos = new FileOutputStream(savedNerFile);
+				ObjectOutputStream out = new ObjectOutputStream(fos);
+				out.writeObject(instance);
+				out.close();
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+
+		return instance;
+
+	}
+
 	public static void main(String[] args) {
 
-		InstanceMatcher matcher = new InstanceMatcher();
+		NamedEntityRecognizer matcher = NamedEntityRecognizer.getInstance();
 
 		MatchResult results = matcher.match("Mark  is the founder of Facebook, which makes the Facebook Platform");
 
