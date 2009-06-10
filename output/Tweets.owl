@@ -1,0 +1,2098 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY iestwitter "http://nlt.shu.edu/iestwitter#" >
+    <!ENTITY owl2 "http://www.w3.org/2006/12/owl2#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://nlt.shu.edu/iestwitter#"
+     xml:base="http://nlt.shu.edu/iestwitter"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:iestwitter="http://nlt.shu.edu/iestwitter#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl2="http://www.w3.org/2006/12/owl2#">
+    <owl:Ontology rdf:about=""/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#PersonProperty -->
+
+    <owl:ObjectProperty rdf:about="#PersonProperty"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#ThoughtProperty -->
+
+    <owl:ObjectProperty rdf:about="#ThoughtProperty">
+        <rdfs:domain rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#hasProduct -->
+
+    <owl:ObjectProperty rdf:about="#hasProduct">
+        <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
+        <rdfs:range rdf:resource="#Product"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isCompetitorOf -->
+
+    <owl:ObjectProperty rdf:about="#isCompetitorOf">
+        <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isCreatedBy -->
+
+    <owl:ObjectProperty rdf:about="#isCreatedBy">
+        <owl:inverseOf rdf:resource="#hasProduct"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isEmployeeOf -->
+
+    <owl:ObjectProperty rdf:about="#isEmployeeOf">
+        <rdf:type rdf:resource="&owl2;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Organization"/>
+        <rdfs:domain rdf:resource="#Person"/>
+        <owl:inverseOf rdf:resource="#isEmployerOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isEmployerOf -->
+
+    <owl:ObjectProperty rdf:about="#isEmployerOf">
+        <rdf:type rdf:resource="&owl2;IrreflexiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isFollowing -->
+
+    <owl:ObjectProperty rdf:about="#isFollowing">
+        <rdf:type rdf:resource="&owl2;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Person"/>
+        <rdfs:domain rdf:resource="#Person"/>
+        <rdfs:subPropertyOf rdf:resource="#PersonProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isLocatedAt -->
+
+    <owl:ObjectProperty rdf:about="#isLocatedAt">
+        <rdfs:range rdf:resource="#Location"/>
+        <rdfs:subPropertyOf rdf:resource="#isReferringTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isReferringTo -->
+
+    <owl:ObjectProperty rdf:about="#isReferringTo">
+        <rdf:type rdf:resource="&owl2;IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isUtteredBy -->
+
+    <owl:ObjectProperty rdf:about="#isUtteredBy">
+        <rdf:type rdf:resource="&owl2;IrreflexiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="#ThoughtProperty"/>
+        <owl:inverseOf rdf:resource="#isUttererOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isUttererOf -->
+
+    <owl:ObjectProperty rdf:about="#isUttererOf">
+        <rdfs:subPropertyOf rdf:resource="#PersonProperty"/>
+        <rdfs:range rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#hasCrunchbaseId -->
+
+    <owl:DatatypeProperty rdf:about="#hasCrunchbaseId">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="#InternetEntity"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#hasTwitterId -->
+
+    <owl:DatatypeProperty rdf:about="#hasTwitterId"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Abstract -->
+
+    <owl:Class rdf:about="#Abstract"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Action -->
+
+    <owl:Class rdf:about="#Action">
+        <rdfs:subClassOf rdf:resource="#Perdurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Belief -->
+
+    <owl:Class rdf:about="#Belief">
+        <rdfs:subClassOf rdf:resource="#OpinionStatement"/>
+        <owl:incompatibleWith
+            >i.e. I believe ...</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Company -->
+
+    <owl:Class rdf:about="#Company">
+        <rdfs:subClassOf rdf:resource="#Organization"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#CompetitiveComparison -->
+
+    <owl:Class rdf:about="#CompetitiveComparison">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Desire -->
+
+    <owl:Class rdf:about="#Desire">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <owl:incompatibleWith
+            >i.e. I want to ...</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Endurant -->
+
+    <owl:Class rdf:about="#Endurant">
+        <rdfs:subClassOf rdf:resource="#SpatialTemporal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Event -->
+
+    <owl:Class rdf:about="#Event">
+        <rdfs:subClassOf rdf:resource="#Perdurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#FactStatement -->
+
+    <owl:Class rdf:about="#FactStatement">
+        <rdfs:subClassOf rdf:resource="#Statement"/>
+        <owl:incompatibleWith>i.e. X is Y</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Intention -->
+
+    <owl:Class rdf:about="#Intention">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+        <rdfs:comment
+            >Intention of a Unit of Thought. Cognitively biased</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#InternetEntity -->
+
+    <owl:Class rdf:about="#InternetEntity">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Introspection -->
+
+    <owl:Class rdf:about="#Introspection">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. I think I don&#39;t have a choice.</rdfs:comment>
+        <rdfs:comment
+            >i.e. What do I do?</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Location -->
+
+    <owl:Class rdf:about="#Location">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+        <rdfs:subClassOf rdf:resource="#NamedEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#NamedEntity -->
+
+    <owl:Class rdf:about="#NamedEntity">
+        <rdfs:subClassOf rdf:resource="#SpatialTemporal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Negative -->
+
+    <owl:Class rdf:about="#Negative">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Neutral -->
+
+    <owl:Class rdf:about="#Neutral">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#OpinionStatement -->
+
+    <owl:Class rdf:about="#OpinionStatement">
+        <rdfs:subClassOf rdf:resource="#Statement"/>
+        <rdfs:comment
+            >i.e. I think socks are the best.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Organization -->
+
+    <owl:Class rdf:about="#Organization">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+        <rdfs:subClassOf rdf:resource="#NamedEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Perdurant -->
+
+    <owl:Class rdf:about="#Perdurant">
+        <rdfs:subClassOf rdf:resource="#SpatialTemporal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Person -->
+
+    <owl:Class rdf:about="#Person">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+        <rdfs:subClassOf rdf:resource="#NamedEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#PersonalFact -->
+
+    <owl:Class rdf:about="#PersonalFact">
+        <rdfs:subClassOf rdf:resource="#FactStatement"/>
+        <rdfs:comment
+            >Fact that applies locally to a small set of users</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#PhysicalObject -->
+
+    <owl:Class rdf:about="#PhysicalObject">
+        <rdfs:subClassOf rdf:resource="#Endurant"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Positive -->
+
+    <owl:Class rdf:about="#Positive">
+        <rdfs:subClassOf rdf:resource="#Sentiment"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Product -->
+
+    <owl:Class rdf:about="#Product">
+        <rdfs:subClassOf rdf:resource="#NamedEntity"/>
+        <rdfs:subClassOf rdf:resource="#PhysicalObject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Proposition -->
+
+    <owl:Class rdf:about="#Proposition">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. Let&#39;s go to the mall</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Question -->
+
+    <owl:Class rdf:about="#Question">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >i.e. How do I ...?</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#QuestionAndAnswer -->
+
+    <owl:Class rdf:about="#QuestionAndAnswer">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Question"/>
+                    <rdf:Description rdf:about="#Statement"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >A thought that answers a question
+
+It contains a question &amp; an answer</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Sentiment -->
+
+    <owl:Class rdf:about="#Sentiment">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#SpatialTemporal -->
+
+    <owl:Class rdf:about="#SpatialTemporal">
+        <owl:disjointWith rdf:resource="#UnitOfThought"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Statement -->
+
+    <owl:Class rdf:about="#Statement">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <owl:incompatibleWith
+            >i.e. New york has good pizza.</owl:incompatibleWith>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Tag -->
+
+    <owl:Class rdf:about="#Tag">
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Technology -->
+
+    <owl:Class rdf:about="#Technology">
+        <rdfs:subClassOf rdf:resource="#Topic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TechnologyCompany -->
+
+    <owl:Class rdf:about="#TechnologyCompany">
+        <rdfs:subClassOf rdf:resource="#Company"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Topic -->
+
+    <owl:Class rdf:about="#Topic">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Tweet -->
+
+    <owl:Class rdf:about="#Tweet">
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+        <rdfs:subClassOf rdf:resource="#Uterance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TweetOpinion -->
+
+    <owl:Class rdf:about="#TweetOpinion">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TweetQuestion -->
+
+    <owl:Class rdf:about="#TweetQuestion">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TweetReply -->
+
+    <owl:Class rdf:about="#TweetReply">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TweetStatement -->
+
+    <owl:Class rdf:about="#TweetStatement">
+        <rdfs:subClassOf rdf:resource="#Tweet"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#TwitterEntity -->
+
+    <owl:Class rdf:about="#TwitterEntity">
+        <rdfs:subClassOf rdf:resource="#InternetEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#URL -->
+
+    <owl:Class rdf:about="#URL">
+        <rdfs:subClassOf rdf:resource="#InternetEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#UnitOfThought -->
+
+    <owl:Class rdf:about="#UnitOfThought">
+        <rdfs:subClassOf rdf:resource="#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#UniversalFact -->
+
+    <owl:Class rdf:about="#UniversalFact">
+        <rdfs:subClassOf rdf:resource="#FactStatement"/>
+        <rdfs:comment
+            >Statement of universal fact</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#User -->
+
+    <owl:Class rdf:about="#User">
+        <rdfs:subClassOf rdf:resource="#Person"/>
+        <rdfs:subClassOf rdf:resource="#TwitterEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Uterance -->
+
+    <owl:Class rdf:about="#Uterance">
+        <rdfs:subClassOf rdf:resource="#UnitOfThought"/>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#related -->
+
+    <owl:Class rdf:about="#related"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#Boise -->
+
+    <Location rdf:about="#Boise"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#aaron-cohen -->
+
+    <Person rdf:about="#aaron-cohen">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">aaron-cohen</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#adobe-air -->
+
+    <Organization rdf:about="#adobe-air">
+        <rdfs:comment>Adobe Air</rdfs:comment>
+    </Organization>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#alan-facey -->
+
+    <Person rdf:about="#alan-facey">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">alan-facey</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#alan-shang -->
+
+    <Person rdf:about="#alan-shang">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">alan-shang</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#alejandro-narancio -->
+
+    <Person rdf:about="#alejandro-narancio">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >alejandro-narancio</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#andreas-zink -->
+
+    <Person rdf:about="#andreas-zink">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">andreas-zink</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#andrew-oliver -->
+
+    <Person rdf:about="#andrew-oliver">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">andrew-oliver</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#bernard-bernstein -->
+
+    <Person rdf:about="#bernard-bernstein">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >bernard-bernstein</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#betty-mcnulty -->
+
+    <Person rdf:about="#betty-mcnulty">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">betty-mcnulty</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#bill-mcquaide -->
+
+    <Person rdf:about="#bill-mcquaide">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">bill-mcquaide</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#black-duck-code-center -->
+
+    <Product rdf:about="#black-duck-code-center">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >black-duck-code-center</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#black-duck-export -->
+
+    <Product rdf:about="#black-duck-export">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >black-duck-export</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#black-duck-protex -->
+
+    <Product rdf:about="#black-duck-protex">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >black-duck-protex</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#black-duck-software -->
+
+    <TechnologyCompany rdf:about="#black-duck-software">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >black-duck-software</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#alan-facey"/>
+        <isEmployerOf rdf:resource="#andreas-zink"/>
+        <isEmployerOf rdf:resource="#bill-mcquaide"/>
+        <hasProduct rdf:resource="#black-duck-code-center"/>
+        <hasProduct rdf:resource="#black-duck-export"/>
+        <hasProduct rdf:resource="#black-duck-protex"/>
+        <hasProduct rdf:resource="#black-duck-transact"/>
+        <isEmployerOf rdf:resource="#doug-levin"/>
+        <isEmployerOf rdf:resource="#jim-berets"/>
+        <isEmployerOf rdf:resource="#kenneth-goldman-2"/>
+        <isEmployerOf rdf:resource="#peter-vescuso"/>
+        <isEmployerOf rdf:resource="#phil-odence"/>
+        <isEmployerOf rdf:resource="#tammi-pirri"/>
+        <isEmployerOf rdf:resource="#tim-yeaton"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#black-duck-transact -->
+
+    <Product rdf:about="#black-duck-transact">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >black-duck-transact</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#bob-rudderow -->
+
+    <Person rdf:about="#bob-rudderow">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">bob-rudderow</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#boss-tweed -->
+
+    <NamedEntity rdf:about="#boss-tweed">
+        <rdfs:comment>Boss Tweed</rdfs:comment>
+    </NamedEntity>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#bradford-d-duea -->
+
+    <Person rdf:about="#bradford-d-duea">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">bradford-d-duea</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#bruce-dembecki -->
+
+    <Person rdf:about="#bruce-dembecki">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">bruce-dembecki</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#carlos-carluccio -->
+
+    <Person rdf:about="#carlos-carluccio">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >carlos-carluccio</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#cbs -->
+
+    <Organization rdf:about="#cbs">
+        <rdfs:comment>CBS</rdfs:comment>
+    </Organization>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#chander-sarna -->
+
+    <Person rdf:about="#chander-sarna">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">chander-sarna</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#cheryl-paul -->
+
+    <Person rdf:about="#cheryl-paul">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">cheryl-paul</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#chris-christensen -->
+
+    <Person rdf:about="#chris-christensen">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >chris-christensen</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#chris-flanigan -->
+
+    <Person rdf:about="#chris-flanigan">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">chris-flanigan</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#chris-gorog -->
+
+    <Person rdf:about="#chris-gorog">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">chris-gorog</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#chris-polito -->
+
+    <Person rdf:about="#chris-polito">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">chris-polito</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#chris-russell -->
+
+    <Person rdf:about="#chris-russell">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">chris-russell</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#christopher-allen -->
+
+    <Person rdf:about="#christopher-allen">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >christopher-allen</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#connected -->
+
+    <Product rdf:about="#connected">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">connected</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#craig-waggy -->
+
+    <Person rdf:about="#craig-waggy">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">craig-waggy</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#dan-halvorson -->
+
+    <Person rdf:about="#dan-halvorson">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">dan-halvorson</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#dan-zaner -->
+
+    <Person rdf:about="#dan-zaner">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">dan-zaner</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#dave-o-donohoe -->
+
+    <Person rdf:about="#dave-o-donohoe">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">dave-o-donohoe</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#david-houston -->
+
+    <Person rdf:about="#david-houston">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">david-houston</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#david-phillips-3 -->
+
+    <Person rdf:about="#david-phillips-3">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >david-phillips-3</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#david-richter -->
+
+    <Person rdf:about="#david-richter">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">david-richter</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#david-teten -->
+
+    <Person rdf:about="#david-teten">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">david-teten</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#david-weiden -->
+
+    <Person rdf:about="#david-weiden">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">david-weiden</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#david-wolfe -->
+
+    <Person rdf:about="#david-wolfe">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">david-wolfe</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#debbie-dembecki -->
+
+    <Person rdf:about="#debbie-dembecki">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">debbie-dembecki</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#dennis-miloseski -->
+
+    <Person rdf:about="#dennis-miloseski">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >dennis-miloseski</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#dennis-miloseski-2 -->
+
+    <Person rdf:about="#dennis-miloseski-2">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >dennis-miloseski-2</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#dion-almaer -->
+
+    <Person rdf:about="#dion-almaer">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">dion-almaer</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#dish -->
+
+    <NamedEntity rdf:about="#dish">
+        <rdfs:comment>Dish</rdfs:comment>
+    </NamedEntity>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#divx -->
+
+    <TechnologyCompany rdf:about="#divx">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">divx</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#chris-russell"/>
+        <hasProduct rdf:resource="#connected"/>
+        <isEmployerOf rdf:resource="#dan-halvorson"/>
+        <isEmployerOf rdf:resource="#david-richter"/>
+        <isEmployerOf rdf:resource="#dennis-miloseski"/>
+        <isEmployerOf rdf:resource="#dennis-miloseski-2"/>
+        <isEmployerOf rdf:resource="#jerome-rota"/>
+        <isEmployerOf rdf:resource="#johnny-chen"/>
+        <isEmployerOf rdf:resource="#kevin-hell"/>
+        <isEmployerOf rdf:resource="#pamela-thompson-johnston"/>
+        <isEmployerOf rdf:resource="#patrice-lagrange"/>
+        <hasProduct rdf:resource="#stage6"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#dominic-li -->
+
+    <Person rdf:about="#dominic-li">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">dominic-li</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#don-dodge -->
+
+    <Person rdf:about="#don-dodge">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">don-dodge</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#doug-levin -->
+
+    <Person rdf:about="#doug-levin">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">doug-levin</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#ed-lafferty -->
+
+    <Person rdf:about="#ed-lafferty">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">ed-lafferty</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#facebook -->
+
+    <rdf:Description rdf:about="#facebook"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#frederic-beckley -->
+
+    <Person rdf:about="#frederic-beckley">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >frederic-beckley</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#fritz-oconer -->
+
+    <Person rdf:about="#fritz-oconer">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">fritz-oconer</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#glenn-wichman -->
+
+    <Person rdf:about="#glenn-wichman">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">glenn-wichman</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#google -->
+
+    <Organization rdf:about="#google">
+        <rdfs:comment>Google</rdfs:comment>
+    </Organization>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#greg-dukat -->
+
+    <Person rdf:about="#greg-dukat">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">greg-dukat</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#grouply -->
+
+    <TechnologyCompany rdf:about="#grouply">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">grouply</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#alan-shang"/>
+        <isEmployerOf rdf:resource="#chander-sarna"/>
+        <isEmployerOf rdf:resource="#david-teten"/>
+        <isEmployerOf rdf:resource="#dion-almaer"/>
+        <isEmployerOf rdf:resource="#glenn-wichman"/>
+        <hasProduct rdf:resource="#grouply-smart-digest"/>
+        <hasProduct rdf:resource="#grouply-website"/>
+        <isEmployerOf rdf:resource="#heng-woon-ong"/>
+        <isEmployerOf rdf:resource="#irvin-fan"/>
+        <isEmployerOf rdf:resource="#jeff-stoddard"/>
+        <isEmployerOf rdf:resource="#mark-robins"/>
+        <isEmployerOf rdf:resource="#paul-resnick"/>
+        <isEmployerOf rdf:resource="#peter-zaitsev"/>
+        <isEmployerOf rdf:resource="#rich-reimer"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#grouply-smart-digest -->
+
+    <Product rdf:about="#grouply-smart-digest">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >grouply-smart-digest</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#grouply-website -->
+
+    <Product rdf:about="#grouply-website">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">grouply-website</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#heavy -->
+
+    <rdf:Description rdf:about="#heavy"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#heng-woon-ong -->
+
+    <Person rdf:about="#heng-woon-ong">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">heng-woon-ong</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#innovator -->
+
+    <NamedEntity rdf:about="#innovator">
+        <rdfs:comment>Innovator</rdfs:comment>
+    </NamedEntity>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#iphone -->
+
+    <rdf:Description rdf:about="#iphone"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#irvin-fan -->
+
+    <Person rdf:about="#irvin-fan">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">irvin-fan</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#james-hong -->
+
+    <Person rdf:about="#james-hong">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">james-hong</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jared-fliesler -->
+
+    <Person rdf:about="#jared-fliesler">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jared-fliesler</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jared-kopf -->
+
+    <Person rdf:about="#jared-kopf">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jared-kopf</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jason-bitensky -->
+
+    <Person rdf:about="#jason-bitensky">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jason-bitensky</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jay-gould -->
+
+    <Person rdf:about="#jay-gould">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jay-gould</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jay-s-bryant -->
+
+    <Person rdf:about="#jay-s-bryant">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jay-s-bryant</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jeff-bandelin -->
+
+    <Person rdf:about="#jeff-bandelin">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jeff-bandelin</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jeff-hurlow -->
+
+    <Person rdf:about="#jeff-hurlow">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jeff-hurlow</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jeff-stoddard -->
+
+    <Person rdf:about="#jeff-stoddard">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jeff-stoddard</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jenna-woodul -->
+
+    <Person rdf:about="#jenna-woodul">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jenna-woodul</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jeremiah-robison -->
+
+    <Person rdf:about="#jeremiah-robison">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >jeremiah-robison</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jerome-rota -->
+
+    <Person rdf:about="#jerome-rota">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jerome-rota</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jim-berets -->
+
+    <Person rdf:about="#jim-berets">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jim-berets</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#john-duncan -->
+
+    <Person rdf:about="#john-duncan">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">john-duncan</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#john-malloy -->
+
+    <Person rdf:about="#john-malloy">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">john-malloy</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#john-pino -->
+
+    <Person rdf:about="#john-pino">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">john-pino</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#johnny-chen -->
+
+    <Person rdf:about="#johnny-chen">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">johnny-chen</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jordan-mendelson -->
+
+    <Person rdf:about="#jordan-mendelson">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >jordan-mendelson</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jordan-ritter -->
+
+    <Person rdf:about="#jordan-ritter">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jordan-ritter</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#jose-ortiz -->
+
+    <Person rdf:about="#jose-ortiz">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">jose-ortiz</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#joseph-khoury -->
+
+    <Person rdf:about="#joseph-khoury">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">joseph-khoury</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#josh-tuttle -->
+
+    <Person rdf:about="#josh-tuttle">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">josh-tuttle</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#keith-forshew -->
+
+    <Person rdf:about="#keith-forshew">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">keith-forshew</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#keith-rabois -->
+
+    <Person rdf:about="#keith-rabois">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">keith-rabois</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#kenneth-goldman-2 -->
+
+    <Person rdf:about="#kenneth-goldman-2">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >kenneth-goldman-2</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#kevin-freedman -->
+
+    <Person rdf:about="#kevin-freedman">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">kevin-freedman</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#kevin-hell -->
+
+    <Person rdf:about="#kevin-hell">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">kevin-hell</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#kevin-young -->
+
+    <Person rdf:about="#kevin-young">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">kevin-young</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#liveworld -->
+
+    <TechnologyCompany rdf:about="#liveworld">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">liveworld</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#andrew-oliver"/>
+        <isEmployerOf rdf:resource="#bernard-bernstein"/>
+        <isEmployerOf rdf:resource="#bruce-dembecki"/>
+        <isEmployerOf rdf:resource="#cheryl-paul"/>
+        <isEmployerOf rdf:resource="#chris-christensen"/>
+        <isEmployerOf rdf:resource="#dan-zaner"/>
+        <isEmployerOf rdf:resource="#david-houston"/>
+        <isEmployerOf rdf:resource="#debbie-dembecki"/>
+        <isEmployerOf rdf:resource="#jay-s-bryant"/>
+        <isEmployerOf rdf:resource="#jenna-woodul"/>
+        <hasProduct rdf:resource="#liveworld-community-center"/>
+        <isEmployerOf rdf:resource="#peter-friedman"/>
+        <isEmployerOf rdf:resource="#trevor-griffiths"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#liveworld-community-center -->
+
+    <Product rdf:about="#liveworld-community-center">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >liveworld-community-center</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#mark-robins -->
+
+    <Person rdf:about="#mark-robins">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">mark-robins</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#martin-liquori -->
+
+    <Person rdf:about="#martin-liquori">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">martin-liquori</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#max-levchin -->
+
+    <Person rdf:about="#max-levchin">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">max-levchin</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#michael-bacarella -->
+
+    <Person rdf:about="#michael-bacarella">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >michael-bacarella</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#michael-boult -->
+
+    <Person rdf:about="#michael-boult">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">michael-boult</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#michael-hoppman -->
+
+    <Person rdf:about="#michael-hoppman">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">michael-hoppman</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#michael-zaic -->
+
+    <Person rdf:about="#michael-zaic">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">michael-zaic</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#microsoft -->
+
+    <Organization rdf:about="#microsoft">
+        <rdfs:comment>Microsoft</rdfs:comment>
+    </Organization>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#mike-amarosa -->
+
+    <Person rdf:about="#mike-amarosa">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">mike-amarosa</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#mike-huang -->
+
+    <Person rdf:about="#mike-huang">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">mike-huang</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#mike-welsh -->
+
+    <Person rdf:about="#mike-welsh">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">mike-welsh</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#napster -->
+
+    <TechnologyCompany rdf:about="#napster">
+        <rdf:type rdf:resource="#Product"/>
+        <hasCrunchbaseId rdf:datatype="&xsd;string">napster</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#bradford-d-duea"/>
+        <isEmployerOf rdf:resource="#chris-gorog"/>
+        <isEmployerOf rdf:resource="#christopher-allen"/>
+        <isEmployerOf rdf:resource="#david-phillips-3"/>
+        <isEmployerOf rdf:resource="#david-wolfe"/>
+        <isEmployerOf rdf:resource="#don-dodge"/>
+        <isEmployerOf rdf:resource="#jeff-hurlow"/>
+        <isEmployerOf rdf:resource="#jordan-mendelson"/>
+        <isEmployerOf rdf:resource="#jordan-ritter"/>
+        <hasProduct rdf:resource="#napster"/>
+        <isEmployerOf rdf:resource="#ross-levinsohn"/>
+        <isEmployerOf rdf:resource="#sean-parker"/>
+        <isEmployerOf rdf:resource="#shawn-fanning"/>
+        <isEmployerOf rdf:resource="#vince-thompson"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#newgrounds-2 -->
+
+    <TechnologyCompany rdf:about="#newgrounds-2">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">newgrounds-2</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#bob-rudderow"/>
+        <isEmployerOf rdf:resource="#jeff-bandelin"/>
+        <isEmployerOf rdf:resource="#jose-ortiz"/>
+        <isEmployerOf rdf:resource="#josh-tuttle"/>
+        <isEmployerOf rdf:resource="#mike-welsh"/>
+        <isEmployerOf rdf:resource="#rob-rosenbaum"/>
+        <isEmployerOf rdf:resource="#tim-miller-2"/>
+        <isEmployerOf rdf:resource="#tom-fulp"/>
+        <isEmployerOf rdf:resource="#wade-fulp"/>
+        <isEmployerOf rdf:resource="#william-stamper"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#newssift -->
+
+    <Organization rdf:about="#newssift">
+        <rdfs:comment>Newssift</rdfs:comment>
+    </Organization>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#nikil-gandhy -->
+
+    <Person rdf:about="#nikil-gandhy">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">nikil-gandhy</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#nintendo -->
+
+    <Organization rdf:about="#nintendo">
+        <rdfs:comment>Nintendo</rdfs:comment>
+    </Organization>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#pamela-thompson-johnston -->
+
+    <Person rdf:about="#pamela-thompson-johnston">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >pamela-thompson-johnston</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#pat-williams -->
+
+    <Person rdf:about="#pat-williams">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">pat-williams</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#patrice-lagrange -->
+
+    <Person rdf:about="#patrice-lagrange">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >patrice-lagrange</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#paul-resnick -->
+
+    <Person rdf:about="#paul-resnick">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">paul-resnick</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#peter-friedman -->
+
+    <Person rdf:about="#peter-friedman">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">peter-friedman</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#peter-vescuso -->
+
+    <Person rdf:about="#peter-vescuso">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">peter-vescuso</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#peter-zaitsev -->
+
+    <Person rdf:about="#peter-zaitsev">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">peter-zaitsev</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#phil-odence -->
+
+    <Person rdf:about="#phil-odence">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">phil-odence</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#pieter-rieder -->
+
+    <Person rdf:about="#pieter-rieder">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">pieter-rieder</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#prince-gupta -->
+
+    <Person rdf:about="#prince-gupta">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">prince-gupta</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#rich-fagan -->
+
+    <Person rdf:about="#rich-fagan">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">rich-fagan</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#rich-reimer -->
+
+    <Person rdf:about="#rich-reimer">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">rich-reimer</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#rob-anderson -->
+
+    <Person rdf:about="#rob-anderson">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">rob-anderson</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#rob-rosenbaum -->
+
+    <Person rdf:about="#rob-rosenbaum">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">rob-rosenbaum</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#robert-morrison -->
+
+    <Person rdf:about="#robert-morrison">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">robert-morrison</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#ross-levinsohn -->
+
+    <Person rdf:about="#ross-levinsohn">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">ross-levinsohn</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#scott-banister -->
+
+    <Person rdf:about="#scott-banister">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">scott-banister</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#sean-parker -->
+
+    <Person rdf:about="#sean-parker">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">sean-parker</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#shawn-fanning -->
+
+    <Person rdf:about="#shawn-fanning">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">shawn-fanning</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#slide -->
+
+    <TechnologyCompany rdf:about="#slide">
+        <rdf:type rdf:resource="#Product"/>
+        <hasCrunchbaseId rdf:datatype="&xsd;string">slide</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#david-weiden"/>
+        <isEmployerOf rdf:resource="#james-hong"/>
+        <isEmployerOf rdf:resource="#jared-fliesler"/>
+        <isEmployerOf rdf:resource="#jared-kopf"/>
+        <isEmployerOf rdf:resource="#jason-bitensky"/>
+        <isEmployerOf rdf:resource="#jeremiah-robison"/>
+        <isEmployerOf rdf:resource="#john-duncan"/>
+        <isEmployerOf rdf:resource="#john-malloy"/>
+        <isEmployerOf rdf:resource="#keith-rabois"/>
+        <isEmployerOf rdf:resource="#kevin-freedman"/>
+        <isEmployerOf rdf:resource="#max-levchin"/>
+        <isEmployerOf rdf:resource="#mike-huang"/>
+        <isEmployerOf rdf:resource="#nikil-gandhy"/>
+        <isEmployerOf rdf:resource="#scott-banister"/>
+        <hasProduct rdf:resource="#slide"/>
+        <isEmployerOf rdf:resource="#sonya-chawla"/>
+        <isEmployerOf rdf:resource="#vineet-buch"/>
+        <isEmployerOf rdf:resource="#william-liu"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#sonya-chawla -->
+
+    <Person rdf:about="#sonya-chawla">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">sonya-chawla</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#stage6 -->
+
+    <Product rdf:about="#stage6">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">stage6</hasCrunchbaseId>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#starcite -->
+
+    <TechnologyCompany rdf:about="#starcite">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">starcite</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#betty-mcnulty"/>
+        <isEmployerOf rdf:resource="#dave-o-donohoe"/>
+        <isEmployerOf rdf:resource="#greg-dukat"/>
+        <isEmployerOf rdf:resource="#john-pino"/>
+        <isEmployerOf rdf:resource="#keith-forshew"/>
+        <isEmployerOf rdf:resource="#kevin-young"/>
+        <isEmployerOf rdf:resource="#michael-boult"/>
+        <isEmployerOf rdf:resource="#pat-williams"/>
+        <isEmployerOf rdf:resource="#pieter-rieder"/>
+        <isEmployerOf rdf:resource="#rich-fagan"/>
+        <isEmployerOf rdf:resource="#venky-rangachari"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#stephen-stuut -->
+
+    <Person rdf:about="#stephen-stuut">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">stephen-stuut</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tammi-pirri -->
+
+    <Person rdf:about="#tammi-pirri">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">tammi-pirri</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tim-miller-2 -->
+
+    <Person rdf:about="#tim-miller-2">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">tim-miller-2</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tim-yeaton -->
+
+    <Person rdf:about="#tim-yeaton">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">tim-yeaton</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tom-fulp -->
+
+    <Person rdf:about="#tom-fulp">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">tom-fulp</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#trevor-griffiths -->
+
+    <Person rdf:about="#trevor-griffiths">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >trevor-griffiths</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#trueposition -->
+
+    <TechnologyCompany rdf:about="#trueposition">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">trueposition</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#chris-polito"/>
+        <isEmployerOf rdf:resource="#craig-waggy"/>
+        <isEmployerOf rdf:resource="#dominic-li"/>
+        <isEmployerOf rdf:resource="#frederic-beckley"/>
+        <isEmployerOf rdf:resource="#joseph-khoury"/>
+        <isEmployerOf rdf:resource="#michael-hoppman"/>
+        <isEmployerOf rdf:resource="#mike-amarosa"/>
+        <isEmployerOf rdf:resource="#rob-anderson"/>
+        <isEmployerOf rdf:resource="#robert-morrison"/>
+        <isEmployerOf rdf:resource="#stephen-stuut"/>
+    </TechnologyCompany>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet108 -->
+
+    <Tweet rdf:about="#tweet108">
+        <rdf:type rdf:resource="#Question"/>
+        <rdfs:comment
+            >Meh. Nintendo&#39;s Briefing was nowhere as good as Xbox&#39;s, or was Xbox just too good?</rdfs:comment>
+        <isReferringTo rdf:resource="#nintendo"/>
+        <isReferringTo rdf:resource="#xbox"/>
+    </Tweet>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet112 -->
+
+    <Tweet rdf:about="#tweet112">
+        <rdf:type rdf:resource="#Question"/>
+        <rdfs:comment
+            >Led Zeppelin - IV coming in at #57? What? Heavy metal?</rdfs:comment>
+        <isReferringTo rdf:resource="#heavy"/>
+    </Tweet>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet114 -->
+
+    <Question rdf:about="#tweet114">
+        <rdf:type rdf:resource="#Tweet"/>
+        <rdfs:comment
+            >I have Dish network in Boise, and Dish does not provide CBS - no March Madness for me. Can&#39;t we all just get along?</rdfs:comment>
+        <isLocatedAt rdf:resource="#Boise"/>
+        <isReferringTo rdf:resource="#cbs"/>
+        <isReferringTo rdf:resource="#dish"/>
+    </Question>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet122 -->
+
+    <CompetitiveComparison rdf:about="#tweet122">
+        <rdf:type rdf:resource="#Tweet"/>
+        <rdfs:comment
+            >The Technology face-off, Google v. Microsoft fighting for title of Innovator in today&#39;s Newssift of the Day http://is.gd/Jk7R</rdfs:comment>
+        <isReferringTo rdf:resource="#google"/>
+        <isReferringTo rdf:resource="#innovator"/>
+        <isReferringTo rdf:resource="#microsoft"/>
+        <isReferringTo rdf:resource="#newssift"/>
+    </CompetitiveComparison>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet147 -->
+
+    <Tweet rdf:about="#tweet147">
+        <rdf:type rdf:resource="#Question"/>
+        <rdfs:comment
+            >@ARDELLd has the Boss Tweed iPhone application?</rdfs:comment>
+        <isReferringTo rdf:resource="#boss-tweed"/>
+        <isReferringTo rdf:resource="#iphone"/>
+    </Tweet>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet153 -->
+
+    <Question rdf:about="#tweet153">
+        <rdf:type rdf:resource="#Tweet"/>
+        <rdfs:comment
+            >RT @lyzadanger: Helping a colleague--any Adobe Air developers looking for a gig?</rdfs:comment>
+        <isReferringTo rdf:resource="#adobe-air"/>
+    </Question>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet176 -->
+
+    <Question rdf:about="#tweet176">
+        <rdf:type rdf:resource="#Tweet"/>
+        <rdfs:comment
+            >trying to figure out TWITTER...?</rdfs:comment>
+        <isReferringTo rdf:resource="#twitter"/>
+    </Question>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet178 -->
+
+    <Question rdf:about="#tweet178">
+        <rdf:type rdf:resource="#Tweet"/>
+        <rdfs:comment
+            >Can someone please tell me how to create a simple &#39;bar chart&#39; in facebook?</rdfs:comment>
+        <isReferringTo rdf:resource="#facebook"/>
+    </Question>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet39 -->
+
+    <Question rdf:about="#tweet39">
+        <rdf:type rdf:resource="#Tweet"/>
+        <rdfs:comment
+            >twitter really reveals the starf*ckers of the world, doesn&#39;t it?</rdfs:comment>
+        <isReferringTo rdf:resource="#twitter"/>
+    </Question>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#tweet95 -->
+
+    <Tweet rdf:about="#tweet95">
+        <rdf:type rdf:resource="#CompetitiveComparison"/>
+        <rdfs:comment
+            >Wii-mote (google): Microsoft at work on Wii-like control system - Yahoo! Tech |: http://tinyurl.com/r8jhfa Full http://tinyurl.com/qdjhu7</rdfs:comment>
+        <isReferringTo rdf:resource="#google"/>
+        <isReferringTo rdf:resource="#microsoft"/>
+        <isReferringTo rdf:resource="#wii-like"/>
+        <isReferringTo rdf:resource="#yahoo"/>
+    </Tweet>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#twitter -->
+
+    <rdf:Description rdf:about="#twitter"/>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#venky-rangachari -->
+
+    <Person rdf:about="#venky-rangachari">
+        <hasCrunchbaseId rdf:datatype="&xsd;string"
+            >venky-rangachari</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#vince-thompson -->
+
+    <Person rdf:about="#vince-thompson">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">vince-thompson</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#vineet-buch -->
+
+    <Person rdf:about="#vineet-buch">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">vineet-buch</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#wade-fulp -->
+
+    <Person rdf:about="#wade-fulp">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">wade-fulp</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#wii-like -->
+
+    <NamedEntity rdf:about="#wii-like">
+        <rdfs:comment>Wii-like</rdfs:comment>
+    </NamedEntity>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#wikiyou -->
+
+    <Product rdf:about="#wikiyou">
+        <rdf:type rdf:resource="#TechnologyCompany"/>
+        <hasCrunchbaseId rdf:datatype="&xsd;string">wikiyou</hasCrunchbaseId>
+        <isEmployerOf rdf:resource="#aaron-cohen"/>
+        <isEmployerOf rdf:resource="#alejandro-narancio"/>
+        <isEmployerOf rdf:resource="#carlos-carluccio"/>
+        <isEmployerOf rdf:resource="#chris-flanigan"/>
+        <isEmployerOf rdf:resource="#ed-lafferty"/>
+        <isEmployerOf rdf:resource="#fritz-oconer"/>
+        <isEmployerOf rdf:resource="#jay-gould"/>
+        <isEmployerOf rdf:resource="#martin-liquori"/>
+        <isEmployerOf rdf:resource="#michael-bacarella"/>
+        <isEmployerOf rdf:resource="#michael-zaic"/>
+        <isEmployerOf rdf:resource="#prince-gupta"/>
+        <hasProduct rdf:resource="#wikiyou"/>
+    </Product>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#william-liu -->
+
+    <Person rdf:about="#william-liu">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">william-liu</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#william-stamper -->
+
+    <Person rdf:about="#william-stamper">
+        <hasCrunchbaseId rdf:datatype="&xsd;string">william-stamper</hasCrunchbaseId>
+    </Person>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#xbox -->
+
+    <Organization rdf:about="#xbox">
+        <rdf:type rdf:resource="#Person"/>
+        <rdfs:comment>Xbox</rdfs:comment>
+    </Organization>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#yahoo -->
+
+    <Organization rdf:about="#yahoo">
+        <rdfs:comment>Yahoo</rdfs:comment>
+    </Organization>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl2;AllDisjointClasses"/>
+        <owl2:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="#TweetOpinion"/>
+            <rdf:Description rdf:about="#TweetQuestion"/>
+            <rdf:Description rdf:about="#TweetReply"/>
+            <rdf:Description rdf:about="#TweetStatement"/>
+        </owl2:members>
+    </rdf:Description>
+</rdf:RDF>

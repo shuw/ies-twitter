@@ -32,7 +32,7 @@ public class PopulateTweets implements LineProcessor {
 	/**
 	 * Used during testing to restrict ontology size
 	 */
-	private static final int c_maxNumOfTweetsToPopulate = 10;
+	private static final int c_maxNumOfTweetsToPopulate = Integer.MAX_VALUE;
 
 	public static final boolean c_useCRFClassifier = true;
 
@@ -128,38 +128,41 @@ public class PopulateTweets implements LineProcessor {
 					Collection<NamedEntity> namedEntities = NERUtil.getNamedEntities(classifier, value);
 
 					for (NamedEntity namedEntity : namedEntities) {
+						String normalizedName = normalizeOntologyName(namedEntity.getName());
 
-						if (namedEntity.getType() == NamedEntity.Type.Location) {
+						if (normalizedName.length() > 3) {
 
-							OWLIndividual locationOwl = ontology.getIndividual(namedEntity.getName());
-							ontology.assertIsClass(locationOwl, "Location");
-							ontology.assertProperty(tweet, "isLocatedAt", locationOwl);
-						}
+							if (namedEntity.getType() == NamedEntity.Type.Location) {
 
-						else {
-
-							boolean isAlreadyInCrunchbase = false;
-							String type;
-							if (namedEntity.getType() == NamedEntity.Type.Person) {
-								type = "Person";
-							} else if (namedEntity.getType() == NamedEntity.Type.Organization) {
-								type = "Organization";
-							} else {
-								type = "NamedEntity";
+								OWLIndividual locationOwl = ontology.getIndividual(normalizedName);
+								ontology.assertIsClass(locationOwl, "Location");
+								ontology.assertProperty(tweet, "isLocatedAt", locationOwl);
 							}
 
-							if (!isAlreadyInCrunchbase) {
-								OWLIndividual namedEntityOwl = ontology.getIndividual(namedEntity.getName()
-										.toLowerCase().replace(" ", "-"));
+							else {
 
-								ontology.assertIsClass(namedEntityOwl, type);
+								boolean isAlreadyInCrunchbase = false;
+								String type;
+								if (namedEntity.getType() == NamedEntity.Type.Person) {
+									type = "Person";
+								} else if (namedEntity.getType() == NamedEntity.Type.Organization) {
+									type = "Organization";
+								} else {
+									type = "NamedEntity";
+								}
 
-								ontology.assertCommentAnnotation(namedEntityOwl, namedEntity.getName());
-								ontology.assertProperty(tweet, "isReferringTo", namedEntityOwl);
+								if (!isAlreadyInCrunchbase) {
+									OWLIndividual namedEntityOwl = ontology.getIndividual(normalizedName);
+
+									ontology.assertIsClass(namedEntityOwl, type);
+
+									ontology.assertCommentAnnotation(namedEntityOwl, namedEntity.getName());
+									ontology.assertProperty(tweet, "isReferringTo", namedEntityOwl);
+								}
 							}
-						}
 
-						System.out.println(namedEntity);
+							System.out.println("Also found using CRF: " + namedEntity);
+						}
 					}
 
 				}
@@ -167,6 +170,15 @@ public class PopulateTweets implements LineProcessor {
 			}
 
 		}
+
+	}
+
+	private String normalizeOntologyName(String value) {
+		value = value.toLowerCase().replaceAll(" ", "-"); // remove punctuation
+
+		value = value.replaceAll("[^\\w-]+", ""); // remove punctuation
+
+		return value;
 
 	}
 }

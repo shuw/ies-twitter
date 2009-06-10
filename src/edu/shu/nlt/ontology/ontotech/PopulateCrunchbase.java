@@ -26,7 +26,7 @@ public class PopulateCrunchbase implements Runnable {
 	// Development variable to speed up ontology creation time
 	//
 	// -1 for unlimited
-	private static final int maxCompaniesToCreate = 10;
+	private static final int maxCompaniesToCreate = Integer.MAX_VALUE;
 
 	public static void main(String[] args) throws OWLOntologyCreationException {
 
@@ -60,7 +60,7 @@ public class PopulateCrunchbase implements Runnable {
 					return;
 				}
 
-				System.out.println("Processing company: " + company.getName() + "  total processed: "
+				System.out.println("Populating company: " + company.getName() + "  total processed: "
 						+ totalCompaniesProcessed);
 
 				OWLIndividual companyOwl = ontology.getIndividual(company.getCrunchBaseId());

@@ -114,7 +114,12 @@ public class OntologyUpdater {
 	}
 
 	public OWLIndividual getIndividual(String name) {
-		return dataFactory.getOWLIndividual(URI.create(base + "#" + name));
+		try {
+			return dataFactory.getOWLIndividual(URI.create(base + "#" + name));
+		} catch (IllegalArgumentException ex) {
+			throw new RuntimeException("Invalid argument: " + name, ex);
+
+		}
 	}
 
 	public OWLOntology getOntology() {
