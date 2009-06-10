@@ -19,7 +19,7 @@ import edu.shu.nlt.crunchbase.data.lists.CompanyList;
  * @author shu
  * 
  */
-public class OntoCrunchbase extends OntoCreater implements Runnable {
+public class PopulateCrunchbase implements Runnable {
 
 	private static final int c_minCompanyEmployees = 10;
 
@@ -30,14 +30,20 @@ public class OntoCrunchbase extends OntoCreater implements Runnable {
 
 	public static void main(String[] args) throws OWLOntologyCreationException {
 
-		(new OntoCrunchbase(new File("data/ontology/IESTwitter.owl"), new File("output/CrunchbaseInstances.owl")))
-				.run();
+		OntologyUpdater ontology = new OntologyUpdater(new File("data/ontology/IESTwitter.owl"), new File(
+				"output/CrunchbaseInstances.owl"));
+
+		(new PopulateCrunchbase(ontology)).run();
 	}
+
+	private OntologyUpdater ontology;
 
 	private CompanyList companyList;
 
-	public OntoCrunchbase(File input, File output) {
-		super(input, output);
+	public PopulateCrunchbase(OntologyUpdater ontology) {
+
+		this.ontology = ontology;
+
 		this.companyList = Crunchbase.getInstance().getCompanyList();
 	}
 
@@ -57,16 +63,20 @@ public class OntoCrunchbase extends OntoCreater implements Runnable {
 				System.out.println("Processing company: " + company.getName() + "  total processed: "
 						+ totalCompaniesProcessed);
 
-				OWLIndividual companyOwl = createIndividual("Company", company.getCrunchBaseId());
+				OWLIndividual companyOwl = ontology.createIndividual("Company", company.getCrunchBaseId());
+				ontology.assertDataProperty(companyOwl, "hasCrunchbaseId", company.getCrunchBaseId());
 
 				for (Employee employee : companyInfo.getEmployees()) {
-					OWLIndividual employeeOwl = createIndividual("Person", employee.getPerson().getCrunchBaseId());
-					assertProperty(companyOwl, "isEmployerOf", employeeOwl);
+					OWLIndividual employeeOwl = ontology.createIndividual("Person", employee.getPerson()
+							.getCrunchBaseId());
+					ontology.assertDataProperty(employeeOwl, "hasCrunchbaseId", employee.getPerson().getCrunchBaseId());
+					ontology.assertProperty(companyOwl, "isEmployerOf", employeeOwl);
 				}
 
 				for (Product product : companyInfo.getProducts()) {
-					OWLIndividual productOwl = createIndividual("Product", product.getCrunchBaseId());
-					assertProperty(companyOwl, "hasProduct", productOwl);
+					OWLIndividual productOwl = ontology.createIndividual("Product", product.getCrunchBaseId());
+					ontology.assertDataProperty(productOwl, "hasCrunchbaseId", product.getCrunchBaseId());
+					ontology.assertProperty(companyOwl, "hasProduct", productOwl);
 				}
 			}
 		}
@@ -77,7 +87,7 @@ public class OntoCrunchbase extends OntoCreater implements Runnable {
 		try {
 			populateInstances();
 
-			save();
+			ontology.save();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

@@ -19,11 +19,11 @@ import edu.shu.nlt.ontology.ontotech.extractionrules.RuleMatcher;
  * @author shu
  * 
  */
-public class OntoTweet implements LineProcessor {
+public class PopulateTweets implements LineProcessor {
 
 	public static void main(String[] args) {
 
-		OntoTweet finder = new OntoTweet();
+		PopulateTweets finder = new PopulateTweets();
 
 		LPMultiThreader lineProcessorMT = new LPMultiThreader(4, finder);
 
@@ -44,7 +44,7 @@ public class OntoTweet implements LineProcessor {
 	private NamedEntityRecognizer neRecognizer;
 	private RuleMatcher ruleMatcher;
 
-	public OntoTweet() {
+	public PopulateTweets() {
 		this.neRecognizer = NamedEntityRecognizer.getInstance();
 		this.ruleMatcher = RuleMatcher.getInstance();
 	}

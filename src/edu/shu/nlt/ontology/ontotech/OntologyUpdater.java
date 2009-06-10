@@ -21,8 +21,17 @@ import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLOntologyStorageException;
 import org.semanticweb.owl.model.UnknownOWLOntologyException;
 
-public class OntoCreater {
-	public OntoCreater(File input, File output) {
+public class OntologyUpdater {
+	private URI base;
+
+	private OWLDataFactory dataFactory;
+	private OWLOntologyManager manager;
+
+	private OWLOntology ontology;
+
+	private File outputFile;
+
+	public OntologyUpdater(File input, File output) {
 		super();
 
 		this.outputFile = output;
@@ -35,16 +44,7 @@ public class OntoCreater {
 		}
 	}
 
-	private URI base;
-	private OWLDataFactory dataFactory;
-
-	private OWLOntologyManager manager;
-
-	private OWLOntology ontology;
-
-	private File outputFile;
-
-	public void initialize(OWLOntologyManager manager, File inputFile) throws OWLOntologyCreationException {
+	private void initialize(OWLOntologyManager manager, File inputFile) throws OWLOntologyCreationException {
 		this.manager = manager;
 		this.dataFactory = manager.getOWLDataFactory();
 
@@ -52,7 +52,17 @@ public class OntoCreater {
 		this.base = ontology.getURI();
 	}
 
-	protected void assertProperty(OWLIndividual source, String predicateName, OWLIndividual target)
+	public void assertDataProperty(OWLIndividual individual, String propertyName, String value)
+			throws OWLOntologyChangeException {
+		OWLDataProperty hasCrunchbaseId = dataFactory.getOWLDataProperty(URI.create(base + "#" + propertyName));
+
+		OWLDataPropertyAssertionAxiom idAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(individual,
+				hasCrunchbaseId, value);
+
+		manager.applyChange(new AddAxiom(ontology, idAssertion));
+	}
+
+	public void assertProperty(OWLIndividual source, String predicateName, OWLIndividual target)
 			throws OWLOntologyChangeException {
 
 		OWLObjectProperty predicate = dataFactory.getOWLObjectProperty(URI.create(base + "#" + predicateName));
@@ -63,31 +73,19 @@ public class OntoCreater {
 		manager.applyChange(new AddAxiom(ontology, newAxiom));
 	}
 
-	protected void save() throws UnknownOWLOntologyException, OWLOntologyStorageException {
-		manager.saveOntology(ontology, new RDFXMLOntologyFormat(), (outputFile).toURI());
-	}
+	public OWLIndividual createIndividual(String type, String name) throws OWLOntologyChangeException {
+		OWLIndividual newIndividual = dataFactory.getOWLIndividual(URI
+				.create(base + "/crunchbase/" + type + "#" + name));
 
-	protected OWLIndividual createIndividual(String type, String crunchbaseId) throws OWLOntologyChangeException {
-		OWLIndividual newIndividual = dataFactory.getOWLIndividual(URI.create(base + "/crunchbase/" + type + "#"
-				+ crunchbaseId));
-
-		// Declare crunchbase Id
-		{
-			OWLDataProperty hasCrunchbaseId = dataFactory.getOWLDataProperty(URI.create(base + "#hasCrunchbaseId"));
-
-			OWLDataPropertyAssertionAxiom idAssertion = dataFactory.getOWLDataPropertyAssertionAxiom(newIndividual,
-					hasCrunchbaseId, crunchbaseId);
-
-			manager.applyChange(new AddAxiom(ontology, idAssertion));
-		}
-
-		// Decalre type of
-		{
-			OWLClass companyClass = dataFactory.getOWLClass(URI.create(base + "#" + type));
-			OWLClassAssertionAxiom isClassOfAxiom = dataFactory.getOWLClassAssertionAxiom(newIndividual, companyClass);
-			manager.applyChange(new AddAxiom(ontology, isClassOfAxiom));
-		}
+		OWLClass owlType = dataFactory.getOWLClass(URI.create(base + "#" + type));
+		OWLClassAssertionAxiom isClassOfAxiom = dataFactory.getOWLClassAssertionAxiom(newIndividual, owlType);
+		manager.applyChange(new AddAxiom(ontology, isClassOfAxiom));
 
 		return newIndividual;
 	}
+
+	public void save() throws UnknownOWLOntologyException, OWLOntologyStorageException {
+		manager.saveOntology(ontology, new RDFXMLOntologyFormat(), (outputFile).toURI());
+	}
+
 }
