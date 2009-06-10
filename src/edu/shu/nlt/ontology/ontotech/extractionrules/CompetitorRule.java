@@ -3,7 +3,11 @@ package edu.shu.nlt.ontology.ontotech.extractionrules;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLIndividual;
+
 import edu.shu.nlt.crunchbase.data.base.Company;
+import edu.shu.nlt.ontology.ontotech.OntologyUpdater;
 
 /**
  * Applies the first-order logic rule:
@@ -13,11 +17,6 @@ import edu.shu.nlt.crunchbase.data.base.Company;
  * 
  */
 public class CompetitorRule implements ExtractionRule {
-
-	@Override
-	public String getRuleName() {
-		return "Competitors";
-	}
 
 	public Collection<String> getCompetitorStrings(Collection<Company> companies) {
 
@@ -36,15 +35,20 @@ public class CompetitorRule implements ExtractionRule {
 	}
 
 	@Override
-	public boolean isMatch(ExtractionContext extractionSentence) {
-		String sentence = extractionSentence.getSentence().toLowerCase();
+	public OWLAxiom addAxiom(ExtractionContext context) {
+		String sentence = context.getSentence().toLowerCase();
 
-		for (String competitor : getCompetitorStrings(extractionSentence.getNamedEntitiesInSentence()
-				.getCompanyMatches())) {
+		for (String competitor : getCompetitorStrings(context.getNamedEntitiesInSentence().getCompanyMatches())) {
 			if (sentence.contains(competitor)) {
-				return true;
+
+				OntologyUpdater ontUpdater = context.getOntologyUpdater();
+
+				OWLAxiom hasIntentionAxiom = ontUpdater
+						.assertIsClass(context.getSentenceOwl(), "CompetitiveComparison");
+
+				return hasIntentionAxiom;
 			}
 		}
-		return false;
+		return null;
 	}
 }

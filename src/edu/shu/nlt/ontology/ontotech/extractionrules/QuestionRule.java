@@ -5,34 +5,29 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.semanticweb.owl.model.OWLAxiom;
+
 import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
 
-public class RegexExtractionRule implements ExtractionRule {
+public class QuestionRule implements ExtractionRule {
 
 	private Pattern simplePattern;
-	private String ruleName;
-
-	private String namedPattern;
 
 	public static final String c_namedEntityMarker = "{NamedEntity}";
 
-	public RegexExtractionRule(String regex, String ruleName) {
-		if (regex.contains(c_namedEntityMarker)) {
-			namedPattern = regex;
+	private String namedPattern;
+
+	public QuestionRule(boolean matchNamedEntity) {
+		if (matchNamedEntity) {
+
+			namedPattern = ".*" + c_namedEntityMarker + "[^?!.]\\?$";
 		} else {
-			simplePattern = Pattern.compile(regex);
+			simplePattern = Pattern.compile(".*\\?$");
 		}
 
-		// this.myPattern = regex;
-		this.ruleName = ruleName;
-	}
-
-	@Override
-	public String getRuleName() {
-		return ruleName;
 	}
 
 	public synchronized Collection<String> getLowerCaseMatchStrings(NamedMatches matches) {
@@ -54,25 +49,32 @@ public class RegexExtractionRule implements ExtractionRule {
 	}
 
 	@Override
-	public boolean isMatch(ExtractionContext extractionSentence) {
+	public OWLAxiom addAxiom(ExtractionContext context) {
 		// compare case-insensitive
-		String sentence = extractionSentence.getSentence().toLowerCase();
+		String sentence = context.getSentence().toLowerCase();
+
+		boolean isFound = true;
 
 		if (simplePattern != null) {
 			Matcher matcher = simplePattern.matcher(sentence);
-			return matcher.find();
+			isFound = matcher.find();
 		} else {
 
-			for (String namedEntity : getLowerCaseMatchStrings(extractionSentence.getNamedEntitiesInSentence())) {
+			for (String namedEntity : getLowerCaseMatchStrings(context.getNamedEntitiesInSentence())) {
 				String toMatch = namedPattern.replace(c_namedEntityMarker, namedEntity.toLowerCase());
 
 				if (sentence.matches(toMatch)) {
-					return true;
+					isFound = true;
+					break;
 				}
 
 			}
 		}
-		return false;
+
+		if (isFound) {
+			return context.getOntologyUpdater().assertIsClass(context.getSentenceOwl(), "Question");
+		}
+		return null;
 
 	}
 }

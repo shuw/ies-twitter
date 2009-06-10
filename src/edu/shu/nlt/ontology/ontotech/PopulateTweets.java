@@ -4,13 +4,15 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.Collection;
 
+import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLIndividual;
+
 import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
 import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer;
 import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
 import edu.shu.nlt.ontology.ontotech.extractionrules.ExtractionContext;
-import edu.shu.nlt.ontology.ontotech.extractionrules.ExtractionRule;
 import edu.shu.nlt.ontology.ontotech.extractionrules.RuleMatcher;
 
 /**
@@ -22,8 +24,10 @@ import edu.shu.nlt.ontology.ontotech.extractionrules.RuleMatcher;
 public class PopulateTweets implements LineProcessor {
 
 	public static void main(String[] args) {
+		OntologyUpdater ontologyUpdater = new OntologyUpdater(new File("data/ontology/IESTwitter.owl"), new File(
+				"output/Tweets.owl"));
 
-		PopulateTweets finder = new PopulateTweets();
+		PopulateTweets finder = new PopulateTweets(ontologyUpdater);
 
 		LPMultiThreader lineProcessorMT = new LPMultiThreader(4, finder);
 
@@ -31,40 +35,62 @@ public class PopulateTweets implements LineProcessor {
 
 		lineProcessorMT.close();
 
+		ontologyUpdater.save();
 		finder.printResults(System.out);
 	}
 
+	private NamedEntityRecognizer neRecognizer;
+	private OntologyUpdater ontologyUpdater;
+
+	private RuleMatcher ruleMatcher;
+
 	private int totalMatches = 0;
 	private int totalProcessed = 0;
+
+	private int tweetId = 0;
+
+	public PopulateTweets(OntologyUpdater ontologyUpdater) {
+		super();
+		this.ontologyUpdater = ontologyUpdater;
+		this.neRecognizer = NamedEntityRecognizer.getInstance();
+		this.ruleMatcher = RuleMatcher.getInstance();
+	}
 
 	public void printResults(PrintStream out) {
 		out.println("Total matches: " + totalMatches);
 	}
 
-	private NamedEntityRecognizer neRecognizer;
-	private RuleMatcher ruleMatcher;
-
-	public PopulateTweets() {
-		this.neRecognizer = NamedEntityRecognizer.getInstance();
-		this.ruleMatcher = RuleMatcher.getInstance();
-	}
+	/**
+	 * Used during testing to restrict ontology size
+	 */
+	private static final int maxNumOfTweetsToPopulate = 10;
 
 	@Override
 	public void processLine(String value) {
+		if (totalMatches >= maxNumOfTweetsToPopulate) {
+			return;
+		}
+
 		totalProcessed++;
 		value = value.trim();
 
 		NamedMatches neMatches = neRecognizer.match(value);
 
 		if (neMatches.getTotalMatches() > 0) {
-			ExtractionContext context = new ExtractionContext(value, neMatches);
+			OWLIndividual tweet = ontologyUpdater.getIndividual("tweet" + tweetId++);
 
-			Collection<ExtractionRule> matchingRules = ruleMatcher.getMatches(context);
+			ExtractionContext context = new ExtractionContext(ontologyUpdater, tweet, value, neMatches);
+			Collection<OWLAxiom> newAxiomAsserts;
 
-			if (matchingRules.size() > 0) {
+			newAxiomAsserts = ruleMatcher.getAxioms(context);
+
+			if (newAxiomAsserts.size() > 0) {
+				ontologyUpdater.assertCommentAnnotation(tweet, value);
+				ontologyUpdater.assertIsClass(tweet, "Tweet");
 				totalMatches++;
 				System.out.println(totalProcessed + "\t " + value);
 			}
+
 		}
 
 	}

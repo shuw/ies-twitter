@@ -1,10 +1,12 @@
 package edu.shu.nlt.ontology.ontotech.extractionrules;
 
+import org.semanticweb.owl.model.OWLAxiom;
 
 public interface ExtractionRule {
 
-	boolean isMatch(ExtractionContext extractionSentence);
-
-	String getRuleName();
+	/**
+	 * * @return Matching axiom. Null if not matched.
+	 */
+	OWLAxiom addAxiom(ExtractionContext context);
 
 }

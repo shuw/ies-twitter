@@ -203,6 +203,14 @@
     
 
 
+    <!-- http://nlt.shu.edu/iestwitter#CompetitiveComparison -->
+
+    <owl:Class rdf:about="#CompetitiveComparison">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+    </owl:Class>
+    
+
+
     <!-- http://nlt.shu.edu/iestwitter#Desire -->
 
     <owl:Class rdf:about="#Desire">
@@ -381,6 +389,26 @@
     
 
 
+    <!-- http://nlt.shu.edu/iestwitter#QuestionAndAnswer -->
+
+    <owl:Class rdf:about="#QuestionAndAnswer">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Question"/>
+                    <rdf:Description rdf:about="#Statement"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+        <rdfs:comment
+            >A thought that answers a question
+
+It contains a question &amp; an answer</rdfs:comment>
+    </owl:Class>
+    
+
+
     <!-- http://nlt.shu.edu/iestwitter#Sentiment -->
 
     <owl:Class rdf:about="#Sentiment">
@@ -526,6 +554,12 @@
     <owl:Class rdf:about="#Uterance">
         <rdfs:subClassOf rdf:resource="#UnitOfThought"/>
     </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#related -->
+
+    <owl:Class rdf:about="#related"/>
     
 
 

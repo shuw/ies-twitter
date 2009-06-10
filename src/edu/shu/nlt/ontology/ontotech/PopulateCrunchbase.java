@@ -36,9 +36,9 @@ public class PopulateCrunchbase implements Runnable {
 		(new PopulateCrunchbase(ontology)).run();
 	}
 
-	private OntologyUpdater ontology;
-
 	private CompanyList companyList;
+
+	private OntologyUpdater ontology;
 
 	public PopulateCrunchbase(OntologyUpdater ontology) {
 
@@ -63,18 +63,20 @@ public class PopulateCrunchbase implements Runnable {
 				System.out.println("Processing company: " + company.getName() + "  total processed: "
 						+ totalCompaniesProcessed);
 
-				OWLIndividual companyOwl = ontology.createIndividual("Company", company.getCrunchBaseId());
+				OWLIndividual companyOwl = ontology.getIndividual(company.getCrunchBaseId());
+				ontology.assertIsClass(companyOwl, "Company");
 				ontology.assertDataProperty(companyOwl, "hasCrunchbaseId", company.getCrunchBaseId());
 
 				for (Employee employee : companyInfo.getEmployees()) {
-					OWLIndividual employeeOwl = ontology.createIndividual("Person", employee.getPerson()
-							.getCrunchBaseId());
+					OWLIndividual employeeOwl = ontology.getIndividual(employee.getPerson().getCrunchBaseId());
+					ontology.assertIsClass(employeeOwl, "Person");
 					ontology.assertDataProperty(employeeOwl, "hasCrunchbaseId", employee.getPerson().getCrunchBaseId());
 					ontology.assertProperty(companyOwl, "isEmployerOf", employeeOwl);
 				}
 
 				for (Product product : companyInfo.getProducts()) {
-					OWLIndividual productOwl = ontology.createIndividual("Product", product.getCrunchBaseId());
+					OWLIndividual productOwl = ontology.getIndividual(product.getCrunchBaseId());
+					ontology.assertIsClass(productOwl, "Product");
 					ontology.assertDataProperty(productOwl, "hasCrunchbaseId", product.getCrunchBaseId());
 					ontology.assertProperty(companyOwl, "hasProduct", productOwl);
 				}

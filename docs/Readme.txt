@@ -22,6 +22,8 @@ Tweet Ontology
  
 *** IE Task ***
 
+Named Entity Recognizer
+
 Used stop words
 
 Extracting instances
