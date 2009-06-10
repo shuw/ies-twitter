@@ -9,7 +9,7 @@ import edu.nlt.shallow.data.table.KeyCounterTable;
 import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
-import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.MatchResult;
+import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
@@ -67,7 +67,7 @@ public class ExtractOntoTweets implements LineProcessor {
 		totalLinesProcessed++;
 		value = value.trim();
 
-		MatchResult results = matcher.match(value);
+		NamedMatches results = matcher.match(value);
 
 		for (Company company : results.getCompanyMatches()) {
 			companyCounter.add(company);

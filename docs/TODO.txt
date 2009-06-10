@@ -1,3 +1,9 @@
+*** TODO ***
+ExtractionRule should return axioms
+
+Find co-occurance of named entities found using NEX
+
+
 *** Linguistic tasks***
 Concept vs. Entities
 

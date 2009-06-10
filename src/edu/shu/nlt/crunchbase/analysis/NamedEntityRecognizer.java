@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -195,7 +196,7 @@ public class NamedEntityRecognizer implements Serializable {
 
 		NamedEntityRecognizer matcher = NamedEntityRecognizer.getInstance();
 
-		MatchResult results = matcher.match("Mark  is the founder of Facebook, which makes the Facebook Platform");
+		NamedMatches results = matcher.match("Mark  is the founder of Facebook, which makes the Facebook Platform");
 
 		for (Person person : results.getPersonMatches())
 			person.printDetails(System.out);
@@ -208,7 +209,7 @@ public class NamedEntityRecognizer implements Serializable {
 
 	}
 
-	public MatchResult match(String sentence) {
+	public NamedMatches match(String sentence) {
 		List<Word> words = new ArrayList<Word>(tokenizer.getWords(sentence));
 
 		LinkedList<Company> companyMatches = new LinkedList<Company>();
@@ -239,10 +240,10 @@ public class NamedEntityRecognizer implements Serializable {
 			}
 		}
 
-		return new MatchResult(companyMatches, personMatches, productMatches);
+		return new NamedMatches(companyMatches, personMatches, productMatches);
 	}
 
-	public static class MatchResult {
+	public static class NamedMatches {
 
 		public List<Company> getCompanyMatches() {
 			return companyMatches;
@@ -260,7 +261,7 @@ public class NamedEntityRecognizer implements Serializable {
 			return companyMatches.size() + personMatches.size() + productMatches.size();
 		}
 
-		public MatchResult(List<Company> companyMatches, List<Person> personMatches, List<Product> productMatches) {
+		public NamedMatches(List<Company> companyMatches, List<Person> personMatches, List<Product> productMatches) {
 			super();
 			this.companyMatches = companyMatches;
 			this.personMatches = personMatches;
@@ -270,6 +271,7 @@ public class NamedEntityRecognizer implements Serializable {
 		private List<Company> companyMatches;
 		private List<Person> personMatches;
 		private List<Product> productMatches;
+
 	}
 
 }

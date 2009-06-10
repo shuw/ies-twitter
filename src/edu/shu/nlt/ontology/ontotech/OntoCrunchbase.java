@@ -21,12 +21,19 @@ import org.semanticweb.owl.model.OWLOntologyManager;
 import org.semanticweb.owl.model.OWLOntologyStorageException;
 import org.semanticweb.owl.model.UnknownOWLOntologyException;
 
+import edu.shu.nlt.crunchbase.Crunchbase;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Employee;
 import edu.shu.nlt.crunchbase.data.base.Product;
 import edu.shu.nlt.crunchbase.data.expanded.CompanyInfo;
 import edu.shu.nlt.crunchbase.data.lists.CompanyList;
 
+/**
+ * Populates ontology with Crunchbase Individuals
+ * 
+ * @author shu
+ * 
+ */
 public class OntoCrunchbase implements Runnable {
 
 	private static final int c_minCompanyEmployees = 10;
@@ -38,9 +45,8 @@ public class OntoCrunchbase implements Runnable {
 
 	public static void main(String[] args) throws OWLOntologyCreationException {
 
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-
-		(new OntoCrunchbase(manager)).run();
+		(new OntoCrunchbase(new File("data/ontology/IESTwitter.owl"), new File("output/CrunchbaseInstances.owl")))
+				.run();
 	}
 
 	private URI base;
@@ -53,14 +59,30 @@ public class OntoCrunchbase implements Runnable {
 
 	private OWLOntology ontology;
 
-	public OntoCrunchbase(OWLOntologyManager manager) {
+	private File outputFile;
+
+	public OntoCrunchbase(File input, File output) {
 		super();
 
+		this.outputFile = output;
+		manager = OWLManager.createOWLOntologyManager();
+
 		try {
-			initialize(manager);
+			initialize(manager, input);
 		} catch (OWLOntologyCreationException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private void assertProperty(OWLIndividual source, String predicateName, OWLIndividual target)
+			throws OWLOntologyChangeException {
+
+		OWLObjectProperty predicate = dataFactory.getOWLObjectProperty(URI.create(base + "#" + predicateName));
+
+		OWLObjectPropertyAssertionAxiom newAxiom = dataFactory.getOWLObjectPropertyAssertionAxiom(source, predicate,
+				target);
+
+		manager.applyChange(new AddAxiom(ontology, newAxiom));
 	}
 
 	private OWLIndividual createIndividual(String type, String crunchbaseId) throws OWLOntologyChangeException {
@@ -85,17 +107,6 @@ public class OntoCrunchbase implements Runnable {
 		}
 
 		return newIndividual;
-	}
-
-	private void assertProperty(OWLIndividual source, String predicateName, OWLIndividual target)
-			throws OWLOntologyChangeException {
-
-		OWLObjectProperty predicate = dataFactory.getOWLObjectProperty(URI.create(base + "#" + predicateName));
-
-		OWLObjectPropertyAssertionAxiom newAxiom = dataFactory.getOWLObjectPropertyAssertionAxiom(source, predicate,
-				target);
-
-		manager.applyChange(new AddAxiom(ontology, newAxiom));
 	}
 
 	private void populateInstances() throws OWLOntologyChangeException {
@@ -130,16 +141,14 @@ public class OntoCrunchbase implements Runnable {
 	}
 
 	private void save() throws UnknownOWLOntologyException, OWLOntologyStorageException {
-		manager
-				.saveOntology(ontology, new RDFXMLOntologyFormat(), (new File("output/CrunchbaseInstances.owl"))
-						.toURI());
+		manager.saveOntology(ontology, new RDFXMLOntologyFormat(), (outputFile).toURI());
 	}
 
-	public void initialize(OWLOntologyManager manager) throws OWLOntologyCreationException {
+	public void initialize(OWLOntologyManager manager, File inputFile) throws OWLOntologyCreationException {
 		this.manager = manager;
 		this.dataFactory = manager.getOWLDataFactory();
-		this.companyList = new CompanyList(new File("data/crunchbase/companies.js"));
-		this.ontology = manager.loadOntologyFromPhysicalURI((new File("data/ontology/IESTwitter.owl")).toURI());
+		this.companyList = Crunchbase.getInstance().getCompanyList();
+		this.ontology = manager.loadOntologyFromPhysicalURI(inputFile.toURI());
 		this.base = ontology.getURI();
 	}
 

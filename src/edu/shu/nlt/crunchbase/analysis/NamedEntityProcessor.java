@@ -9,7 +9,7 @@ import edu.nlt.shallow.data.table.KeyCounterTable;
 import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
-import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.MatchResult;
+import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
@@ -20,11 +20,11 @@ import edu.shu.nlt.crunchbase.data.base.Product;
  * @author shu
  * 
  */
-public class NamedEntityPrinter implements LineProcessor {
+public class NamedEntityProcessor implements LineProcessor {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
-		NamedEntityPrinter finder = new NamedEntityPrinter();
+		NamedEntityProcessor finder = new NamedEntityProcessor();
 
 		LPMultiThreader lineProcessorMT = new LPMultiThreader(4, finder);
 
@@ -69,7 +69,7 @@ public class NamedEntityPrinter implements LineProcessor {
 		totalLinesProcessed++;
 		value = value.trim();
 
-		MatchResult results = matcher.match(value);
+		NamedMatches results = matcher.match(value);
 
 		for (Company company : results.getCompanyMatches())
 			companyCounter.add(company);
