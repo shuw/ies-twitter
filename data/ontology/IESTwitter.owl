@@ -114,6 +114,15 @@
     
 
 
+    <!-- http://nlt.shu.edu/iestwitter#isReferringTo -->
+
+    <owl:ObjectProperty rdf:about="#isReferringTo">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://nlt.shu.edu/iestwitter#isUtteredBy -->
 
     <owl:ObjectProperty rdf:about="#isUtteredBy">

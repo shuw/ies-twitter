@@ -31,7 +31,7 @@ public class PopulateCrunchbase implements Runnable {
 	public static void main(String[] args) throws OWLOntologyCreationException {
 
 		OntologyUpdater ontology = new OntologyUpdater(new File("data/ontology/IESTwitter.owl"), new File(
-				"output/CrunchbaseInstances.owl"));
+				"output/crunchbase.owl"));
 
 		(new PopulateCrunchbase(ontology)).run();
 	}

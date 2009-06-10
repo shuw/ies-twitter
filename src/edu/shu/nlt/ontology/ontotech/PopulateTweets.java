@@ -12,6 +12,9 @@ import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
 import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer;
 import edu.shu.nlt.crunchbase.analysis.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.data.base.Company;
+import edu.shu.nlt.crunchbase.data.base.Person;
+import edu.shu.nlt.crunchbase.data.base.Product;
 import edu.shu.nlt.ontology.ontotech.extractionrules.ExtractionContext;
 import edu.shu.nlt.ontology.ontotech.extractionrules.RuleMatcher;
 
@@ -24,7 +27,7 @@ import edu.shu.nlt.ontology.ontotech.extractionrules.RuleMatcher;
 public class PopulateTweets implements LineProcessor {
 
 	public static void main(String[] args) {
-		OntologyUpdater ontologyUpdater = new OntologyUpdater(new File("data/ontology/IESTwitter.owl"), new File(
+		OntologyUpdater ontologyUpdater = new OntologyUpdater(new File("output/crunchbase.owl"), new File(
 				"output/Tweets.owl"));
 
 		PopulateTweets finder = new PopulateTweets(ontologyUpdater);
@@ -40,7 +43,7 @@ public class PopulateTweets implements LineProcessor {
 	}
 
 	private NamedEntityRecognizer neRecognizer;
-	private OntologyUpdater ontologyUpdater;
+	private OntologyUpdater ontology;
 
 	private RuleMatcher ruleMatcher;
 
@@ -51,7 +54,7 @@ public class PopulateTweets implements LineProcessor {
 
 	public PopulateTweets(OntologyUpdater ontologyUpdater) {
 		super();
-		this.ontologyUpdater = ontologyUpdater;
+		this.ontology = ontologyUpdater;
 		this.neRecognizer = NamedEntityRecognizer.getInstance();
 		this.ruleMatcher = RuleMatcher.getInstance();
 	}
@@ -65,6 +68,8 @@ public class PopulateTweets implements LineProcessor {
 	 */
 	private static final int maxNumOfTweetsToPopulate = 10;
 
+	private boolean populateInstancesOnlyIfAxiomsMatched;
+
 	@Override
 	public void processLine(String value) {
 		if (totalMatches >= maxNumOfTweetsToPopulate) {
@@ -77,18 +82,31 @@ public class PopulateTweets implements LineProcessor {
 		NamedMatches neMatches = neRecognizer.match(value);
 
 		if (neMatches.getTotalMatches() > 0) {
-			OWLIndividual tweet = ontologyUpdater.getIndividual("tweet" + tweetId++);
+			OWLIndividual tweet = ontology.getIndividual("tweet" + tweetId++);
 
-			ExtractionContext context = new ExtractionContext(ontologyUpdater, tweet, value, neMatches);
+			ExtractionContext context = new ExtractionContext(ontology, tweet, value, neMatches);
 			Collection<OWLAxiom> newAxiomAsserts;
 
 			newAxiomAsserts = ruleMatcher.getAxioms(context);
 
-			if (newAxiomAsserts.size() > 0) {
-				ontologyUpdater.assertCommentAnnotation(tweet, value);
-				ontologyUpdater.assertIsClass(tweet, "Tweet");
+			if (newAxiomAsserts.size() > 0 || !populateInstancesOnlyIfAxiomsMatched) {
+				ontology.assertCommentAnnotation(tweet, value);
+				ontology.assertIsClass(tweet, "Tweet");
 				totalMatches++;
-				System.out.println(totalProcessed + "\t " + value);
+				System.out.println(totalProcessed + "\t New individual: " + value);
+
+				for (Company company : neMatches.getCompanyMatches()) {
+					ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(company.getCrunchBaseId()));
+				}
+
+				for (Person person : neMatches.getPersonMatches()) {
+					ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(person.getCrunchBaseId()));
+				}
+
+				for (Product product : neMatches.getProductMatches()) {
+					ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(product.getCrunchBaseId()));
+				}
+
 			}
 
 		}
