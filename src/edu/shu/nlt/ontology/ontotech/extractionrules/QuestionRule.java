@@ -76,9 +76,8 @@ public class QuestionRule implements ExtractionRule {
 		if (isFound) {
 			OntologyUpdater ontUpdater = context.getOntologyUpdater();
 
-			OWLIndividual intentionOwl = ontUpdater.getIndividual("QuestionInd");
+			OWLIndividual intentionOwl = context.getSentenceIntentionOwl();
 			ontUpdater.assertIsClass(intentionOwl, "Question");
-
 			return ontUpdater.assertProperty(context.getSentenceOwl(), "hasIntention", intentionOwl);
 		}
 		return null;

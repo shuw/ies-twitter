@@ -32,7 +32,7 @@ public class PopulateTweets implements LineProcessor {
 	/**
 	 * Used during testing to restrict ontology size
 	 */
-	private static final int c_maxNumOfTweetsToPopulate = 100;
+	private static final int c_maxNumOfTweetsToPopulate = 1000;
 
 	public static final boolean c_useCRFClassifier = true;
 
@@ -99,11 +99,13 @@ public class PopulateTweets implements LineProcessor {
 
 		if (neMatches.getTotalMatches() > 0) {
 			OWLIndividual tweet = ontology.getIndividual("tweet" + tweetId++);
+			OWLIndividual intention = ontology.getIndividual("tweet" + tweetId++ + "Intention");
 
 			Collection<NamedEntity> namedEntities = classifier != null ? NERUtil.getNamedEntities(classifier, value)
 					: null;
 
-			ExtractionContext context = new ExtractionContext(ontology, tweet, value, neMatches, namedEntities);
+			ExtractionContext context = new ExtractionContext(ontology, tweet, intention, value, neMatches,
+					namedEntities);
 
 			Collection<OWLAxiom> newAxiomAsserts;
 
@@ -115,6 +117,7 @@ public class PopulateTweets implements LineProcessor {
 				{
 					ontology.assertCommentAnnotation(tweet, value);
 					ontology.assertIsClass(tweet, "Tweet");
+
 					totalMatches++;
 					System.out.println(totalProcessed + "\t New individual: " + value);
 
@@ -177,8 +180,9 @@ public class PopulateTweets implements LineProcessor {
 
 	public static String normalizeOntologyName(String value) {
 		value = value.toLowerCase().replaceAll(" ", "-"); // remove punctuation
+		value = value.replace("--+", "-");
 
-		value = value.replaceAll("[^\\w-]+", ""); // remove punctuation
+		value = value.replaceAll("[^\\w]+", ""); // remove punctuation
 
 		return value;
 

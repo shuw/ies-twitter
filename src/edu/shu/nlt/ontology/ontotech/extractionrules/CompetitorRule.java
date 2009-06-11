@@ -43,7 +43,7 @@ public class CompetitorRule implements ExtractionRule {
 
 				OntologyUpdater ontUpdater = context.getOntologyUpdater();
 
-				OWLIndividual intentionOwl = ontUpdater.getIndividual("CompetitiveComparisonInd");
+				OWLIndividual intentionOwl = context.getSentenceIntentionOwl();
 				ontUpdater.assertIsClass(intentionOwl, "CompetitiveComparison");
 
 				OWLAxiom hasIntentionAxiom = ontUpdater.assertProperty(context.getSentenceOwl(), "hasIntention",

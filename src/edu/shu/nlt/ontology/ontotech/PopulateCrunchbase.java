@@ -21,7 +21,7 @@ import edu.shu.nlt.crunchbase.data.lists.CompanyList;
  */
 public class PopulateCrunchbase implements Runnable {
 
-	private static final int c_minCompanyEmployees = 10;
+	private static final int c_minCompanyEmployees = Integer.MAX_VALUE;
 
 	// Development variable to speed up ontology creation time
 	//

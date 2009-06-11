@@ -36,9 +36,9 @@ public class StatementRule implements ExtractionRule {
 
 		if (isFound) {
 			OntologyUpdater ontUpdater = context.getOntologyUpdater();
-			OWLIndividual intentionOwl = ontUpdater.getIndividual("StatementInd");
-			ontUpdater.assertIsClass(intentionOwl, "Statement");
 
+			OWLIndividual intentionOwl = context.getSentenceIntentionOwl();
+			ontUpdater.assertIsClass(intentionOwl, "Statement");
 			return ontUpdater.assertProperty(context.getSentenceOwl(), "hasIntention", intentionOwl);
 
 		}

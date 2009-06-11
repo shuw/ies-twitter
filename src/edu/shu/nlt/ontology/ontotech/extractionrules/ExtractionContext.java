@@ -18,12 +18,15 @@ public class ExtractionContext {
 	private String sentence;
 
 	private OWLIndividual sentenceOwl;
+	private OWLIndividual sentenceIntentionOwl;
 
-	public ExtractionContext(OntologyUpdater ontologyUpdater, OWLIndividual sentenceOwl, String sentence,
-			CrunchbaseMatches namedEntitiesInSentence, Collection<NamedEntity> namedEntityMatches) {
+	public ExtractionContext(OntologyUpdater ontologyUpdater, OWLIndividual sentenceOwl,
+			OWLIndividual sentenceIntentionOwl, String sentence, CrunchbaseMatches namedEntitiesInSentence,
+			Collection<NamedEntity> namedEntityMatches) {
 		super();
 		this.ontologyUpdater = ontologyUpdater;
 		this.sentenceOwl = sentenceOwl;
+		this.sentenceIntentionOwl = sentenceIntentionOwl;
 		this.sentence = sentence;
 		this.crunchbaseMatches = namedEntitiesInSentence;
 		this.namedEntityMatches = namedEntityMatches;
@@ -43,6 +46,10 @@ public class ExtractionContext {
 
 	public String getSentence() {
 		return sentence;
+	}
+
+	public OWLIndividual getSentenceIntentionOwl() {
+		return sentenceIntentionOwl;
 	}
 
 	public OWLIndividual getSentenceOwl() {

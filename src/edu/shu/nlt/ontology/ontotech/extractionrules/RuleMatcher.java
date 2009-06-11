@@ -26,13 +26,17 @@ public class RuleMatcher {
 	 * 
 	 * find named entity, in a question sentence
 	 */
-	private ExtractionRule QuestionRule = new QuestionRule(false);
+	private ExtractionRule questionRule = new QuestionRule(false);
 
-	private CompetitorRule CompetitorRule = new CompetitorRule();
+	private CompetitorRule competitorRule = new CompetitorRule();
 
-	private EventRule EventRule = new EventRule();
+	private EventRule eventRule = new EventRule();
 
-	private ExtractionRule[] Rules = { CompetitorRule, QuestionRule, EventRule };
+	private DesireRule desireRule = new DesireRule();
+
+	// private ExtractionRule[] Rules = { CompetitorRule, QuestionRule,
+	// EventRule };
+	private ExtractionRule[] Rules = { desireRule, eventRule, questionRule, competitorRule };
 
 	/**
 	 * Return matching results
