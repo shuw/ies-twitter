@@ -3,6 +3,7 @@ package edu.shu.nlt.ontology.ontotech;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.semanticweb.owl.model.OWLAxiom;
 import org.semanticweb.owl.model.OWLIndividual;
@@ -32,17 +33,17 @@ public class PopulateTweets implements LineProcessor {
 	/**
 	 * Used during testing to restrict ontology size
 	 */
-	private static final int c_maxNumOfTweetsToPopulate = 1000;
-
-	public static final boolean c_useCRFClassifier = true;
+	private static final int c_maxNumOfTweetsToPopulate = 100;
 
 	public static final boolean c_populateInstancesOnlyIfAxiomsMatched = true;
 
+	public static final boolean c_useCRFClassifier = true;
+
 	public static void main(String[] args) {
-		OntologyUpdater ontologyUpdater = new OntologyUpdater(new File("output/crunchbase.owl"), new File(
+		OntologyUpdater ontology = new OntologyUpdater(new File("data/ontology/IESTwitter.owl"), new File(
 				"output/Tweets.owl"));
 
-		PopulateTweets finder = new PopulateTweets(ontologyUpdater);
+		PopulateTweets finder = new PopulateTweets(ontology);
 
 		LPMultiThreader lineProcessorMT = new LPMultiThreader(4, finder);
 
@@ -50,16 +51,36 @@ public class PopulateTweets implements LineProcessor {
 
 		lineProcessorMT.close();
 
-		ontologyUpdater.save();
+		// Populate ontology with crunchbase company information
+		(new PopulateCrunchbase(ontology, finder.getCompaniesMentioned())).run();
+
+		ontology.save();
 		finder.printResults(System.out);
 	}
 
+	public HashSet<Company> getCompaniesMentioned() {
+		return companiesMentioned;
+	}
+
+	public static String normalizeOntologyName(String value) {
+		value = value.toLowerCase().replaceAll(" ", "-"); // remove punctuation
+		value = value.replace("--+", "-");
+
+		value = value.replaceAll("[^\\w]+", ""); // remove punctuation
+
+		return value;
+
+	}
+
 	private CRFClassifier classifier;
+
 	private NamedEntityRecognizer neRecognizer;
 
 	private OntologyUpdater ontology;
 
 	private RuleMatcher ruleMatcher;
+
+	private OWLIndividual technologyTopic;
 
 	private int totalMatches = 0;
 
@@ -80,11 +101,16 @@ public class PopulateTweets implements LineProcessor {
 				throw new RuntimeException(ex);
 			}
 		}
+		companiesMentioned = new HashSet<Company>();
+		technologyTopic = ontology.getIndividual("TechnologyTopic");
+		ontology.assertIsClass(technologyTopic, "Technology");
 	}
 
 	public void printResults(PrintStream out) {
 		out.println("Total matches: " + totalMatches);
 	}
+
+	private HashSet<Company> companiesMentioned;
 
 	@Override
 	public void processLine(String value) {
@@ -117,21 +143,29 @@ public class PopulateTweets implements LineProcessor {
 				{
 					ontology.assertCommentAnnotation(tweet, value);
 					ontology.assertIsClass(tweet, "Tweet");
+					ontology.assertProperty(tweet, "hasTopic", technologyTopic);
 
 					totalMatches++;
 					System.out.println(totalProcessed + "\t New individual: " + value);
 
 					for (Company company : neMatches.getCompanyMatches()) {
+						PopulateCrunchbase.assertCompany(ontology, company);
+						companiesMentioned.add(company);
+
 						ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(company
 								.getCrunchBaseId()));
 					}
 
 					for (Person person : neMatches.getPersonMatches()) {
+						PopulateCrunchbase.assertPerson(ontology, person);
+
 						ontology.assertProperty(tweet, "isReferringTo", ontology
 								.getIndividual(person.getCrunchBaseId()));
 					}
 
 					for (Product product : neMatches.getProductMatches()) {
+						PopulateCrunchbase.assertProduct(ontology, product);
+
 						ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(product
 								.getCrunchBaseId()));
 					}
@@ -175,16 +209,6 @@ public class PopulateTweets implements LineProcessor {
 			}
 
 		}
-
-	}
-
-	public static String normalizeOntologyName(String value) {
-		value = value.toLowerCase().replaceAll(" ", "-"); // remove punctuation
-		value = value.replace("--+", "-");
-
-		value = value.replaceAll("[^\\w]+", ""); // remove punctuation
-
-		return value;
 
 	}
 }

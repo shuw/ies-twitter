@@ -545,6 +545,14 @@ It contains a question &amp; an answer</rdfs:comment>
     
 
 
+    <!-- http://nlt.shu.edu/iestwitter#Surprise -->
+
+    <owl:Class rdf:about="#Surprise">
+        <rdfs:subClassOf rdf:resource="#Intention"/>
+    </owl:Class>
+    
+
+
     <!-- http://nlt.shu.edu/iestwitter#Tag -->
 
     <owl:Class rdf:about="#Tag">

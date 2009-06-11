@@ -76,7 +76,7 @@ public class NamedEntityRecognizer implements Serializable {
 	 * Company's minimum employee count to be included in the recognizable word
 	 * list
 	 */
-	private final int c_minCompanyEmployees = 10;
+	private final int c_minCompanyEmployees = 2;
 
 	/**
 	 * If true, then the company list will be filted by this minimum employee

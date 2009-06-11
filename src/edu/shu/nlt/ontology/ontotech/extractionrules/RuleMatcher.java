@@ -34,9 +34,16 @@ public class RuleMatcher {
 
 	private DesireRule desireRule = new DesireRule();
 
-	// private ExtractionRule[] Rules = { CompetitorRule, QuestionRule,
-	// EventRule };
-	private ExtractionRule[] Rules = { desireRule, eventRule, questionRule, competitorRule };
+	private IntrospectionRule introspectionRule = new IntrospectionRule();
+
+	private SurpriseRule surpriseRule = new SurpriseRule();
+
+	private PropositionRule propositionRule = new PropositionRule();
+
+	private ExtractionRule[] Rules = { desireRule, eventRule, questionRule, competitorRule, introspectionRule,
+			surpriseRule, propositionRule };
+
+	// private ExtractionRule[] Rules = { propositionRule };
 
 	/**
 	 * Return matching results
