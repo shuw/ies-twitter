@@ -42,12 +42,7 @@ public class EventRule implements ExtractionRule {
 
 					String normalizedName = PopulateTweets.normalizeOntologyName(namedEntity.getName());
 
-					if (locationName.toLowerCase().equals("Linux")) {
-						System.out.println("Hello");
-					}
-
 					OWLIndividual locationOwl = ontology.getIndividual(normalizedName);
-					ontology.assertIsClass(locationOwl, "Location");
 
 					locations.add(locationOwl);
 				}
@@ -59,6 +54,8 @@ public class EventRule implements ExtractionRule {
 
 			if (context.getCrunchbaseMatches().getCompanyMatches().size() > 0) {
 				OWLIndividual eventOwl = ontology.getIndividual("detectedEvent" + eventCount++);
+				ontology.assertIsClass(locationOwl, "Location");
+
 				axiom = ontology.assertProperty(context.getSentenceOwl(), "isReferringTo", eventOwl);
 
 				ontology.assertIsClass(eventOwl, "Event");

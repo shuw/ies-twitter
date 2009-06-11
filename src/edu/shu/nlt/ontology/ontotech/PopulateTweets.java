@@ -33,7 +33,7 @@ public class PopulateTweets implements LineProcessor {
 	/**
 	 * Used during testing to restrict ontology size
 	 */
-	private static final int c_maxNumOfTweetsToPopulate = 100;
+	private static final int c_maxNumOfTweetsToPopulate = 2000;
 
 	public static final boolean c_populateInstancesOnlyIfAxiomsMatched = true;
 
@@ -108,6 +108,7 @@ public class PopulateTweets implements LineProcessor {
 
 	public void printResults(PrintStream out) {
 		out.println("Total matches: " + totalMatches);
+		out.println("Total processed: " + totalProcessed);
 	}
 
 	private HashSet<Company> companiesMentioned;
@@ -141,7 +142,7 @@ public class PopulateTweets implements LineProcessor {
 				// Assert named entity relationship
 				//
 				{
-					ontology.assertCommentAnnotation(tweet, value);
+					ontology.assertCommentAnnotation(tweet, value.replace("[^\\x20-\\x7E]", "_"));
 					ontology.assertIsClass(tweet, "Tweet");
 					ontology.assertProperty(tweet, "hasTopic", technologyTopic);
 
