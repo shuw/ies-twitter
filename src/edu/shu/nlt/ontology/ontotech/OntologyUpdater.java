@@ -68,7 +68,7 @@ public class OntologyUpdater {
 		this.base = ontology.getURI();
 	}
 
-	public OWLAxiom assertCommentAnnotation(OWLIndividual individual, String value) {
+	public synchronized OWLAxiom assertCommentAnnotation(OWLIndividual individual, String value) {
 
 		OWLCommentAnnotation comment = dataFactory.getCommentAnnotation(value);
 
@@ -79,7 +79,7 @@ public class OntologyUpdater {
 		return axiom;
 	}
 
-	public OWLAxiom assertDataProperty(OWLIndividual individual, String propertyName, String value) {
+	public synchronized OWLAxiom assertDataProperty(OWLIndividual individual, String propertyName, String value) {
 		OWLDataProperty property = dataFactory.getOWLDataProperty(URI.create(base + "#" + propertyName));
 
 		OWLDataPropertyAssertionAxiom axiom = dataFactory.getOWLDataPropertyAssertionAxiom(individual, property, value);
@@ -89,7 +89,7 @@ public class OntologyUpdater {
 		return axiom;
 	}
 
-	public OWLAxiom assertIsClass(OWLIndividual individual, String typeName) {
+	public synchronized OWLAxiom assertIsClass(OWLIndividual individual, String typeName) {
 
 		OWLClass owlType = dataFactory.getOWLClass(URI.create(base + "#" + typeName));
 		OWLClassAssertionAxiom axiom = dataFactory.getOWLClassAssertionAxiom(individual, owlType);
@@ -98,7 +98,7 @@ public class OntologyUpdater {
 		return axiom;
 	}
 
-	public OWLAxiom assertProperty(OWLIndividual source, String predicateName, OWLIndividual target) {
+	public synchronized OWLAxiom assertProperty(OWLIndividual source, String predicateName, OWLIndividual target) {
 
 		OWLObjectProperty predicate = dataFactory.getOWLObjectProperty(URI.create(base + "#" + predicateName));
 
@@ -113,7 +113,7 @@ public class OntologyUpdater {
 		return dataFactory;
 	}
 
-	public OWLIndividual getIndividual(String name) {
+	public synchronized OWLIndividual getIndividual(String name) {
 		try {
 			return dataFactory.getOWLIndividual(URI.create(base + "#" + name));
 		} catch (IllegalArgumentException ex) {
@@ -126,22 +126,26 @@ public class OntologyUpdater {
 		return ontology;
 	}
 
-	public void removeIndividual(OWLIndividual individual) {
+	public synchronized void removeIndividual(OWLIndividual individual) {
 
 		individual.accept(remover);
 
-		try {
-			manager.applyChanges(remover.getChanges());
-		} catch (OWLOntologyChangeException e) {
-			throw new RuntimeException(e);
+		synchronized (manager) {
+			try {
+				manager.applyChanges(remover.getChanges());
+			} catch (OWLOntologyChangeException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
-	public void save() {
-		try {
-			manager.saveOntology(ontology, new RDFXMLOntologyFormat(), (outputFile).toURI());
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
+	public synchronized void save() {
+		synchronized (manager) {
+			try {
+				manager.saveOntology(ontology, new RDFXMLOntologyFormat(), (outputFile).toURI());
+			} catch (Exception ex) {
+				throw new RuntimeException(ex);
+			}
 		}
 	}
 
