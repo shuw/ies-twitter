@@ -10,7 +10,7 @@ import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
 import edu.shu.nlt.crunchbase.NamedEntityRecognizer;
-import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.CrunchbaseMatches;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
@@ -70,7 +70,7 @@ public class FindPopularEntities implements LineProcessor {
 		totalLinesProcessed++;
 		value = value.trim();
 
-		NamedMatches results = matcher.match(value);
+		CrunchbaseMatches results = matcher.match(value);
 
 		for (Company company : results.getCompanyMatches())
 			companyCounter.add(company);

@@ -4,6 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLIndividual;
+
+import edu.shu.nlt.ontology.ontotech.OntologyUpdater;
 
 /**
  * Matches sentences that end in a period or exclamation
@@ -32,8 +35,12 @@ public class StatementRule implements ExtractionRule {
 		}
 
 		if (isFound) {
+			OntologyUpdater ontUpdater = context.getOntologyUpdater();
+			OWLIndividual intentionOwl = ontUpdater.getIndividual("StatementInd");
+			ontUpdater.assertIsClass(intentionOwl, "Statement");
 
-			return context.getOntologyUpdater().assertIsClass(context.getSentenceOwl(), "Question");
+			return ontUpdater.assertProperty(context.getSentenceOwl(), "hasIntention", intentionOwl);
+
 		}
 		return null;
 

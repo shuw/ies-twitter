@@ -47,7 +47,7 @@ public class StopWords implements Serializable {
 	 * their names form matching
 	 */
 	private static String[] s_crunchbaseStopWords = { "slide", "like", "better place", "common sense", "propser",
-			"tipped", "wtf", "popular", "slide", "arms", "shine", "prism", "mobile" };
+			"tipped", "wtf", "popular", "slide", "arms", "shine", "prism", "mobile", "heavy" };
 
 	private HashSet<String> stopWords;
 

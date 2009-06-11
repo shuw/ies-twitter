@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.shu.nlt.crunchbase.NamedEntityRecognizer;
-import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.CrunchbaseMatches;
 
 public class InstanceMatcherTest {
 
@@ -33,7 +33,7 @@ public class InstanceMatcherTest {
 
 	@Test
 	public void findHash() {
-		NamedMatches result = myInstance.match("#facebook");
+		CrunchbaseMatches result = myInstance.match("#facebook");
 
 		Assert.assertTrue(result.getTotalMatches() == 1);
 		Assert.assertTrue(result.getCompanyMatches().get(0).getCrunchBaseId().equals("facebook"));
@@ -42,7 +42,7 @@ public class InstanceMatcherTest {
 
 	@Test
 	public void findMixed() {
-		NamedMatches result = myInstance.match("bill gates worked at microsoft");
+		CrunchbaseMatches result = myInstance.match("bill gates worked at microsoft");
 
 		Assert.assertTrue(result.getCompanyMatches().get(0).getCrunchBaseId().equals("microsoft"));
 		Assert.assertTrue(result.getPersonMatches().get(0).getCrunchBaseId().equals("bill-gates"));

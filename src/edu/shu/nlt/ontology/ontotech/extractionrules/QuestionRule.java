@@ -6,11 +6,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.semanticweb.owl.model.OWLAxiom;
+import org.semanticweb.owl.model.OWLIndividual;
 
-import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.CrunchbaseMatches;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
+import edu.shu.nlt.ontology.ontotech.OntologyUpdater;
 
 public class QuestionRule implements ExtractionRule {
 
@@ -30,7 +32,7 @@ public class QuestionRule implements ExtractionRule {
 
 	}
 
-	public synchronized Collection<String> getLowerCaseMatchStrings(NamedMatches matches) {
+	public synchronized Collection<String> getLowerCaseMatchStrings(CrunchbaseMatches matches) {
 
 		ArrayList<String> matchStrings = new ArrayList<String>(matches.getCompanyMatches().size()
 				+ matches.getPersonMatches().size() + matches.getProductMatches().size());
@@ -60,7 +62,7 @@ public class QuestionRule implements ExtractionRule {
 			isFound = matcher.find();
 		} else {
 
-			for (String namedEntity : getLowerCaseMatchStrings(context.getNamedEntitiesInSentence())) {
+			for (String namedEntity : getLowerCaseMatchStrings(context.getCrunchbaseMatches())) {
 				String toMatch = namedPattern.replace(c_namedEntityMarker, namedEntity.toLowerCase());
 
 				if (sentence.matches(toMatch)) {
@@ -72,7 +74,12 @@ public class QuestionRule implements ExtractionRule {
 		}
 
 		if (isFound) {
-			return context.getOntologyUpdater().assertIsClass(context.getSentenceOwl(), "Question");
+			OntologyUpdater ontUpdater = context.getOntologyUpdater();
+
+			OWLIndividual intentionOwl = ontUpdater.getIndividual("QuestionInd");
+			ontUpdater.assertIsClass(intentionOwl, "Question");
+
+			return ontUpdater.assertProperty(context.getSentenceOwl(), "hasIntention", intentionOwl);
 		}
 		return null;
 

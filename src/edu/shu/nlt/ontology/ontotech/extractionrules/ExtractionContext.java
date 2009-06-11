@@ -1,34 +1,40 @@
 package edu.shu.nlt.ontology.ontotech.extractionrules;
 
+import java.util.Collection;
+
 import org.semanticweb.owl.model.OWLIndividual;
 
-import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.CrunchbaseMatches;
+import edu.shu.nlt.ie.NamedEntity;
 import edu.shu.nlt.ontology.ontotech.OntologyUpdater;
 
 public class ExtractionContext {
 
+	private CrunchbaseMatches crunchbaseMatches;
+
+	private Collection<NamedEntity> namedEntityMatches;
 	private OntologyUpdater ontologyUpdater;
 
-	private OWLIndividual sentenceOwl;
 	private String sentence;
 
-	public OWLIndividual getSentenceOwl() {
-		return sentenceOwl;
-	}
+	private OWLIndividual sentenceOwl;
 
 	public ExtractionContext(OntologyUpdater ontologyUpdater, OWLIndividual sentenceOwl, String sentence,
-			NamedMatches namedEntitiesInSentence) {
+			CrunchbaseMatches namedEntitiesInSentence, Collection<NamedEntity> namedEntityMatches) {
 		super();
 		this.ontologyUpdater = ontologyUpdater;
 		this.sentenceOwl = sentenceOwl;
 		this.sentence = sentence;
-		this.namedEntitiesInSentence = namedEntitiesInSentence;
+		this.crunchbaseMatches = namedEntitiesInSentence;
+		this.namedEntityMatches = namedEntityMatches;
 	}
 
-	private NamedMatches namedEntitiesInSentence;
+	public CrunchbaseMatches getCrunchbaseMatches() {
+		return crunchbaseMatches;
+	}
 
-	public NamedMatches getNamedEntitiesInSentence() {
-		return namedEntitiesInSentence;
+	public Collection<NamedEntity> getNamedEntityMatches() {
+		return namedEntityMatches;
 	}
 
 	public OntologyUpdater getOntologyUpdater() {
@@ -37,6 +43,10 @@ public class ExtractionContext {
 
 	public String getSentence() {
 		return sentence;
+	}
+
+	public OWLIndividual getSentenceOwl() {
+		return sentenceOwl;
 	}
 
 }

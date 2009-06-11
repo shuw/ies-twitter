@@ -30,7 +30,9 @@ public class RuleMatcher {
 
 	private CompetitorRule CompetitorRule = new CompetitorRule();
 
-	private ExtractionRule[] Rules = { CompetitorRule, QuestionRule };
+	private EventRule EventRule = new EventRule();
+
+	private ExtractionRule[] Rules = { CompetitorRule, QuestionRule, EventRule };
 
 	/**
 	 * Return matching results

@@ -38,13 +38,16 @@ public class CompetitorRule implements ExtractionRule {
 	public OWLAxiom addAxiom(ExtractionContext context) {
 		String sentence = context.getSentence().toLowerCase();
 
-		for (String competitor : getCompetitorStrings(context.getNamedEntitiesInSentence().getCompanyMatches())) {
+		for (String competitor : getCompetitorStrings(context.getCrunchbaseMatches().getCompanyMatches())) {
 			if (sentence.contains(competitor)) {
 
 				OntologyUpdater ontUpdater = context.getOntologyUpdater();
 
-				OWLAxiom hasIntentionAxiom = ontUpdater
-						.assertIsClass(context.getSentenceOwl(), "CompetitiveComparison");
+				OWLIndividual intentionOwl = ontUpdater.getIndividual("CompetitiveComparisonInd");
+				ontUpdater.assertIsClass(intentionOwl, "CompetitiveComparison");
+
+				OWLAxiom hasIntentionAxiom = ontUpdater.assertProperty(context.getSentenceOwl(), "hasIntention",
+						intentionOwl);
 
 				return hasIntentionAxiom;
 			}

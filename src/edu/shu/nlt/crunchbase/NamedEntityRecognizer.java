@@ -194,7 +194,7 @@ public class NamedEntityRecognizer implements Serializable {
 
 		NamedEntityRecognizer matcher = NamedEntityRecognizer.getInstance();
 
-		NamedMatches results = matcher.match("Mark  is the founder of Facebook, which makes the Facebook Platform");
+		CrunchbaseMatches results = matcher.match("Mark  is the founder of Facebook, which makes the Facebook Platform");
 
 		for (Person person : results.getPersonMatches())
 			person.printDetails(System.out);
@@ -207,7 +207,7 @@ public class NamedEntityRecognizer implements Serializable {
 
 	}
 
-	public NamedMatches match(String sentence) {
+	public CrunchbaseMatches match(String sentence) {
 		List<Word> words = new ArrayList<Word>(tokenizer.getWords(sentence));
 
 		LinkedList<Company> companyMatches = new LinkedList<Company>();
@@ -238,10 +238,10 @@ public class NamedEntityRecognizer implements Serializable {
 			}
 		}
 
-		return new NamedMatches(companyMatches, personMatches, productMatches);
+		return new CrunchbaseMatches(companyMatches, personMatches, productMatches);
 	}
 
-	public static class NamedMatches {
+	public static class CrunchbaseMatches {
 
 		public List<Company> getCompanyMatches() {
 			return companyMatches;
@@ -259,7 +259,7 @@ public class NamedEntityRecognizer implements Serializable {
 			return companyMatches.size() + personMatches.size() + productMatches.size();
 		}
 
-		public NamedMatches(List<Company> companyMatches, List<Person> personMatches, List<Product> productMatches) {
+		public CrunchbaseMatches(List<Company> companyMatches, List<Person> personMatches, List<Product> productMatches) {
 			super();
 			this.companyMatches = companyMatches;
 			this.personMatches = personMatches;

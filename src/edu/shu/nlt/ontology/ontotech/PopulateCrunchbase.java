@@ -26,7 +26,7 @@ public class PopulateCrunchbase implements Runnable {
 	// Development variable to speed up ontology creation time
 	//
 	// -1 for unlimited
-	private static final int maxCompaniesToCreate = Integer.MAX_VALUE;
+	private static final int maxCompaniesToCreate = 1;
 
 	public static void main(String[] args) throws OWLOntologyCreationException {
 

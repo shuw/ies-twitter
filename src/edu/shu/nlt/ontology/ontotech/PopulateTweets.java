@@ -11,7 +11,7 @@ import edu.nlt.util.InputUtil;
 import edu.nlt.util.LPMultiThreader;
 import edu.nlt.util.processor.LineProcessor;
 import edu.shu.nlt.crunchbase.NamedEntityRecognizer;
-import edu.shu.nlt.crunchbase.NamedEntityRecognizer.NamedMatches;
+import edu.shu.nlt.crunchbase.NamedEntityRecognizer.CrunchbaseMatches;
 import edu.shu.nlt.crunchbase.data.base.Company;
 import edu.shu.nlt.crunchbase.data.base.Person;
 import edu.shu.nlt.crunchbase.data.base.Product;
@@ -32,7 +32,7 @@ public class PopulateTweets implements LineProcessor {
 	/**
 	 * Used during testing to restrict ontology size
 	 */
-	private static final int c_maxNumOfTweetsToPopulate = Integer.MAX_VALUE;
+	private static final int c_maxNumOfTweetsToPopulate = 100;
 
 	public static final boolean c_useCRFClassifier = true;
 
@@ -95,53 +95,56 @@ public class PopulateTweets implements LineProcessor {
 		totalProcessed++;
 		value = value.trim();
 
-		NamedMatches neMatches = neRecognizer.match(value);
+		CrunchbaseMatches neMatches = neRecognizer.match(value);
 
 		if (neMatches.getTotalMatches() > 0) {
 			OWLIndividual tweet = ontology.getIndividual("tweet" + tweetId++);
 
-			ExtractionContext context = new ExtractionContext(ontology, tweet, value, neMatches);
+			Collection<NamedEntity> namedEntities = classifier != null ? NERUtil.getNamedEntities(classifier, value)
+					: null;
+
+			ExtractionContext context = new ExtractionContext(ontology, tweet, value, neMatches, namedEntities);
+
 			Collection<OWLAxiom> newAxiomAsserts;
 
 			newAxiomAsserts = ruleMatcher.getAxioms(context);
 
 			if (!c_populateInstancesOnlyIfAxiomsMatched || newAxiomAsserts.size() > 0) {
-				ontology.assertCommentAnnotation(tweet, value);
-				ontology.assertIsClass(tweet, "Tweet");
-				totalMatches++;
-				System.out.println(totalProcessed + "\t New individual: " + value);
+				// Assert named entity relationship
+				//
+				{
+					ontology.assertCommentAnnotation(tweet, value);
+					ontology.assertIsClass(tweet, "Tweet");
+					totalMatches++;
+					System.out.println(totalProcessed + "\t New individual: " + value);
 
-				for (Company company : neMatches.getCompanyMatches()) {
-					ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(company.getCrunchBaseId()));
+					for (Company company : neMatches.getCompanyMatches()) {
+						ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(company
+								.getCrunchBaseId()));
+					}
+
+					for (Person person : neMatches.getPersonMatches()) {
+						ontology.assertProperty(tweet, "isReferringTo", ontology
+								.getIndividual(person.getCrunchBaseId()));
+					}
+
+					for (Product product : neMatches.getProductMatches()) {
+						ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(product
+								.getCrunchBaseId()));
+					}
 				}
 
-				for (Person person : neMatches.getPersonMatches()) {
-					ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(person.getCrunchBaseId()));
-				}
-
-				for (Product product : neMatches.getProductMatches()) {
-					ontology.assertProperty(tweet, "isReferringTo", ontology.getIndividual(product.getCrunchBaseId()));
-				}
-
+				// Assert crunchbase relationship
+				//
 				if (classifier != null) {
-
-					Collection<NamedEntity> namedEntities = NERUtil.getNamedEntities(classifier, value);
 
 					for (NamedEntity namedEntity : namedEntities) {
 						String normalizedName = normalizeOntologyName(namedEntity.getName());
 
 						if (normalizedName.length() > 3) {
 
-							if (namedEntity.getType() == NamedEntity.Type.Location) {
+							if (namedEntity.getType() != NamedEntity.Type.Location) {
 
-								OWLIndividual locationOwl = ontology.getIndividual(normalizedName);
-								ontology.assertIsClass(locationOwl, "Location");
-								ontology.assertProperty(tweet, "isLocatedAt", locationOwl);
-							}
-
-							else {
-
-								boolean isAlreadyInCrunchbase = false;
 								String type;
 								if (namedEntity.getType() == NamedEntity.Type.Person) {
 									type = "Person";
@@ -151,14 +154,13 @@ public class PopulateTweets implements LineProcessor {
 									type = "NamedEntity";
 								}
 
-								if (!isAlreadyInCrunchbase) {
-									OWLIndividual namedEntityOwl = ontology.getIndividual(normalizedName);
+								OWLIndividual namedEntityOwl = ontology.getIndividual(normalizedName);
 
-									ontology.assertIsClass(namedEntityOwl, type);
+								ontology.assertIsClass(namedEntityOwl, type);
 
-									ontology.assertCommentAnnotation(namedEntityOwl, namedEntity.getName());
-									ontology.assertProperty(tweet, "isReferringTo", namedEntityOwl);
-								}
+								ontology.assertCommentAnnotation(namedEntityOwl, namedEntity.getName());
+								ontology.assertProperty(tweet, "isReferringTo", namedEntityOwl);
+
 							}
 
 							System.out.println("Also found using CRF: " + namedEntity);
@@ -173,7 +175,7 @@ public class PopulateTweets implements LineProcessor {
 
 	}
 
-	private String normalizeOntologyName(String value) {
+	public static String normalizeOntologyName(String value) {
 		value = value.toLowerCase().replaceAll(" ", "-"); // remove punctuation
 
 		value = value.replaceAll("[^\\w-]+", ""); // remove punctuation

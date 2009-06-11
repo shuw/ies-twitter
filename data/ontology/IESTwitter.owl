@@ -48,11 +48,30 @@
     
 
 
+    <!-- http://nlt.shu.edu/iestwitter#hasIntention -->
+
+    <owl:ObjectProperty rdf:about="#hasIntention">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <rdfs:range rdf:resource="#Intention"/>
+        <rdfs:domain rdf:resource="#UnitOfThought"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://nlt.shu.edu/iestwitter#hasProduct -->
 
     <owl:ObjectProperty rdf:about="#hasProduct">
         <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
         <rdfs:range rdf:resource="#Product"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isAttendedBy -->
+
+    <owl:ObjectProperty rdf:about="#isAttendedBy">
+        <rdfs:range rdf:resource="#Endurant"/>
+        <rdfs:domain rdf:resource="#Event"/>
     </owl:ObjectProperty>
     
 
@@ -103,11 +122,35 @@
     
 
 
+    <!-- http://nlt.shu.edu/iestwitter#isIntendedBy -->
+
+    <owl:ObjectProperty rdf:about="#isIntendedBy">
+        <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
+        <owl:inverseOf rdf:resource="#hasIntention"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://nlt.shu.edu/iestwitter#isLocatedAt -->
 
     <owl:ObjectProperty rdf:about="#isLocatedAt">
         <rdfs:range rdf:resource="#Location"/>
-        <rdfs:subPropertyOf rdf:resource="#isReferringTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isLocationOf -->
+
+    <owl:ObjectProperty rdf:about="#isLocationOf">
+        <owl:inverseOf rdf:resource="#isLocatedAt"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#isReferredFrom -->
+
+    <owl:ObjectProperty rdf:about="#isReferredFrom">
+        <owl:inverseOf rdf:resource="#isReferringTo"/>
     </owl:ObjectProperty>
     
 
@@ -218,6 +261,31 @@
     
 
 
+    <!-- http://nlt.shu.edu/iestwitter#Conference -->
+
+    <owl:Class rdf:about="#Conference">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Event"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#isAttendedBy"/>
+                        <owl:someValuesFrom rdf:resource="#Organization"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#isAttendedBy"/>
+                        <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minCardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="#Event"/>
+        <rdfs:comment
+            >An event with many companies</rdfs:comment>
+    </owl:Class>
+    
+
+
     <!-- http://nlt.shu.edu/iestwitter#Desire -->
 
     <owl:Class rdf:about="#Desire">
@@ -257,6 +325,7 @@
 
     <owl:Class rdf:about="#Intention">
         <rdfs:subClassOf rdf:resource="#Abstract"/>
+        <owl:disjointWith rdf:resource="#UnitOfThought"/>
         <rdfs:comment
             >Intention of a Unit of Thought. Cognitively biased</rdfs:comment>
     </owl:Class>
@@ -322,6 +391,29 @@
         <rdfs:subClassOf rdf:resource="#Statement"/>
         <rdfs:comment
             >i.e. I think socks are the best.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://nlt.shu.edu/iestwitter#OrgEvent -->
+
+    <owl:Class rdf:about="#OrgEvent">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Event"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#isAttendedBy"/>
+                        <owl:someValuesFrom rdf:resource="#Organization"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="#isAttendedBy"/>
+                        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="#Event"/>
     </owl:Class>
     
 
@@ -494,38 +586,6 @@ It contains a question &amp; an answer</rdfs:comment>
     
 
 
-    <!-- http://nlt.shu.edu/iestwitter#TweetOpinion -->
-
-    <owl:Class rdf:about="#TweetOpinion">
-        <rdfs:subClassOf rdf:resource="#Tweet"/>
-    </owl:Class>
-    
-
-
-    <!-- http://nlt.shu.edu/iestwitter#TweetQuestion -->
-
-    <owl:Class rdf:about="#TweetQuestion">
-        <rdfs:subClassOf rdf:resource="#Tweet"/>
-    </owl:Class>
-    
-
-
-    <!-- http://nlt.shu.edu/iestwitter#TweetReply -->
-
-    <owl:Class rdf:about="#TweetReply">
-        <rdfs:subClassOf rdf:resource="#Tweet"/>
-    </owl:Class>
-    
-
-
-    <!-- http://nlt.shu.edu/iestwitter#TweetStatement -->
-
-    <owl:Class rdf:about="#TweetStatement">
-        <rdfs:subClassOf rdf:resource="#Tweet"/>
-    </owl:Class>
-    
-
-
     <!-- http://nlt.shu.edu/iestwitter#TwitterEntity -->
 
     <owl:Class rdf:about="#TwitterEntity">
@@ -583,42 +643,9 @@ It contains a question &amp; an answer</rdfs:comment>
     
 
 
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Individuals
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
 
-    
-
-
-    <!-- http://nlt.shu.edu/iestwitter#tweet39 -->
-
-    <Question rdf:about="#tweet39">
-        <rdf:type rdf:resource="#Tweet"/>
-    </Question>
-    
-
-
-    <!-- 
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // General axioms
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-    <rdf:Description>
-        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="#TweetOpinion"/>
-            <rdf:Description rdf:about="#TweetQuestion"/>
-            <rdf:Description rdf:about="#TweetReply"/>
-            <rdf:Description rdf:about="#TweetStatement"/>
-        </owl:members>
-    </rdf:Description>
+    <owl:Class rdf:about="&owl;Thing"/>
 </rdf:RDF>
 
 
